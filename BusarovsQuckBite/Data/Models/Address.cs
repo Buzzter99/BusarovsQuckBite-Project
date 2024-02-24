@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusarovsQuckBite.Data.Models
 {
@@ -19,7 +20,11 @@ namespace BusarovsQuckBite.Data.Models
         [Required]
         public bool IsDeleted { get; set; }
         public DateTime? LastModifiedOn { get; set; }
-        public ICollection<ApplicationUser> Users { get; set; } = new List<ApplicationUser>();
+        [Required]
+        public string UserId { get; set; } = string.Empty;
+        [Required]
+        [ForeignKey(nameof(UserId))]
+        public ApplicationUser User { get; set; } = null!;
 
     }
 }
