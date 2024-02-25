@@ -26,7 +26,6 @@
     <Folder Include="Areas\AccountManager\Pages\" />
     <Folder Include="Areas\AccountManager\Views\Users\" />
     <Folder Include="Contracts\" />
-    <Folder Include="Data\Configuration\" />
   </ItemGroup>
 
 </Project>

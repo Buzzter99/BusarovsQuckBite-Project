@@ -4,6 +4,7 @@ using BusarovsQuckBite.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusarovsQuckBite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240225195259_FinalDbModels")]
+    partial class FinalDbModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,13 +54,13 @@ namespace BusarovsQuckBite.Migrations
                     b.Property<DateTime>("TransactionDateAndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Who")
+                    b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Who");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Addresses");
                 });
@@ -221,13 +223,13 @@ namespace BusarovsQuckBite.Migrations
                     b.Property<DateTime>("TransactionDateAndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Who")
+                    b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Who");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Categories");
                 });
@@ -243,6 +245,10 @@ namespace BusarovsQuckBite.Migrations
                     b.Property<int>("CartId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Orderer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("SpecialWishes")
                         .HasColumnType("nvarchar(max)");
 
@@ -255,15 +261,11 @@ namespace BusarovsQuckBite.Migrations
                     b.Property<DateTime>("TransactionDateAndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Who")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CartId");
 
-                    b.HasIndex("Who");
+                    b.HasIndex("Orderer");
 
                     b.ToTable("Orders");
                 });
@@ -275,6 +277,9 @@ namespace BusarovsQuckBite.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -308,6 +313,8 @@ namespace BusarovsQuckBite.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("CategoryId");
 
@@ -426,7 +433,7 @@ namespace BusarovsQuckBite.Migrations
                 {
                     b.HasOne("BusarovsQuckBite.Data.Models.ApplicationUser", "User")
                         .WithMany("Addresses")
-                        .HasForeignKey("Who")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -465,13 +472,13 @@ namespace BusarovsQuckBite.Migrations
 
             modelBuilder.Entity("BusarovsQuckBite.Data.Models.Category", b =>
                 {
-                    b.HasOne("BusarovsQuckBite.Data.Models.ApplicationUser", "User")
+                    b.HasOne("BusarovsQuckBite.Data.Models.ApplicationUser", "Who")
                         .WithMany("Categories")
-                        .HasForeignKey("Who")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Who");
                 });
 
             modelBuilder.Entity("BusarovsQuckBite.Data.Models.Order", b =>
@@ -484,7 +491,7 @@ namespace BusarovsQuckBite.Migrations
 
                     b.HasOne("BusarovsQuckBite.Data.Models.ApplicationUser", "User")
                         .WithMany("Orders")
-                        .HasForeignKey("Who")
+                        .HasForeignKey("Orderer")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -495,6 +502,10 @@ namespace BusarovsQuckBite.Migrations
 
             modelBuilder.Entity("BusarovsQuckBite.Data.Models.Product", b =>
                 {
+                    b.HasOne("BusarovsQuckBite.Data.Models.ApplicationUser", null)
+                        .WithMany("Products")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("BusarovsQuckBite.Data.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
@@ -502,7 +513,7 @@ namespace BusarovsQuckBite.Migrations
                         .IsRequired();
 
                     b.HasOne("BusarovsQuckBite.Data.Models.ApplicationUser", "User")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("Who")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();

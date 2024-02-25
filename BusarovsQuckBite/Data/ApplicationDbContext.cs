@@ -1,10 +1,11 @@
-﻿using BusarovsQuckBite.Data.Models;
+﻿using BusarovsQuckBite.Data.Configuration;
+using BusarovsQuckBite.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BusarovsQuckBite.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser,ApplicationRole,string>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -16,12 +17,9 @@ namespace BusarovsQuckBite.Data
             {
                 x.CartId, x.ProductId
             });
-            builder.Entity<Order>()
-                .HasOne(e => e.Cart)
-                .WithMany()
-                .HasForeignKey(e => e.CartId)
-                .OnDelete(DeleteBehavior.Restrict);
-
+            builder.ApplyConfiguration(new OrderConfiguration());
+            builder.ApplyConfiguration(new CategoryConfiguration());
+            builder.ApplyConfiguration(new ProductConfiguration());
             base.OnModelCreating(builder);
         }
         public DbSet<Address> Addresses { get; set; }

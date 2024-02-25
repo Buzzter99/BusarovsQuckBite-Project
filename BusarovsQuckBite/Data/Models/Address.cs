@@ -19,11 +19,10 @@ namespace BusarovsQuckBite.Data.Models
         public DateTime TransactionDateAndTime { get; set; }
         [Required]
         public bool IsDeleted { get; set; }
-        public DateTime? LastModifiedOn { get; set; }
         [Required]
-        public string UserId { get; set; } = string.Empty;
+        public string Who { get; set; } = string.Empty;
         [Required]
-        [ForeignKey(nameof(UserId))]
+        [ForeignKey(nameof(Who))]
         public ApplicationUser User { get; set; } = null!;
 
     }

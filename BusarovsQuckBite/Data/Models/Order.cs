@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BusarovsQuckBite.Data.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using BusarovsQuckBite.Data.Enums;
-using Microsoft.AspNetCore.Identity;
 
 namespace BusarovsQuckBite.Data.Models
 {
@@ -11,11 +10,11 @@ namespace BusarovsQuckBite.Data.Models
         public int Id { get; set; }
 
         [Required]
-        public string Orderer { get; set; } = string.Empty;
+        public string Who { get; set; } = string.Empty;
         [Required]
-        [ForeignKey(nameof(Orderer))]
+        [ForeignKey(nameof(Who))]
 
-        public virtual IdentityUser User { get; set; } = null!;
+        public ApplicationUser User { get; set; } = null!;
 
         public string? SpecialWishes { get; set; } = string.Empty;
         [Required]

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using ApplicationUser = BusarovsQuckBite.Data.Models.ApplicationUser;
 
 namespace BusarovsQuckBite.Areas.Identity.Pages.Account
 {

@@ -4,6 +4,7 @@ using BusarovsQuckBite.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusarovsQuckBite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240225200700_changescheme")]
+    partial class changescheme
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -211,6 +213,9 @@ namespace BusarovsQuckBite.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -226,6 +231,8 @@ namespace BusarovsQuckBite.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("Who");
 
@@ -276,6 +283,9 @@ namespace BusarovsQuckBite.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
@@ -308,6 +318,8 @@ namespace BusarovsQuckBite.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("CategoryId");
 
@@ -465,8 +477,12 @@ namespace BusarovsQuckBite.Migrations
 
             modelBuilder.Entity("BusarovsQuckBite.Data.Models.Category", b =>
                 {
-                    b.HasOne("BusarovsQuckBite.Data.Models.ApplicationUser", "User")
+                    b.HasOne("BusarovsQuckBite.Data.Models.ApplicationUser", null)
                         .WithMany("Categories")
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("BusarovsQuckBite.Data.Models.ApplicationUser", "User")
+                        .WithMany()
                         .HasForeignKey("Who")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -495,6 +511,10 @@ namespace BusarovsQuckBite.Migrations
 
             modelBuilder.Entity("BusarovsQuckBite.Data.Models.Product", b =>
                 {
+                    b.HasOne("BusarovsQuckBite.Data.Models.ApplicationUser", null)
+                        .WithMany("Products")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("BusarovsQuckBite.Data.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
@@ -502,7 +522,7 @@ namespace BusarovsQuckBite.Migrations
                         .IsRequired();
 
                     b.HasOne("BusarovsQuckBite.Data.Models.ApplicationUser", "User")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("Who")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();

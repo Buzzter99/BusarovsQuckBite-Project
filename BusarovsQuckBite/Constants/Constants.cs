@@ -13,6 +13,15 @@
         public static class ControllerConstants
         {
             public const string BasePathForView = "/Areas/AccountManager/Views/BaseUsers";
+            public const string ExtenstionForView = ".cshtml";
+        }
+        public static class UserConstants
+        {
+
+        }
+        public static class RoleConstants
+        {
+
         }
     }
 }

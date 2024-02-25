@@ -1,6 +1,9 @@
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
+using BusarovsQuckBite.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ApplicationUser = BusarovsQuckBite.Data.Models.ApplicationUser;
 
 namespace BusarovsQuckBite
 {
@@ -15,10 +18,11 @@ namespace BusarovsQuckBite
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
-                .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddEntityFrameworkStores<ApplicationDbContext>().AddUserManager<ApplicationUserManager<ApplicationUser>>()
+                .AddDefaultTokenProviders();
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddRazorPages();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

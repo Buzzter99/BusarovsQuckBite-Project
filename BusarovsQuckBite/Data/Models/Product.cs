@@ -22,8 +22,14 @@ namespace BusarovsQuckBite.Data.Models
         public int CategoryId { get; set; }
         [Required]
         public bool IsDeleted { get; set; }
-        public DateTime? LastModifiedOn { get; set; }
+        [Required]
+        public DateTime TransactionDateAndTime { get; set; }
         [Required]
         public byte[] Image { get; set; } = null!;
+        [Required]
+        public string Who { get; set; } = string.Empty;
+        [Required]
+        [ForeignKey(nameof(Who))]
+        public ApplicationUser User { get; set; } = null!;
     }
 }

@@ -4,12 +4,16 @@ using Microsoft.AspNetCore.Mvc;
 namespace BusarovsQuckBite.Areas.AccountManager.Controllers
 {
     [Authorize]
-    public class BaseUsersController : Controller
+    public abstract class BaseUsersController : Controller
     {
+        public BaseUsersController()
+        {
+            
+        }
         [AllowAnonymous]
         public IActionResult Login()
         {
-            return View($"{Constants.Constants.ControllerConstants.BasePathForView}/Login.cshtml");
+            return View($"{Constants.Constants.ControllerConstants.BasePathForView}/{nameof(Login)}{Constants.Constants.ControllerConstants.ExtenstionForView}");
         }
         [AllowAnonymous]
         public IActionResult Register()

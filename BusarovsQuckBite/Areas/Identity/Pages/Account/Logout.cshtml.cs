@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using ApplicationUser = BusarovsQuckBite.Data.Models.ApplicationUser;
 
 namespace BusarovsQuckBite.Areas.Identity.Pages.Account
 {
