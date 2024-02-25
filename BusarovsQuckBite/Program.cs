@@ -1,6 +1,5 @@
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace BusarovsQuckBite
@@ -41,10 +40,17 @@ namespace BusarovsQuckBite
 
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "areas",
+                    pattern: "{area:exists}/{controller=Users}/{action=Index}/{id?}"
+                );
+            });
+
             app.MapRazorPages();
 
             app.Run();

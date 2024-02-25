@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -21,9 +21,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\AccountManager\Data\" />
+    <Folder Include="Areas\AccountManager\Models\" />
+    <Folder Include="Areas\AccountManager\Pages\" />
     <Folder Include="Contracts\" />
     <Folder Include="Data\Configuration\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
