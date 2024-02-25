@@ -27,7 +27,7 @@ namespace BusarovsQuckBite.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<CartProduct> CartProducts { get; set; }
-        public DbSet<ApplicationUser> Users { get; set; }
-        public DbSet<ApplicationRole> Roles { get; set; }
+        public override DbSet<ApplicationUser> Users { get; set; }
+        public override DbSet<ApplicationRole> Roles { get; set; }
     }
 }
