@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BusarovsQuckBite.Areas.AccountManager.Controllers;
+using Microsoft.AspNetCore.Mvc;
 using static BusarovsQuckBite.Constants.Constants;
 namespace BusarovsQuckBite.Areas.Users.Controllers
 {
     [Area(AreaConstants.UserArea)]
-    public class UsersController : Controller
+    public class UsersController : BaseUsersController
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+
     }
 }

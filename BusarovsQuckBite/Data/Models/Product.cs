@@ -23,5 +23,7 @@ namespace BusarovsQuckBite.Data.Models
         [Required]
         public bool IsDeleted { get; set; }
         public DateTime? LastModifiedOn { get; set; }
+        [Required]
+        public byte[] Image { get; set; } = null!;
     }
 }

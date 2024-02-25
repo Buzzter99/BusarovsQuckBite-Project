@@ -6,10 +6,13 @@
         {
             public const string UserArea = "AccountManager";
         }
-
         public static class DataConstants
         {
 
+        }
+        public static class ControllerConstants
+        {
+            public const string BasePathForView = "/Areas/AccountManager/Views/BaseUsers";
         }
     }
 }

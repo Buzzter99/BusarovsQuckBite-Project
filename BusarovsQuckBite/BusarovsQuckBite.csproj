@@ -24,6 +24,7 @@
     <Folder Include="Areas\AccountManager\Data\" />
     <Folder Include="Areas\AccountManager\Models\" />
     <Folder Include="Areas\AccountManager\Pages\" />
+    <Folder Include="Areas\AccountManager\Views\Users\" />
     <Folder Include="Contracts\" />
     <Folder Include="Data\Configuration\" />
   </ItemGroup>
