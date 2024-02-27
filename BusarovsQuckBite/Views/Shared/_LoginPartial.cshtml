@@ -3,7 +3,6 @@
 @using BusarovsQuckBite.Services
 @inject SignInManager<ApplicationUser> SignInManager
 @inject ApplicationUserManager<ApplicationUser> UserManager
-
 @if (SignInManager.IsSignedIn(User))
 {
     <ul class="navbar-nav">

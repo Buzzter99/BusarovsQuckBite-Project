@@ -12,10 +12,6 @@ namespace BusarovsQuckBite.Data.Models
         [Required]
         public string City { get; set; } = string.Empty;
         [Required]
-        public string PostalCode { get; set; } = string.Empty;
-        [Required]
-        public string Country { get; set; } = string.Empty;
-        [Required]
         public DateTime TransactionDateAndTime { get; set; }
         [Required]
         public bool IsDeleted { get; set; }

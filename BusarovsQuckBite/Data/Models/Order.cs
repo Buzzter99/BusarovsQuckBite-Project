@@ -15,12 +15,10 @@ namespace BusarovsQuckBite.Data.Models
         [ForeignKey(nameof(Who))]
 
         public ApplicationUser User { get; set; } = null!;
-
-        public string? SpecialWishes { get; set; } = string.Empty;
         [Required]
         public DateTime TransactionDateAndTime { get; set; }
 
-        public OrderStatus Status { get; set; } = OrderStatus.Pending;
+        public OrderStatus Status { get; set; }
         [Required]
         public decimal TotalAmount { get; set; }
         [Required]

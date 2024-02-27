@@ -2,8 +2,10 @@
 {
     public enum OrderStatus
     {
-        Pending = 0,
-        Ongoing = 1,
-        Delivered = 2,
+        None = 0,
+        OrderProcessing = 1,
+        ReadyForDelivery = 2,
+        OnTheWay = 3,
+        Delivered = 4,
     }
 }

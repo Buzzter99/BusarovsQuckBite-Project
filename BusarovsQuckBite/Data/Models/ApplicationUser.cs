@@ -21,5 +21,7 @@ namespace BusarovsQuckBite.Data.Models
         public override string PhoneNumber { get; set; } = string.Empty;
         [Required]
         public override string PasswordHash { get; set; } = string.Empty;
+        [Required]
+        public bool IsActive { get; set; }
     }
 }
