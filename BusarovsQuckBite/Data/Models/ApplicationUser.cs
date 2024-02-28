@@ -10,6 +10,8 @@ namespace BusarovsQuckBite.Data.Models
         public string FirstName { get; set; } = string.Empty;
         [Required]
         public string LastName { get; set; } = string.Empty;
+        [Required]
+        public string Username { get; set; } = string.Empty;
         public ICollection<Address> Addresses { get; set; } = new List<Address>();
         public ICollection<Category> Categories { get; set; } = new List<Category>();
         public ICollection<Product> Products { get; set; } = new List<Product>();
