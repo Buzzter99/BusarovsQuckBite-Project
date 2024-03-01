@@ -1,6 +1,9 @@
-﻿using BusarovsQuckBite.Data.Enums;
+﻿using BusarovsQuckBite.Constants;
+using BusarovsQuckBite.Data.Enums;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static BusarovsQuckBite.Constants.DataConstants.OrderConstants;
 
 namespace BusarovsQuckBite.Data.Models
 {
@@ -8,22 +11,21 @@ namespace BusarovsQuckBite.Data.Models
     {
         [Key]
         public int Id { get; set; }
-
         [Required]
+        [MaxLength(UserConstants.UserIdMaxLength)]
         public string Who { get; set; } = string.Empty;
         [Required]
         [ForeignKey(nameof(Who))]
-
         public ApplicationUser User { get; set; } = null!;
         [Required]
         public DateTime TransactionDateAndTime { get; set; }
-
+        [Required]
         public OrderStatus Status { get; set; }
         [Required]
+        [Precision(TotalAmountPrecision,TotalAmountScale)]
         public decimal TotalAmount { get; set; }
         [Required]
         public int CartId { get; set; }
-
         [Required]
         [ForeignKey(nameof(CartId))]
         public Cart Cart { get; set; } = null!;

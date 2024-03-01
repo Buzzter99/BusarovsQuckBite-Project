@@ -17,9 +17,12 @@ namespace BusarovsQuckBite.Data
             {
                 x.CartId, x.ProductId
             });
-            builder.ApplyConfiguration(new OrderConfiguration());
+            builder.ApplyConfiguration(new UserConfiguration());
+            builder.ApplyConfiguration(new RoleConfiguration());
+            builder.ApplyConfiguration(new UserRoleConfiguration());
             builder.ApplyConfiguration(new CategoryConfiguration());
             builder.ApplyConfiguration(new ProductConfiguration());
+            builder.ApplyConfiguration(new OrderConfiguration());
             base.OnModelCreating(builder);
         }
         public DbSet<Address> Addresses { get; set; }

@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using BusarovsQuckBite.Constants;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusarovsQuckBite.Data.Models
 {
@@ -8,10 +10,13 @@ namespace BusarovsQuckBite.Data.Models
         [Key]
         public int Id { get; set; }
         [Required]
+        [MaxLength(DataConstants.ProductConstants.NameMaxLength)]
         public string Name { get; set; } = string.Empty;
         [Required]
+        [MaxLength(DataConstants.ProductConstants.DescriptionMaxLength)]
         public string Description { get; set; } = string.Empty;
         [Required]
+        [Precision(DataConstants.ProductConstants.PricePrecision, DataConstants.ProductConstants.PriceScale)]
         public decimal Price { get; set; }
         [Required]
         public int Quantity { get; set; }
@@ -27,6 +32,7 @@ namespace BusarovsQuckBite.Data.Models
         [Required]
         public byte[] Image { get; set; } = null!;
         [Required]
+        [MaxLength(UserConstants.UserIdMaxLength)]
         public string Who { get; set; } = string.Empty;
         [Required]
         [ForeignKey(nameof(Who))]

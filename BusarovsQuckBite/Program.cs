@@ -19,13 +19,21 @@ namespace BusarovsQuckBite
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-            builder.Services.AddIdentity<ApplicationUser,ApplicationRole>(options => options.SignIn.RequireConfirmedAccount = false)
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+                {
+                    options.SignIn.RequireConfirmedAccount = false;
+                }).AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>().AddUserManager<ApplicationUserManager<ApplicationUser>>()
                 .AddDefaultTokenProviders();
-            builder.Services.Configure<CookieAuthenticationOptions>(options =>
-            {
-                options.LoginPath = "/AccountManager/Users/Login";
-            });
+            builder.Services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                }).AddCookie(options =>
+                {
+                    options.LoginPath = "/AccountManager/Users/Register";
+                });
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
             var app = builder.Build();

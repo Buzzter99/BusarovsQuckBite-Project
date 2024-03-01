@@ -1,6 +1,6 @@
 ﻿namespace BusarovsQuckBite.Constants
 {
-    public class AreaConstants
+    public static class AreaConstants
     {
         public const string UserArea = "AccountManager";
     }

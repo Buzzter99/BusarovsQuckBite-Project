@@ -7,5 +7,7 @@ namespace BusarovsQuckBite.Data.Models
     {
         [Required]
         public override string Name { get; set; } = string.Empty;
+        [Required]
+        public DateTime TransactionDateAndTime { get; set; }
     }
 }

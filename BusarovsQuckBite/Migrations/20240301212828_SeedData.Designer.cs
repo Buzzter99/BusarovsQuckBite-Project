@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusarovsQuckBite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240225195914_ChangeNamesOfPRoperties")]
-    partial class ChangeNamesOfPRoperties
+    [Migration("20240301212828_SeedData")]
+    partial class SeedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,33 +34,28 @@ namespace BusarovsQuckBite.Migrations
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Street")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<DateTime>("TransactionDateAndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("Who")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("Who");
 
                     b.ToTable("Addresses");
                 });
@@ -75,12 +70,16 @@ namespace BusarovsQuckBite.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("TransactionDateAndTime")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -90,12 +89,47 @@ namespace BusarovsQuckBite.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
+                            ConcurrencyStamp = "42fd3cac-5ac1-43d1-bae3-935fdf3ab6c1",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN",
+                            TransactionDateAndTime = new DateTime(2024, 3, 1, 23, 28, 28, 43, DateTimeKind.Local).AddTicks(4648)
+                        },
+                        new
+                        {
+                            Id = "fa175b24-e5a7-41ab-8237-94734f2b5408",
+                            ConcurrencyStamp = "4e39bff2-9750-43a6-9e07-99d4e0959c57",
+                            Name = "Customer",
+                            NormalizedName = "CUSTOMER",
+                            TransactionDateAndTime = new DateTime(2024, 3, 1, 23, 28, 28, 43, DateTimeKind.Local).AddTicks(4654)
+                        },
+                        new
+                        {
+                            Id = "22ccb117-1c50-47a5-bc43-1d9a84879e10",
+                            ConcurrencyStamp = "f95134b6-68f6-45b6-a9e2-96635e769faa",
+                            Name = "Delivery Driver",
+                            NormalizedName = "DELIVERY DRIVER",
+                            TransactionDateAndTime = new DateTime(2024, 3, 1, 23, 28, 28, 43, DateTimeKind.Local).AddTicks(4660)
+                        },
+                        new
+                        {
+                            Id = "a1a8637e-6e83-4ee9-adef-09cd724473a7",
+                            ConcurrencyStamp = "651696f4-54ae-4c69-abdb-87153cd84cf4",
+                            Name = "Cooking Staff",
+                            NormalizedName = "COOKING STAFF",
+                            TransactionDateAndTime = new DateTime(2024, 3, 1, 23, 28, 28, 43, DateTimeKind.Local).AddTicks(4665)
+                        });
                 });
 
             modelBuilder.Entity("BusarovsQuckBite.Data.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -105,6 +139,7 @@ namespace BusarovsQuckBite.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -112,12 +147,15 @@ namespace BusarovsQuckBite.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -134,9 +172,11 @@ namespace BusarovsQuckBite.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
@@ -152,6 +192,7 @@ namespace BusarovsQuckBite.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -166,6 +207,28 @@ namespace BusarovsQuckBite.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "602950b8-a951-4434-9231-ae7f551ea780",
+                            Email = "brandabg1@gmail.com",
+                            EmailConfirmed = false,
+                            FirstName = "",
+                            IsActive = true,
+                            LastName = "",
+                            LockoutEnabled = false,
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMAAFTsIKkVMm2sTpXkTJ/rOQiwUn9f7tYCPDwObSbIP9bS8QTOzoBKkK0axrPxaaQ==",
+                            PhoneNumber = "0896722926",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "a2819faf-a765-42dc-9f38-689dc07425eb",
+                            TransactionDateAndTime = new DateTime(2024, 3, 1, 23, 28, 28, 43, DateTimeKind.Local).AddTicks(4490),
+                            TwoFactorEnabled = false,
+                            UserName = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("BusarovsQuckBite.Data.Models.Cart", b =>
@@ -181,7 +244,8 @@ namespace BusarovsQuckBite.Migrations
 
                     b.Property<string>("Who")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.HasKey("Id");
 
@@ -213,30 +277,85 @@ namespace BusarovsQuckBite.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<DateTime>("TransactionDateAndTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Who")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("Who");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsDeleted = false,
+                            Name = "Snacks",
+                            TransactionDateAndTime = new DateTime(2024, 3, 1, 23, 28, 28, 43, DateTimeKind.Local).AddTicks(5481),
+                            Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsDeleted = false,
+                            Name = "Burgers",
+                            TransactionDateAndTime = new DateTime(2024, 3, 1, 23, 28, 28, 43, DateTimeKind.Local).AddTicks(5491),
+                            Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsDeleted = false,
+                            Name = "Drinks",
+                            TransactionDateAndTime = new DateTime(2024, 3, 1, 23, 28, 28, 43, DateTimeKind.Local).AddTicks(5493),
+                            Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IsDeleted = false,
+                            Name = "Pizzas",
+                            TransactionDateAndTime = new DateTime(2024, 3, 1, 23, 28, 28, 43, DateTimeKind.Local).AddTicks(5495),
+                            Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            IsDeleted = false,
+                            Name = "Pasta",
+                            TransactionDateAndTime = new DateTime(2024, 3, 1, 23, 28, 28, 43, DateTimeKind.Local).AddTicks(5496),
+                            Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            IsDeleted = false,
+                            Name = "Sandwiches",
+                            TransactionDateAndTime = new DateTime(2024, 3, 1, 23, 28, 28, 43, DateTimeKind.Local).AddTicks(5498),
+                            Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            IsDeleted = false,
+                            Name = "Desserts",
+                            TransactionDateAndTime = new DateTime(2024, 3, 1, 23, 28, 28, 43, DateTimeKind.Local).AddTicks(5500),
+                            Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
+                        });
                 });
 
             modelBuilder.Entity("BusarovsQuckBite.Data.Models.Order", b =>
@@ -250,21 +369,20 @@ namespace BusarovsQuckBite.Migrations
                     b.Property<int>("CartId")
                         .HasColumnType("int");
 
-                    b.Property<string>("SpecialWishes")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 5)
+                        .HasColumnType("decimal(18,5)");
 
                     b.Property<DateTime>("TransactionDateAndTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Who")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.HasKey("Id");
 
@@ -283,15 +401,13 @@ namespace BusarovsQuckBite.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<byte[]>("Image")
                         .IsRequired()
@@ -302,9 +418,11 @@ namespace BusarovsQuckBite.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Quantity")
@@ -315,11 +433,10 @@ namespace BusarovsQuckBite.Migrations
 
                     b.Property<string>("Who")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("CategoryId");
 
@@ -369,7 +486,7 @@ namespace BusarovsQuckBite.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(40)");
 
                     b.HasKey("Id");
 
@@ -381,17 +498,19 @@ namespace BusarovsQuckBite.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(40)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -403,7 +522,7 @@ namespace BusarovsQuckBite.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("RoleId")
                         .HasColumnType("nvarchar(450)");
@@ -413,18 +532,27 @@ namespace BusarovsQuckBite.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                            RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7210"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -438,7 +566,7 @@ namespace BusarovsQuckBite.Migrations
                 {
                     b.HasOne("BusarovsQuckBite.Data.Models.ApplicationUser", "User")
                         .WithMany("Addresses")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("Who")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -477,12 +605,8 @@ namespace BusarovsQuckBite.Migrations
 
             modelBuilder.Entity("BusarovsQuckBite.Data.Models.Category", b =>
                 {
-                    b.HasOne("BusarovsQuckBite.Data.Models.ApplicationUser", null)
-                        .WithMany("Categories")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("BusarovsQuckBite.Data.Models.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("Categories")
                         .HasForeignKey("Who")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -511,10 +635,6 @@ namespace BusarovsQuckBite.Migrations
 
             modelBuilder.Entity("BusarovsQuckBite.Data.Models.Product", b =>
                 {
-                    b.HasOne("BusarovsQuckBite.Data.Models.ApplicationUser", null)
-                        .WithMany("Products")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("BusarovsQuckBite.Data.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
@@ -522,7 +642,7 @@ namespace BusarovsQuckBite.Migrations
                         .IsRequired();
 
                     b.HasOne("BusarovsQuckBite.Data.Models.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("Who")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
