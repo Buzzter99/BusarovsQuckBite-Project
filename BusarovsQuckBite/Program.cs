@@ -1,5 +1,6 @@
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
+using BusarovsQuckBite.Middlewares;
 using BusarovsQuckBite.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
@@ -23,22 +24,16 @@ namespace BusarovsQuckBite
                 {
                     options.SignIn.RequireConfirmedAccount = false;
                 }).AddRoles<ApplicationRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>().AddUserManager<ApplicationUserManager<ApplicationUser>>()
-                .AddDefaultTokenProviders();
-            builder.Services.AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                }).AddCookie(options =>
-                {
-                    options.LoginPath = "/AccountManager/Users/Register";
-                });
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddUserManager<ApplicationUserManager<ApplicationUser>>().AddSignInManager<ApplicationSignInManager<ApplicationUser>>();
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/AccountManager/Users/Login";
+            });
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
             var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
+            
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
@@ -46,10 +41,10 @@ namespace BusarovsQuckBite
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                
                 app.UseHsts();
             }
-
+            app.UseMiddleware<IdentityPathMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();

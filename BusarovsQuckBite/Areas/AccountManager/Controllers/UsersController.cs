@@ -12,20 +12,23 @@ namespace BusarovsQuckBite.Areas.Users.Controllers
     public class UsersController : BaseController
     {
         private readonly ApplicationUserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        public UsersController(ApplicationUserManager<ApplicationUser> userManager,SignInManager<ApplicationUser> signInManager)
+        private readonly ApplicationSignInManager<ApplicationUser> _signInManager;
+        private readonly ILogger<ApplicationUser> _logger;
+        public UsersController(ApplicationUserManager<ApplicationUser> userManager, ApplicationSignInManager<ApplicationUser> signInManager, ILogger<ApplicationUser> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _logger = logger;
         }
         [AllowAnonymous]
+        [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult Register(RegisterFormViewModel model)
+        public async Task<IActionResult> Register(RegisterFormViewModel model)
         {
             return View();
         }
@@ -33,6 +36,36 @@ namespace BusarovsQuckBite.Areas.Users.Controllers
         public IActionResult Login()
         {
             return View();
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User logged in.");
+                    return RedirectToAction("Index", "Home", new { area = "" });
+                    
+                }
+                if (result.IsLockedOut)
+                {
+                    _logger.LogWarning("User account locked out.");
+                    return RedirectToAction(nameof(Login));
+                }
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return View(model);
+
+            }
+            return View();
+        }
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User logged out.");
+            return RedirectToAction("Index", "Home", new { area = "" });
         }
     }
 }

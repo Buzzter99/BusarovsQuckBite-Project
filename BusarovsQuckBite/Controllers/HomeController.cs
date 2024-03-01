@@ -1,6 +1,7 @@
 ﻿using BusarovsQuckBite.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BusarovsQuckBite.Controllers
 {
@@ -16,7 +17,6 @@ namespace BusarovsQuckBite.Controllers
         {
             return View();
         }
-
         public IActionResult Privacy()
         {
             return View();
