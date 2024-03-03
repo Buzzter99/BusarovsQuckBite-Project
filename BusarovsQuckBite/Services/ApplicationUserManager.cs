@@ -45,6 +45,9 @@ namespace BusarovsQuckBite.Services
                     Username = c.UserName,
                     IsActive = c.IsActive,
                     Email = c.Email,
+                    FirstName = c.FirstName,
+                    LastName = c.LastName,
+                    PhoneNumber = c.PhoneNumber,
                     TransactionDateAndTime = c.TransactionDateAndTime,
                     Roles = _store.Context.UserRoles
                         .Where(ur => ur.UserId == c.Id)
