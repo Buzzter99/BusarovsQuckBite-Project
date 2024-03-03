@@ -1,0 +1,8 @@
+﻿@model AdministrationViewModel
+<tr>
+    <td>@Model.Username</td>
+    <td>@Model.Email</td>
+    <td>@Model.TransactionDateAndTime</td>
+    <td>@string.Join(", ", @Model.Roles)</td>
+    <td>@Html.ActionLink("Edit", "Edit", "Administration", new { id = @Model.Id }, new { @class = "btn btn-primary" })</td>
+</tr>

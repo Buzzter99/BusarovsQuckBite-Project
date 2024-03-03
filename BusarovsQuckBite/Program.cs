@@ -27,7 +27,6 @@ namespace BusarovsQuckBite
                     options.Password.RequireLowercase = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireNonAlphanumeric = false;
-                    options.User.RequireUniqueEmail = false;
                 }).AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddSignInManager<ApplicationSignInManager<ApplicationUser>>().AddUserManager<ApplicationUserManager<ApplicationUser>>()
@@ -50,7 +49,7 @@ namespace BusarovsQuckBite
 
                 app.UseHsts();
             }
-            //app.UseMiddleware<IdentityPathMiddleware>();
+            app.UseMiddleware<IdentityPathMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();

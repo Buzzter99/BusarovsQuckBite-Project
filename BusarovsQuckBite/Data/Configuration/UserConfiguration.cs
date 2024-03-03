@@ -23,7 +23,10 @@ namespace BusarovsQuckBite.Data.Configuration
                     PhoneNumber = UserConstants.AdminPhoneNumber,
                     PhoneNumberConfirmed = true,
                     IsActive = true,
-                    TransactionDateAndTime = DateTime.Now
+                    TransactionDateAndTime = DateTime.Now,
+                    EmailConfirmed = true,
+                    FirstName = UserConstants.AdminUsername,
+                    LastName = UserConstants.AdminUsername,
                 }
             );
         }

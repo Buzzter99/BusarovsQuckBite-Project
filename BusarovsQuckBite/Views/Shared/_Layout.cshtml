@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using BusarovsQuckBite.Constants
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -20,6 +21,12 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        @if (User.IsInRole(RoleConstants.AdminRoleName))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="AccountManager" asp-controller="Administration" asp-action="Index">User Administration</a>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

@@ -5,7 +5,6 @@ namespace BusarovsQuckBite.Areas.AccountManager.Models
 {
     public class RegisterFormViewModel
     {
-        public string Id { get; set; } = string.Empty;
         [Required]
         [MinLength(UserConstants.UsernameMinLength)]
         [MaxLength(UserConstants.UsernameMaxLength)]

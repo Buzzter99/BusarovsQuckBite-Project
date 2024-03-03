@@ -1,7 +1,9 @@
-﻿using BusarovsQuckBite.Data;
+﻿using BusarovsQuckBite.Areas.AccountManager.Models;
+using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace BusarovsQuckBite.Services
@@ -34,5 +36,25 @@ namespace BusarovsQuckBite.Services
             }
             return base.CreateAsync(user, password);
         }
+        public async Task<List<AdministrationViewModel>> GetAllUsers()
+        {
+            var usersWithRoles = await _store.Context.Users
+                .Select(c => new AdministrationViewModel()
+                {
+                    Id = c.Id,
+                    Username = c.UserName,
+                    IsActive = c.IsActive,
+                    Email = c.Email,
+                    TransactionDateAndTime = c.TransactionDateAndTime,
+                    Roles = _store.Context.UserRoles
+                        .Where(ur => ur.UserId == c.Id)
+                        .Select(ur => ur.RoleId)
+                        .Join(_store.Context.Roles, ur => ur, r => r.Id, (ur, r) => r.Name)
+                        .ToList()
+                })
+                .ToListAsync();
+            return usersWithRoles;
+        }
+
     }
 }
