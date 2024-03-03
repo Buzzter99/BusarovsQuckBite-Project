@@ -23,9 +23,15 @@ namespace BusarovsQuckBite
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = false;
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.User.RequireUniqueEmail = false;
                 }).AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddUserManager<ApplicationUserManager<ApplicationUser>>().AddSignInManager<ApplicationSignInManager<ApplicationUser>>();
+                .AddSignInManager<ApplicationSignInManager<ApplicationUser>>().AddUserManager<ApplicationUserManager<ApplicationUser>>()
+                .AddDefaultTokenProviders();
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/AccountManager/Users/Login";
@@ -33,7 +39,7 @@ namespace BusarovsQuckBite
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
             var app = builder.Build();
-            
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
@@ -41,10 +47,10 @@ namespace BusarovsQuckBite
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                
+
                 app.UseHsts();
             }
-            app.UseMiddleware<IdentityPathMiddleware>();
+            //app.UseMiddleware<IdentityPathMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();

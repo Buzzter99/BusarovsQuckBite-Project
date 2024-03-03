@@ -13,33 +13,29 @@
                             <div class="form-group mb-3">
                                 <label class="form-label" for="Username">Username</label>
                                 <input asp-for="Username" type="text" id="Username" class="form-control form-control-lg"/>
-                                <span asp-validation-for="Username" class="text-danger"></span>
                             </div>
                             <div class="form-group mb-3">
                                 <label class="form-label" for="Email">Email</label>
                                 <input asp-for="Email" type="email" id="Email" class="form-control form-control-lg"/>
-                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="form-label" for="PhoneNumber">Enter your phone number</label>
+                                <input asp-for="PhoneNumber" type="text" id="PhoneNumber" class="form-control form-control-lg" />
                             </div>
                             <div class="form-group mb-3">
                                 <label class="form-label" for="Password">Password</label>
                                 <input asp-for="Password" type="password" id="Password" class="form-control form-control-lg"/>
-                                <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
                             <div class="form-group mb-3">
                                 <label class="form-label" for="Password">Confirm your provided password</label>
                                 <input asp-for="ConfirmPassword" type="password" id="" class="form-control form-control-lg"/>
-                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label class="form-label" for="Password">Phone Number</label>
-                                <input asp-for="PhoneNumber" type="text" id="" class="form-control form-control-lg"/>
-                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                             </div>
                             <div class="d-grid">
                                 <input type="submit" class="btn btn-primary btn-lg gradient-custom-4 text-body" value="Create Account">
                             </div>
+                            <div asp-validation-summary="All" class="text-danger"></div>
                             <p class="text-center text-muted mt-3 mb-0">
-                                Have already an account? <a asp-controller="Users" asp-action="Login" asp-area="AccountManager" class="fw-bold text-body"><u>Login here</u></a>
+                                Already have an account? <a asp-controller="Users" asp-action="Login" asp-area="AccountManager" class="fw-bold text-body"><u>Login here</u></a>
                             </p>
                         </form>
                     </div>

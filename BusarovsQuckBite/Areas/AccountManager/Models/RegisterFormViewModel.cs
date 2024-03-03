@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BusarovsQuckBite.Constants;
 
 namespace BusarovsQuckBite.Areas.AccountManager.Models
 {
@@ -6,7 +7,10 @@ namespace BusarovsQuckBite.Areas.AccountManager.Models
     {
         public string Id { get; set; } = string.Empty;
         [Required]
-        public string Username { get; set; }
+        [MinLength(UserConstants.UsernameMinLength)]
+        [MaxLength(UserConstants.UsernameMaxLength)]
+
+        public string Username { get; set; } = string.Empty;
         [Required]
         public string Password { get; set; } = string.Empty;
         [Required]
