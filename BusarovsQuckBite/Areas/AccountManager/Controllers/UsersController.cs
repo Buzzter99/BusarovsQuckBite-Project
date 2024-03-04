@@ -1,6 +1,7 @@
 ﻿using BusarovsQuckBite.Areas.AccountManager.Controllers;
 using BusarovsQuckBite.Areas.AccountManager.Models;
 using BusarovsQuckBite.Constants;
+using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -15,15 +16,18 @@ namespace BusarovsQuckBite.Areas.Users.Controllers
         private readonly ApplicationSignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly ILogger<ApplicationUser> _logger;
+        private readonly IDataProtectionService _dataProtectionService;
         public UsersController(ApplicationUserManager<ApplicationUser> userManager,
             ApplicationSignInManager<ApplicationUser> signInManager,
             ILogger<ApplicationUser> logger,
-           RoleManager<ApplicationRole> roleManager)
+           RoleManager<ApplicationRole> roleManager,
+            IDataProtectionService dataProtectionService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _roleManager = roleManager;
+            _dataProtectionService = dataProtectionService;
         }
         [AllowAnonymous]
         [HttpGet]

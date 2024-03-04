@@ -1,3 +1,4 @@
+using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Middlewares;
@@ -19,6 +20,7 @@ namespace BusarovsQuckBite
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+            builder.Services.AddScoped<IDataProtectionService, DataProtectionService>();
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = false;

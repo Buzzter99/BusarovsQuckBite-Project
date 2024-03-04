@@ -19,21 +19,24 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(string keyword = "All")
         {
-            List<AdministrationViewModel> test = new List<AdministrationViewModel>();
+            List<AdministrationViewModel> model;
             ViewBag.Keyword = keyword;
             switch (keyword)
             {
                 case "All":
-                    test = await _userManager.GetAllUsers();
+                    model = await _userManager.GetAllUsers();
                     break;
                 case "Active":
-                    test = await _userManager.GetAllActiveUsersAsync(); 
+                    model = await _userManager.GetAllActiveUsersAsync(); 
                     break;
                 case "Deactivated":
-                    test = await _userManager.GetAllDeactivatedUsersAsync();
+                    model = await _userManager.GetAllDeactivatedUsersAsync();
+                    break;
+                default: model = await _userManager.GetAllUsers();
+                    ViewBag.Keyword = "All";
                     break;
             }
-            return View(test);
+            return View(model);
         }
 
         public async Task<IActionResult> Edit(string id)
