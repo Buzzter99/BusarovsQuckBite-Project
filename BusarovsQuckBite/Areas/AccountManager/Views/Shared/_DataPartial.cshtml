@@ -6,6 +6,7 @@
     <td>@Model.LastName</td>
     <td>@Model.PhoneNumber</td>
     <td>@Model.TransactionDateAndTime</td>
-    <td>@string.Join(", ", @Model.Roles)</td>
+    <td>@string.Join(", ", @Model.Roles.Select(c => c.Name))</td>
     <td>@Html.ActionLink("Edit", "Edit", "Administration", new { id = @Model.Id }, new { @class = "btn btn-primary" })</td>
+    <td>@Html.ActionLink("Roles", "ManageRoles", "Administration", new { id = @Model.Id }, new { @class = "btn btn-primary" })</td>
 </tr>

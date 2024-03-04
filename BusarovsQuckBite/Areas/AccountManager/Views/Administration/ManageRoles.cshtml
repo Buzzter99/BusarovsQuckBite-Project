@@ -1,0 +1,38 @@
+﻿@inject ApplicationUserManager<ApplicationUser> UserManager
+@using BusarovsQuckBite.Data.Models
+@using BusarovsQuckBite.Services
+@model AdministrationViewModel
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Email</th>
+            <th scope="col">Created On</th>
+            <th scope="col">Role Name</th>
+            <th scope="col">Role Action</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var role in Model.Roles)
+        {
+            <tr>
+                <td>@Model.Username</td>
+                <td>@Model.Email</td>
+                <td>@Model.TransactionDateAndTime</td>
+                <td>@role.Name</td>
+                @{
+                    var user = await UserManager.FindByIdAsync(Model.Id);
+                }
+                @if (await UserManager.IsInRoleAsync(user, role.Name))
+                {
+                    <td>@Html.ActionLink("Remove From Role", "RemoveFromRole", "Administration", new { userId = Model.Id, roleName = role.Name }, new { @class = "btn btn-danger" })</td>
+                }
+                else
+                {
+                    <td>@Html.ActionLink("Add To Role", "AddToRole", "Administration", new { userId = Model.Id, roleName = role.Name }, new { @class = "btn btn-success" })</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

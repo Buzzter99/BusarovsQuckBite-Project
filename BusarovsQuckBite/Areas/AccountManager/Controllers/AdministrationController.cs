@@ -1,11 +1,8 @@
-﻿using BusarovsQuckBite.Areas.AccountManager.Models;
-using BusarovsQuckBite.Constants;
+﻿using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using NuGet.Protocol.Core.Types;
 
 namespace BusarovsQuckBite.Areas.AccountManager.Controllers
 {
@@ -29,10 +26,36 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> ManageRoles(string id)
         {
-            return View();
+            var entity = await _userManager.FindByIdAsync(id);
+            if (entity != null)
+            {
+                var model = await _userManager.MapViewModel(entity);
+                return View(model);
+            }
+            return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> AddToRoleAsync(string userId, string roleName)
+        {
+            var entity = await _userManager.FindByIdAsync(userId);
+            var result = await _userManager.AddToRoleAsync(entity, roleName);
+            if (result.Succeeded)
+            {
+                return View(nameof(ManageRoles),await _userManager.MapViewModel(entity));
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> RemoveFromRoleAsync(string userId, string roleName)
+        {
+            var entity = await _userManager.FindByIdAsync(userId);
+            var result = await _userManager.RemoveFromRoleAsync(entity, roleName);
+            if (result.Succeeded)
+            {
+                return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
+            }
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

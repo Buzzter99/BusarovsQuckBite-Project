@@ -8,12 +8,12 @@ using Microsoft.Extensions.Options;
 
 namespace BusarovsQuckBite.Services
 {
-    public class ApplicationUserManager<TUser> : UserManager<TUser> where TUser : IdentityUser
+    public class ApplicationUserManager<TUser> : UserManager<TUser> where TUser : IdentityUser, new()
     {
         private readonly UserStore<TUser, ApplicationRole, ApplicationDbContext, string, IdentityUserClaim<string>,
                 IdentityUserRole<string>, IdentityUserLogin<string>, IdentityUserToken<string>, IdentityRoleClaim<string>>
             _store;
-        public ApplicationUserManager(IUserStore<TUser> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<TUser> passwordHasher, IEnumerable<IUserValidator<TUser>> userValidators, IEnumerable<IPasswordValidator<TUser>> passwordValidators, ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<TUser>> logger) 
+        public ApplicationUserManager(IUserStore<TUser> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<TUser> passwordHasher, IEnumerable<IUserValidator<TUser>> userValidators, IEnumerable<IPasswordValidator<TUser>> passwordValidators, ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<TUser>> logger)
             : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
         {
             _store = (UserStore<TUser, ApplicationRole, ApplicationDbContext, string, IdentityUserClaim<string>,
@@ -52,12 +52,34 @@ namespace BusarovsQuckBite.Services
                     Roles = _store.Context.UserRoles
                         .Where(ur => ur.UserId == c.Id)
                         .Select(ur => ur.RoleId)
-                        .Join(_store.Context.Roles, ur => ur, r => r.Id, (ur, r) => r.Name)
+                        .Join(_store.Context.Roles, ur => ur, r => r.Id, (ur, r) => new RoleViewModel { Id = r.Id, Name = r.Name })
                         .ToList()
                 })
                 .ToListAsync();
             return usersWithRoles;
         }
-
+        private async Task<List<RoleViewModel>> GetAllRoles<TUser>(TUser user) where TUser : ApplicationUser
+        {
+            return await _store.Context.Roles.Select(c => new RoleViewModel()
+            {
+                Id = c.Id,
+                Name = c.Name
+            }).ToListAsync();
+        }
+        public async Task<AdministrationViewModel> MapViewModel<TUser>(TUser user) where TUser : ApplicationUser
+        {
+            return new AdministrationViewModel()
+            {
+                Id = user.Id,
+                Username = user.UserName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Roles = await GetAllRoles(user),
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                IsActive = user.IsActive,
+                TransactionDateAndTime = user.TransactionDateAndTime
+            };
+        }
     }
 }
