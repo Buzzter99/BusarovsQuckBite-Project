@@ -15,6 +15,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
         {
             _userManager = userManager;
         }
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var model = await _userManager.GetAllUsers();
@@ -25,7 +26,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
         {
             return View();
         }
-
+        [HttpGet]
         public async Task<IActionResult> ManageRoles(string id)
         {
             var entity = await _userManager.FindByIdAsync(id);
@@ -36,24 +37,31 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-
+        [HttpPost]
         public async Task<IActionResult> AddToRoleAsync(string userId, string roleName)
         {
             var entity = await _userManager.FindByIdAsync(userId);
-            var result = await _userManager.AddToRoleAsync(entity, roleName);
-            if (result.Succeeded)
+            if (entity != null)
             {
-                return View(nameof(ManageRoles),await _userManager.MapViewModel(entity));
+                var result = await _userManager.AddToRoleAsync(entity, roleName);
+                if (result.Succeeded)
+                {
+                    return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
+                }
             }
             return RedirectToAction(nameof(Index));
         }
+        [HttpPost]
         public async Task<IActionResult> RemoveFromRoleAsync(string userId, string roleName)
         {
             var entity = await _userManager.FindByIdAsync(userId);
-            var result = await _userManager.RemoveFromRoleAsync(entity, roleName);
-            if (result.Succeeded)
+            if (entity != null)
             {
-                return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
+                var result = await _userManager.RemoveFromRoleAsync(entity, roleName);
+                if (result.Succeeded)
+                {
+                    return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
+                }
             }
             return RedirectToAction(nameof(Index));
         }
