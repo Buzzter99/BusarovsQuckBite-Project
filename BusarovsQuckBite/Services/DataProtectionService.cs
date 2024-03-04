@@ -1,5 +1,6 @@
 ﻿using BusarovsQuckBite.Contracts;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
 
 namespace BusarovsQuckBite.Services
 {

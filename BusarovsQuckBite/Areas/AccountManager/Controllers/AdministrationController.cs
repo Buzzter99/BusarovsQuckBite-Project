@@ -82,5 +82,16 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> ManageAccess(string id)
+        {
+            var model = await _userManager.FindByIdAsync(id);
+            if (model != null)
+            {
+                model.IsActive = !model.IsActive;
+                await _userManager.UpdateAsync(model);
+            }
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

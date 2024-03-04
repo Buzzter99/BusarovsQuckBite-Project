@@ -30,7 +30,8 @@ namespace BusarovsQuckBite
                     options.Password.RequireNonAlphanumeric = false;
                 }).AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddSignInManager<ApplicationSignInManager<ApplicationUser>>().AddUserManager<ApplicationUserManager<ApplicationUser>>()
+                .AddSignInManager<ApplicationSignInManager<ApplicationUser>>()
+                .AddUserManager<ApplicationUserManager<ApplicationUser>>()
                 .AddDefaultTokenProviders();
             builder.Services.ConfigureApplicationCookie(options =>
             {
