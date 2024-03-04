@@ -2,7 +2,6 @@ using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Middlewares;
 using BusarovsQuckBite.Services;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ApplicationUser = BusarovsQuckBite.Data.Models.ApplicationUser;
@@ -34,6 +33,7 @@ namespace BusarovsQuckBite
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/AccountManager/Users/Login";
+                options.AccessDeniedPath = "/Home/Error";
             });
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();

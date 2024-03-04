@@ -99,7 +99,7 @@ namespace BusarovsQuckBite.Areas.Users.Controllers
                     }
                 }
             }
-            ModelState.AddModelError(nameof(model.Password), "Invalid username or password.");
+            ModelState.AddModelError(nameof(model.Password), "Invalid login attempt.");
             return View(model);
         }
         public async Task<IActionResult> Logout()

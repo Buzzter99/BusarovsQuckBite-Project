@@ -1,4 +1,5 @@
 ﻿using BusarovsQuckBite.Areas.AccountManager.Models;
+using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
 using Microsoft.AspNetCore.Identity;
@@ -80,6 +81,62 @@ namespace BusarovsQuckBite.Services
                 IsActive = user.IsActive,
                 TransactionDateAndTime = user.TransactionDateAndTime
             };
+        }
+        public async Task<bool> IsInRoleAsyncById(string userId, string roleId)
+        {
+            var user = await _store.FindByIdAsync(userId);
+            var role = await _store.Context.Roles.FirstOrDefaultAsync(x => x.Id == roleId);
+            if (role == null || user == null)
+            {
+                throw new InvalidOperationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
+            }
+            return await IsInRoleAsync(user, role.Name);
+        }
+
+        public async Task<List<AdministrationViewModel>> GetAllActiveUsersAsync()
+        {
+            var usersWithRoles = await _store.Context.Users.Where(x => x.IsActive)
+                .Select(c => new AdministrationViewModel()
+                {
+                    Id = c.Id,
+                    Username = c.UserName,
+                    IsActive = c.IsActive,
+                    Email = c.Email,
+                    FirstName = c.FirstName,
+                    LastName = c.LastName,
+                    PhoneNumber = c.PhoneNumber,
+                    TransactionDateAndTime = c.TransactionDateAndTime,
+                    Roles = _store.Context.UserRoles
+                        .Where(ur => ur.UserId == c.Id)
+                        .Select(ur => ur.RoleId)
+                        .Join(_store.Context.Roles, ur => ur, r => r.Id, (ur, r) => new RoleViewModel { Id = r.Id, Name = r.Name })
+                        .ToList()
+                })
+                .ToListAsync();
+            return usersWithRoles;
+        }
+
+        public async Task<List<AdministrationViewModel>> GetAllDeactivatedUsersAsync()
+        {
+            var usersWithRoles = await _store.Context.Users.Where(x => !x.IsActive)
+                .Select(c => new AdministrationViewModel()
+                {
+                    Id = c.Id,
+                    Username = c.UserName,
+                    IsActive = c.IsActive,
+                    Email = c.Email,
+                    FirstName = c.FirstName,
+                    LastName = c.LastName,
+                    PhoneNumber = c.PhoneNumber,
+                    TransactionDateAndTime = c.TransactionDateAndTime,
+                    Roles = _store.Context.UserRoles
+                        .Where(ur => ur.UserId == c.Id)
+                        .Select(ur => ur.RoleId)
+                        .Join(_store.Context.Roles, ur => ur, r => r.Id, (ur, r) => new RoleViewModel { Id = r.Id, Name = r.Name })
+                        .ToList()
+                })
+                .ToListAsync();
+            return usersWithRoles;
         }
     }
 }

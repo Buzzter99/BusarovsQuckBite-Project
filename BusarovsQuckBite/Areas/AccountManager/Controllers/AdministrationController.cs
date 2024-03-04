@@ -1,4 +1,5 @@
-﻿using BusarovsQuckBite.Constants;
+﻿using BusarovsQuckBite.Areas.AccountManager.Models;
+using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -16,10 +17,23 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             _userManager = userManager;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string keyword = "All")
         {
-            var model = await _userManager.GetAllUsers();
-            return View(model);
+            List<AdministrationViewModel> test = new List<AdministrationViewModel>();
+            ViewBag.Keyword = keyword;
+            switch (keyword)
+            {
+                case "All":
+                    test = await _userManager.GetAllUsers();
+                    break;
+                case "Active":
+                    test = await _userManager.GetAllActiveUsersAsync(); 
+                    break;
+                case "Deactivated":
+                    test = await _userManager.GetAllDeactivatedUsersAsync();
+                    break;
+            }
+            return View(test);
         }
 
         public async Task<IActionResult> Edit(string id)

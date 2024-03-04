@@ -17,6 +17,12 @@
                 return;
             }
             await _next(context);
+            if (context.Response.StatusCode == StatusCodes.Status400BadRequest)
+            {
+                context.Response.Redirect("/");
+            }
+            
+
         }
     }
 }
