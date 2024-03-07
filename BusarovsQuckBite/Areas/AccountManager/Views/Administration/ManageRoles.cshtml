@@ -21,7 +21,7 @@
             <td>@Model.Email</td>
             <td>@Model.TransactionDateAndTime</td>
             <td>@role.Name</td>
-            @if (await UserManager.IsInRoleAsyncById(Model.Id, role.Id))
+                @if (await UserManager.IsInRoleAsyncById(Model.Id, role.Id))
             {
                 <td>
                     @using (Html.BeginForm("RemoveFromRole", "Administration", new { userId = Model.Id, roleName = role.Name }, FormMethod.Post))

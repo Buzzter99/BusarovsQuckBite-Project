@@ -40,28 +40,6 @@ namespace BusarovsQuckBite.Services
             }
             return base.CreateAsync(user, password);
         }
-        public async Task<List<AdministrationViewModel>> GetAllUsers()
-        {
-            var usersWithRoles = await _store.Context.Users
-                .Select(c => new AdministrationViewModel()
-                {
-                    Id = c.Id,
-                    Username = c.UserName,
-                    IsActive = c.IsActive,
-                    Email = c.Email,
-                    FirstName = c.FirstName,
-                    LastName = c.LastName,
-                    PhoneNumber = c.PhoneNumber,
-                    TransactionDateAndTime = c.TransactionDateAndTime,
-                    Roles = _store.Context.UserRoles
-                        .Where(ur => ur.UserId == c.Id)
-                        .Select(ur => ur.RoleId)
-                        .Join(_store.Context.Roles, ur => ur, r => r.Id, (ur, r) => new RoleViewModel { Id = r.Id, Name = r.Name })
-                        .ToList()
-                })
-                .ToListAsync();
-            return usersWithRoles;
-        }
         private async Task<List<RoleViewModel>> GetAllRoles<TUser>(TUser user) where TUser : ApplicationUser
         {
             return await _store.Context.Roles.Select(c => new RoleViewModel()
@@ -79,8 +57,8 @@ namespace BusarovsQuckBite.Services
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 Roles = await GetAllRoles(user),
-                FirstName = user.FirstName,
-                LastName = user.LastName,
+                FirstName = user.FirstName == "" ? "" : _protectionService.Decrypt(user.FirstName!),
+                LastName = user.LastName == "" ? "" : _protectionService.Decrypt(user.LastName!),
                 IsActive = user.IsActive,
                 TransactionDateAndTime = user.TransactionDateAndTime
             };
@@ -96,32 +74,14 @@ namespace BusarovsQuckBite.Services
             return await IsInRoleAsync(user, role.Name);
         }
 
-        public async Task<List<AdministrationViewModel>> GetAllActiveUsersAsync()
+        public async Task<List<AdministrationViewModel>> GetAllUsersByStatusAsync(bool? status)
         {
-            var usersWithRoles = await _store.Context.Users.Where(x => x.IsActive)
-                .Select(c => new AdministrationViewModel()
-                {
-                    Id = c.Id,
-                    Username = c.UserName,
-                    IsActive = c.IsActive,
-                    Email = c.Email,
-                    FirstName = c.FirstName,
-                    LastName = c.LastName,
-                    PhoneNumber = c.PhoneNumber,
-                    TransactionDateAndTime = c.TransactionDateAndTime,
-                    Roles = _store.Context.UserRoles
-                        .Where(ur => ur.UserId == c.Id)
-                        .Select(ur => ur.RoleId)
-                        .Join(_store.Context.Roles, ur => ur, r => r.Id, (ur, r) => new RoleViewModel { Id = r.Id, Name = r.Name })
-                        .ToList()
-                })
-                .ToListAsync();
-            return usersWithRoles;
-        }
-
-        public async Task<List<AdministrationViewModel>> GetAllDeactivatedUsersAsync()
-        {
-            var usersWithRoles = await _store.Context.Users.Where(x => !x.IsActive)
+            IQueryable<ApplicationUser> query = _store.Context.Users;
+            if (status.HasValue)
+            {
+                query = query.Where(x => x.IsActive == status);
+            }
+            var usersWithRoles = await query
                 .Select(c => new AdministrationViewModel()
                 {
                     Id = c.Id,

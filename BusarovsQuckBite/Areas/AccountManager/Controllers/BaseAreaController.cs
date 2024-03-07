@@ -6,7 +6,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
 {
     [Authorize]
     [Area(AreaConstants.UserArea)]
-    public abstract class BaseController : Controller
+    public abstract class BaseAreaController : Controller
     {
         
     }

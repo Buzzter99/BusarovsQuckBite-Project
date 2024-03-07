@@ -1,28 +1,33 @@
 ﻿using BusarovsQuckBite.Contracts;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Identity;
+using System.Configuration;
 
 namespace BusarovsQuckBite.Services
 {
     public class DataProtectionService : IDataProtectionService
     {
         private readonly IDataProtectionProvider _dataProtectionProvider;
-        private const string Key = "my-very-long-key-of-no-exact-size";
+        private readonly IConfiguration _configuration;
 
-        public DataProtectionService(IDataProtectionProvider dataProtectionProvider)
+        public DataProtectionService(IDataProtectionProvider dataProtectionProvider, IConfiguration configuration)
         {
             _dataProtectionProvider = dataProtectionProvider;
+            _configuration = configuration;
         }
         public string Encrypt(string input)
         {
-            var protector = _dataProtectionProvider.CreateProtector(Key);
+            var protector = _dataProtectionProvider.CreateProtector(GetKey());
             return protector.Protect(input);
         }
 
         public string Decrypt(string cipherText)
         {
-            var protector = _dataProtectionProvider.CreateProtector(Key);
+            var protector = _dataProtectionProvider.CreateProtector(GetKey());
             return protector.Unprotect(cipherText);
+        }
+        private string GetKey()
+        {
+            return  _configuration.GetValue<string>("EncryptionKeys:DefaultKey");
         }
     }
 }

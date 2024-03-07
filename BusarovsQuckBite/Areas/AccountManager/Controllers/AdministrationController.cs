@@ -1,5 +1,6 @@
 ﻿using BusarovsQuckBite.Areas.AccountManager.Models;
 using BusarovsQuckBite.Constants;
+using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -8,13 +9,15 @@ using Microsoft.AspNetCore.Mvc;
 namespace BusarovsQuckBite.Areas.AccountManager.Controllers
 {
     [Authorize(Roles = RoleConstants.AdminRoleName)]
-    public class AdministrationController : BaseController
+    public class AdministrationController : BaseAreaController
     {
         private readonly ApplicationUserManager<ApplicationUser> _userManager;
+        private readonly IDataProtectionService _dataProtectionService;
 
-        public AdministrationController(ApplicationUserManager<ApplicationUser> userManager)
+        public AdministrationController(ApplicationUserManager<ApplicationUser> userManager,IDataProtectionService protectionService)
         {
             _userManager = userManager;
+            _dataProtectionService = protectionService;
         }
         [HttpGet]
         public async Task<IActionResult> Index(string keyword = "All")
@@ -24,15 +27,15 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             switch (keyword)
             {
                 case "All":
-                    model = await _userManager.GetAllUsers();
+                    model = await _userManager.GetAllUsersByStatusAsync(null);
                     break;
                 case "Active":
-                    model = await _userManager.GetAllActiveUsersAsync(); 
+                    model = await _userManager.GetAllUsersByStatusAsync(true); 
                     break;
                 case "Deactivated":
-                    model = await _userManager.GetAllDeactivatedUsersAsync();
+                    model = await _userManager.GetAllUsersByStatusAsync(false);
                     break;
-                default: model = await _userManager.GetAllUsers();
+                default: model = await _userManager.GetAllUsersByStatusAsync(null);
                     ViewBag.Keyword = "All";
                     break;
             }
@@ -83,7 +86,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> ManageAccess(string id)
+        public async Task<IActionResult> ManageAccess(string id, string keyword)
         {
             var model = await _userManager.FindByIdAsync(id);
             if (model != null)
@@ -91,7 +94,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 model.IsActive = !model.IsActive;
                 await _userManager.UpdateAsync(model);
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index),"Administration", new { keyword = $"{keyword}"});
         }
     }
 }

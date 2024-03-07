@@ -1,7 +1,6 @@
 ﻿using BusarovsQuckBite.Areas.AccountManager.Controllers;
 using BusarovsQuckBite.Areas.AccountManager.Models;
 using BusarovsQuckBite.Constants;
-using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -10,24 +9,21 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 namespace BusarovsQuckBite.Areas.Users.Controllers
 {
-    public class UsersController : BaseController
+    public class UsersController : BaseAreaController
     {
         private readonly ApplicationUserManager<ApplicationUser> _userManager;
         private readonly ApplicationSignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly ILogger<ApplicationUser> _logger;
-        private readonly IDataProtectionService _dataProtectionService;
         public UsersController(ApplicationUserManager<ApplicationUser> userManager,
             ApplicationSignInManager<ApplicationUser> signInManager,
             ILogger<ApplicationUser> logger,
-           RoleManager<ApplicationRole> roleManager,
-            IDataProtectionService dataProtectionService)
+           RoleManager<ApplicationRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _roleManager = roleManager;
-            _dataProtectionService = dataProtectionService;
         }
         [AllowAnonymous]
         [HttpGet]
@@ -77,6 +73,7 @@ namespace BusarovsQuckBite.Areas.Users.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+            
             var user = await _userManager.FindByNameAsync(model.Username);
             if (user != null)
             {
