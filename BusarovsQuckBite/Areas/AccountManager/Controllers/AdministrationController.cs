@@ -47,9 +47,38 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Edit(string id)
+        public IActionResult Edit(AdministrationViewModel model)
         {
-            return View();
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id,AdministrationViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction(nameof(Edit), model);
+            }
+            var entity = await _userManager.FindByIdAsync(id);
+            if (entity == null)
+            {
+                return BadRequest();
+            }
+            entity.Email = model.Email.Trim();
+            entity.FirstName = model.FirstName == null ? "": _dataProtectionService.Encrypt(model.FirstName!);
+            entity.LastName = model.LastName == null ? "" : _dataProtectionService.Encrypt(model.LastName!);
+            entity.PhoneNumber = model.PhoneNumber.Trim();
+            entity.UserName = model.Username.Trim();
+            var operation = await _userManager.UpdateAsync(entity);
+            if (!operation.Succeeded)
+            {
+                foreach (var error in operation.Errors)
+                {
+                    ModelState.AddModelError(string.Empty,error.Description);
+                }
+                return View(model);
+            }
+            TempData["Success"] = SuccessMessageConstants.SuccessfullyModified;
+            return View(model);
         }
         [HttpGet]
         public async Task<IActionResult> ManageRoles(string id)

@@ -1,1 +1,61 @@
-﻿edit view
+﻿@{
+    ViewData["Title"] = "Edit";
+}
+@model AdministrationViewModel
+<div class="mask d-flex align-items-center h-100 gradient-custom-3">
+    <div class="container h-100">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-md-8 col-lg-6">
+                <div class="card" style="border-radius: 15px;">
+                    <div class="card-body p-5">
+                        <h2 class="text-uppercase text-center mb-5">Edit User</h2>
+                        <form asp-area="AccountManager" asp-controller="Administration" asp-action="Edit" method="post">
+                            <div class="form-group mb-3">
+                                <label class="form-label" for="Username">Username</label>
+                                <input asp-for="Username" type="text" id="Username" class="form-control form-control-lg" />
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="form-label" for="Email">Email</label>
+                                <input asp-for="Email" type="email" id="Email" class="form-control form-control-lg" />
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="form-label" for="PhoneNumber">Enter your phone number</label>
+                                <input asp-for="PhoneNumber" type="text" id="PhoneNumber" class="form-control form-control-lg" />
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="form-label">First Name</label>
+                                <input asp-for="FirstName" type="text" id="Password" class="form-control form-control-lg" />
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="form-label">Last Name</label>
+                                <input asp-for="LastName" type="text" id="" class="form-control form-control-lg" />
+                            </div>
+                            <div class="d-grid">
+                                <input type="submit" class="btn btn-primary btn-lg gradient-custom-4 text-body" value="Create Account">
+                            </div>
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <p class="text-center text-muted mt-3 mb-0">
+                                <a asp-controller="Administration" asp-action="Index" asp-area="AccountManager" class="fw-bold text-body"><u> Back To All</u></a>
+                            </p>
+                        </form>
+                        @{
+                            if (TempData["Success"] != null)
+                            {
+                                <div class="alert alert-success" role="alert">
+                                    @TempData["Success"]
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

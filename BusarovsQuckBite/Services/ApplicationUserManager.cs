@@ -83,8 +83,8 @@ namespace BusarovsQuckBite.Services
                     Username = c.UserName,
                     IsActive = c.IsActive,
                     Email = c.Email,
-                    FirstName = c.FirstName,
-                    LastName = c.LastName,
+                    FirstName = c.FirstName == "" ? "" : _protectionService.Decrypt(c.FirstName!),
+                    LastName = c.LastName == "" ? "" : _protectionService.Decrypt(c.LastName!),
                     PhoneNumber = c.PhoneNumber,
                     TransactionDateAndTime = c.TransactionDateAndTime,
                     Roles = _store.Context.UserRoles
@@ -98,6 +98,11 @@ namespace BusarovsQuckBite.Services
         }
         public override Task<IdentityResult> UpdateAsync(TUser user)
         {
+            var validateUser = ValidateUser(user, _store.Users.Where(x => x.Id != user.Id));
+            if (validateUser.Result.Any())
+            {
+                return Task.FromResult(IdentityResult.Failed(validateUser.Result.ToArray()));
+            }
             return base.UpdateAsync(user);
         }
         private Task<List<IdentityError>> ValidateUser(TUser user, IQueryable<TUser> collection)
