@@ -5,6 +5,7 @@ using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -16,7 +17,7 @@ namespace BusarovsQuckBite.Services
                 IdentityUserRole<string>, IdentityUserLogin<string>, IdentityUserToken<string>, IdentityRoleClaim<string>>
             _store;
         private readonly IDataProtectionService _protectionService;
-        public ApplicationUserManager(IUserStore<TUser> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<TUser> passwordHasher, IEnumerable<IUserValidator<TUser>> userValidators, IEnumerable<IPasswordValidator<TUser>> passwordValidators, ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<TUser>> logger,IDataProtectionService protectionService)
+        public ApplicationUserManager(IUserStore<TUser> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<TUser> passwordHasher, IEnumerable<IUserValidator<TUser>> userValidators, IEnumerable<IPasswordValidator<TUser>> passwordValidators, ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<TUser>> logger, IDataProtectionService protectionService)
             : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
         {
             _store = (UserStore<TUser, ApplicationRole, ApplicationDbContext, string, IdentityUserClaim<string>,
@@ -26,20 +27,14 @@ namespace BusarovsQuckBite.Services
 
         public override Task<IdentityResult> CreateAsync(TUser user, string password)
         {
-            if (_store.Users.Any(x => x.UserName == user.UserName))
+            var validateUser = ValidateUser(user, _store.Users);
+            if (validateUser.Result.Any())
             {
-                return Task.FromResult(IdentityResult.Failed(new IdentityError { Description = "Username is already registered" }));
-            }
-            if (_store.Users.Any(x => x.PhoneNumber == user.PhoneNumber))
-            {
-                return Task.FromResult(IdentityResult.Failed(new IdentityError { Description = "Phone Number is already used" }));
-            }
-            if (_store.Users.Any(x => x.Email == user.Email))
-            {
-                return Task.FromResult(IdentityResult.Failed(new IdentityError { Description = "Email is already registered" }));
+                return Task.FromResult(IdentityResult.Failed(validateUser.Result.ToArray()));
             }
             return base.CreateAsync(user, password);
         }
+        
         private async Task<List<RoleViewModel>> GetAllRoles<TUser>(TUser user) where TUser : ApplicationUser
         {
             return await _store.Context.Roles.Select(c => new RoleViewModel()
@@ -69,7 +64,7 @@ namespace BusarovsQuckBite.Services
             var role = await _store.Context.Roles.FirstOrDefaultAsync(x => x.Id == roleId);
             if (role == null || user == null)
             {
-                throw new InvalidOperationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
+                throw new KeyNotFoundException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
             }
             return await IsInRoleAsync(user, role.Name);
         }
@@ -100,6 +95,27 @@ namespace BusarovsQuckBite.Services
                 })
                 .ToListAsync();
             return usersWithRoles;
+        }
+        public override Task<IdentityResult> UpdateAsync(TUser user)
+        {
+            return base.UpdateAsync(user);
+        }
+        private Task<List<IdentityError>> ValidateUser(TUser user, IQueryable<TUser> collection)
+        {
+            var errors = new List<IdentityError>();
+            if (collection.Any(x => x.UserName == user.UserName))
+            {
+                errors.Add(new IdentityError { Description = "Username is already registered" });
+            }
+            if (collection.Any(x => x.Email == user.Email))
+            {
+                errors.Add(new IdentityError { Description = "Email is already registered" });
+            }
+            if (collection.Any(x => x.PhoneNumber == user.PhoneNumber))
+            {
+                errors.Add(new IdentityError { Description = "Phone number is already registered" });
+            }
+            return Task.FromResult(errors);
         }
     }
 }

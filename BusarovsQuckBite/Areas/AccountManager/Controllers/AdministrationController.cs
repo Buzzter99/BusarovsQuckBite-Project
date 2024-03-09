@@ -4,6 +4,7 @@ using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusarovsQuckBite.Areas.AccountManager.Controllers
@@ -13,11 +14,15 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
     {
         private readonly ApplicationUserManager<ApplicationUser> _userManager;
         private readonly IDataProtectionService _dataProtectionService;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public AdministrationController(ApplicationUserManager<ApplicationUser> userManager,IDataProtectionService protectionService)
+        public AdministrationController(ApplicationUserManager<ApplicationUser> userManager,
+            IDataProtectionService protectionService,
+            RoleManager<ApplicationRole> roleManager)
         {
             _userManager = userManager;
             _dataProtectionService = protectionService;
+            _roleManager = roleManager;
         }
         [HttpGet]
         public async Task<IActionResult> Index(string keyword = "All")
@@ -61,7 +66,8 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
         public async Task<IActionResult> AddToRoleAsync(string userId, string roleName)
         {
             var entity = await _userManager.FindByIdAsync(userId);
-            if (entity != null)
+            var roleExists = await _roleManager.RoleExistsAsync(roleName);
+            if (entity != null && roleExists)
             {
                 var result = await _userManager.AddToRoleAsync(entity, roleName);
                 if (result.Succeeded)
@@ -69,19 +75,28 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                     return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
                 }
             }
+            else
+            {
+                return BadRequest();
+            }
             return RedirectToAction(nameof(Index));
         }
         [HttpPost]
         public async Task<IActionResult> RemoveFromRoleAsync(string userId, string roleName)
         {
             var entity = await _userManager.FindByIdAsync(userId);
-            if (entity != null)
+            var roleExists = await _roleManager.RoleExistsAsync(roleName);
+            if (entity != null && roleExists)
             {
                 var result = await _userManager.RemoveFromRoleAsync(entity, roleName);
                 if (result.Succeeded)
                 {
                     return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
                 }
+            }
+            else
+            {
+                return BadRequest();
             }
             return RedirectToAction(nameof(Index));
         }
