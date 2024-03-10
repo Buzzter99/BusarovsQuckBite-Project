@@ -9,11 +9,11 @@ namespace BusarovsQuckBite.Data.Models
         [ForeignKey(nameof(Cart))]
         public int CartId { get; set; }
         [Required]
-        public Cart Cart { get; set; } = null!;
+        public virtual Cart Cart { get; set; } = null!;
         [Required]
         [ForeignKey(nameof(Product))]
         public int ProductId { get; set; }
         [Required]
-        public Product Product { get; set; } = null!;
+        public virtual Product Product { get; set; } = null!;
     }
 }

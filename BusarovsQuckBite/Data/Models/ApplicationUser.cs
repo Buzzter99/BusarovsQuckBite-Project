@@ -17,11 +17,11 @@ namespace BusarovsQuckBite.Data.Models
         [Required]
         [MaxLength(UserConstants.UsernameMaxLength)]
         public override string UserName { get; set; } = string.Empty;
-        public ICollection<Address> Addresses { get; set; } = new List<Address>();
-        public ICollection<Category> Categories { get; set; } = new List<Category>();
-        public ICollection<Product> Products { get; set; } = new List<Product>();
-        public ICollection<Order> Orders { get; set; } = new List<Order>();
-        public ICollection<Cart> Carts { get; set; } = new List<Cart>();
+        public virtual ICollection<Address> Addresses { get; set; } = new List<Address>();
+        public virtual ICollection<Category> Categories { get; set; } = new List<Category>();
+        public virtual ICollection<Product> Products { get; set; } = new List<Product>();
+        public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+        public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
         [Required]
         public override string Email { get; set; } = string.Empty;
         [Required]

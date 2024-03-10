@@ -15,7 +15,7 @@ namespace BusarovsQuckBite.Data.Models
         [MaxLength(UserConstants.UserIdMaxLength)]
         public string Who { get; set; } = string.Empty;
         [Required]
-        public ApplicationUser User { get; set; } = null!;
-        public ICollection<CartProduct> Products { get; set; } = new List<CartProduct>();
+        public virtual ApplicationUser User { get; set; } = null!;
+        public virtual ICollection<CartProduct> Products { get; set; } = new List<CartProduct>();
     }
 }

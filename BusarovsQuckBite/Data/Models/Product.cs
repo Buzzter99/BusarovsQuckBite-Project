@@ -21,7 +21,7 @@ namespace BusarovsQuckBite.Data.Models
         [Required]
         public int Quantity { get; set; }
         [Required]
-        public Category Category { get; set; } = null!;
+        public virtual Category Category { get; set; } = null!;
         [Required]
         [ForeignKey(nameof(Category))]
         public int CategoryId { get; set; }
@@ -36,6 +36,6 @@ namespace BusarovsQuckBite.Data.Models
         public string Who { get; set; } = string.Empty;
         [Required]
         [ForeignKey(nameof(Who))]
-        public ApplicationUser User { get; set; } = null!;
+        public virtual ApplicationUser User { get; set; } = null!;
     }
 }

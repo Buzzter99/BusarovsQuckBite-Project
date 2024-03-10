@@ -41,7 +41,7 @@ namespace BusarovsQuckBite.Services
             {
                 Id = c.Id,
                 Name = c.Name
-            }).ToListAsync();
+            }).AsNoTracking().ToListAsync();
         }
         public async Task<AdministrationViewModel> MapViewModel<TUser>(TUser user) where TUser : ApplicationUser
         {
@@ -94,6 +94,7 @@ namespace BusarovsQuckBite.Services
                         .Join(_store.Context.Roles, ur => ur, r => r.Id, (ur, r) => new RoleViewModel { Id = r.Id, Name = r.Name })
                         .ToList()
                 })
+                .AsNoTracking()
                 .ToListAsync();
             return usersWithRoles;
         }

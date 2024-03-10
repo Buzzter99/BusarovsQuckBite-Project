@@ -24,7 +24,7 @@ namespace BusarovsQuckBite.Data.Models
         public string Who { get; set; } = string.Empty;
         [Required]
         [ForeignKey(nameof(Who))]
-        public ApplicationUser User { get; set; } = null!;
+        public virtual ApplicationUser User { get; set; } = null!;
 
     }
 }

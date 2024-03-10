@@ -4,6 +4,7 @@ using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Middlewares;
 using BusarovsQuckBite.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ApplicationUser = BusarovsQuckBite.Data.Models.ApplicationUser;
 
@@ -38,7 +39,10 @@ namespace BusarovsQuckBite
                 options.LoginPath = "/AccountManager/Users/Login";
                 options.AccessDeniedPath = "/Home/Error";
             });
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            });
             builder.Services.AddRazorPages();
             var app = builder.Build();
 

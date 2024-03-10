@@ -16,7 +16,7 @@ namespace BusarovsQuckBite.Data.Models
         public string Who { get; set; } = string.Empty;
         [Required]
         [ForeignKey(nameof(Who))]
-        public ApplicationUser User { get; set; } = null!;
+        public virtual ApplicationUser User { get; set; } = null!;
         [Required]
         public DateTime TransactionDateAndTime { get; set; }
         [Required]
@@ -28,7 +28,7 @@ namespace BusarovsQuckBite.Data.Models
         public int CartId { get; set; }
         [Required]
         [ForeignKey(nameof(CartId))]
-        public Cart Cart { get; set; } = null!;
+        public virtual Cart Cart { get; set; } = null!;
 
     }
 }

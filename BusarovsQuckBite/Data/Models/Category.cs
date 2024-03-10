@@ -20,7 +20,7 @@ namespace BusarovsQuckBite.Data.Models
         public string Who { get; set; } = string.Empty;
         [Required]
         [ForeignKey(nameof(Who))]
-        public ApplicationUser User { get; set; } = null!;
-        public ICollection<Product> Products { get; set; } = new List<Product>();
+        public virtual ApplicationUser User { get; set; } = null!;
+        public virtual ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }
