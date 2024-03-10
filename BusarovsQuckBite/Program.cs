@@ -19,8 +19,9 @@ namespace BusarovsQuckBite
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+                options.UseSqlServer(connectionString).UseLazyLoadingProxies());
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+            builder.Services.AddScoped<IAddressService, AddressService>();
             builder.Services.AddScoped<IDataProtectionService, DataProtectionService>();
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
                 {
@@ -56,7 +57,6 @@ namespace BusarovsQuckBite
 
                 app.UseHsts();
             }
-
             //app.UseMiddleware<IdentityPathMiddleware>();
             //app.UseMiddleware<ExceptionRedirect>();
             app.UseHttpsRedirection();

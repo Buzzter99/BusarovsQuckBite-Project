@@ -1,0 +1,21 @@
+﻿@model List<AddressViewModel>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Street</th>
+        <th>City</th>
+        <th>Action</th>
+        <th>Activity</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        @foreach (var entity in Model)
+        {
+            await Html.RenderPartialAsync("_AddressDataPartial", entity);
+        }
+    </tr>
+    </tbody>
+</table>
+@Html.ActionLink("Add New", "AddAddress", "Address", new { }, new { @class = "btn btn-success" })
+@Html.ActionLink("Back To Home", "Index", "Home", new { }, new { @class = "btn btn-primary" })

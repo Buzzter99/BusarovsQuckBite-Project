@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using System.Security.Claims;
 
 namespace BusarovsQuckBite.Services
 {
@@ -35,7 +36,7 @@ namespace BusarovsQuckBite.Services
             return base.CreateAsync(user, password);
         }
         
-        private async Task<List<RoleViewModel>> GetAllRoles<TUser>(TUser user) where TUser : ApplicationUser
+        private async Task<List<RoleViewModel>> GetAllRoles()
         {
             return await _store.Context.Roles.Select(c => new RoleViewModel()
             {
@@ -51,7 +52,7 @@ namespace BusarovsQuckBite.Services
                 Username = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                Roles = await GetAllRoles(user),
+                Roles = await GetAllRoles(),
                 FirstName = user.FirstName == "" ? "" : _protectionService.Decrypt(user.FirstName!),
                 LastName = user.LastName == "" ? "" : _protectionService.Decrypt(user.LastName!),
                 IsActive = user.IsActive,
@@ -91,7 +92,8 @@ namespace BusarovsQuckBite.Services
                     Roles = _store.Context.UserRoles
                         .Where(ur => ur.UserId == c.Id)
                         .Select(ur => ur.RoleId)
-                        .Join(_store.Context.Roles, ur => ur, r => r.Id, (ur, r) => new RoleViewModel { Id = r.Id, Name = r.Name })
+                        .Join(_store.Context.Roles, ur => ur, r => r.Id, (ur, r) => 
+                            new RoleViewModel { Id = r.Id, Name = r.Name })
                         .ToList()
                 })
                 .AsNoTracking()
@@ -124,5 +126,7 @@ namespace BusarovsQuckBite.Services
             }
             return Task.FromResult(errors);
         }
+
+
     }
 }

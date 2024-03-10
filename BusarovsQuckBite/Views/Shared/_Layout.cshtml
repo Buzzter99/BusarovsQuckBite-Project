@@ -28,6 +28,12 @@
                                 <a class="nav-link" asp-area="AccountManager" asp-controller="Administration" asp-action="Index">User Administration</a>
                             </li>
                         }
+                        @if (User.Identity!.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Address" asp-action="All">My Addresses</a>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -41,7 +47,7 @@
     </div>
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - QuickBite - All Rights Reserved <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            Contact us at @UserConstants.AdminEmail <a asp-area="" asp-controller="Home" asp-action="Privacy"></a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -1,0 +1,21 @@
+﻿@model AddressViewModel
+<td>@Model.City</td>
+<td>@Model.Street</td>
+<td>
+    @Html.ActionLink("Edit Address", "EditAddress", "Address", new { }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Delete Address", "DeleteAddress", "Address", new { }, new { @class = "btn btn-danger" })
+</td>
+<td>
+    @if (Model.IsDeleted)
+    {
+        <div class="badge bg-danger text-wrap">
+            Deactivated
+        </div>
+    }
+    else
+    {
+        <div class="badge bg-success text-wrap">
+            Active
+        </div>
+    }
+</td>
