@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using BusarovsQuckBite.Constants;
 
 namespace BusarovsQuckBite.Controllers
 {
@@ -14,6 +15,18 @@ namespace BusarovsQuckBite.Controllers
             _logger = logger;
         }
         public IActionResult Index()
+        {
+            return View();
+        }
+        public IActionResult BadRequestView()
+        {
+            return View();
+        }
+        public IActionResult InvalidOperation()
+        {
+            return View();
+        }
+        public IActionResult NotFoundView()
         {
             return View();
         }

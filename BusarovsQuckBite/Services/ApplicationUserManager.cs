@@ -64,7 +64,7 @@ namespace BusarovsQuckBite.Services
             var role = await _store.Context.Roles.FirstOrDefaultAsync(x => x.Id == roleId);
             if (role == null || user == null)
             {
-                throw new KeyNotFoundException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
+                throw new InvalidOperationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
             }
             return await IsInRoleAsync(user, role.Name);
         }

@@ -52,7 +52,9 @@ namespace BusarovsQuckBite
 
                 app.UseHsts();
             }
+
             app.UseMiddleware<IdentityPathMiddleware>();
+            app.UseMiddleware<ExceptionRedirect>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
