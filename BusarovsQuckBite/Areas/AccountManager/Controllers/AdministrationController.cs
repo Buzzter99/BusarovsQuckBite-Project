@@ -25,7 +25,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             _roleManager = roleManager;
         }
         [HttpGet]
-        public async Task<IActionResult> Index(string keyword = "All")
+        public async Task<IActionResult> Index(string keyword = "All", int page = 1, int pageSize = 10)
         {
             List<AdministrationViewModel> model;
             ViewBag.Keyword = keyword;
@@ -44,7 +44,11 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                     ViewBag.Keyword = "All";
                     break;
             }
-            return View(model);
+            var currentPageItems = model.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            ViewBag.PageNumber = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)(model.Count) / pageSize);
+            ViewBag.PageSize = pageSize;
+            return View(currentPageItems);
         }
 
         public IActionResult Edit(AdministrationViewModel model)
