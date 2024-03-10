@@ -19,10 +19,10 @@
                 await Html.RenderPartialAsync("_UsersPartialHeader");
             }
             <tbody>
-            @foreach (var entity in Model)
-            {
-                await Html.RenderPartialAsync("_DataPartial", entity);
-            }
+                @foreach (var entity in Model)
+                {
+                    await Html.RenderPartialAsync("_DataPartial", entity);
+                }
             </tbody>
         </table>
     </div>

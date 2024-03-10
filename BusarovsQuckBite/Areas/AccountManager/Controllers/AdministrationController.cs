@@ -146,9 +146,43 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             return RedirectToAction(nameof(Index),"Administration", new { keyword = $"{keyword}"});
         }
 
-        public IActionResult ChangePassword(string id)
+        public async Task<IActionResult> ChangePassword(string id)
         {
-            return View();
+            var entity = await _userManager.FindByIdAsync(id);
+            if (entity == null)
+            {
+                return BadRequest();
+            }
+            return View(new ChangePasswordViewModel()
+            {
+                Id = entity.Id,
+                Username = entity.UserName
+            });
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var entity = await _userManager.FindByIdAsync(model.Id);
+            if (entity == null)
+            {
+                return BadRequest();
+            }
+            var token = await _userManager.GeneratePasswordResetTokenAsync(entity);
+            var result = await _userManager.ResetPasswordAsync(entity, token, model.Password);
+            if (result.Succeeded)
+            {
+                TempData["Success"] = SuccessMessageConstants.SuccessfullyModified;
+                return View(model);
+            }
+            foreach (var kvp in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, kvp.Description);
+            }
+            return View(model);
         }
     }
 }
