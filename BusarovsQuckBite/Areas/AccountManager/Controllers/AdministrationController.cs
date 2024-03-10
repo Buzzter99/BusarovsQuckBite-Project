@@ -88,12 +88,12 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
         public async Task<IActionResult> ManageRoles(string id)
         {
             var entity = await _userManager.FindByIdAsync(id);
-            if (entity != null)
+            if (entity == null)
             {
-                var model = await _userManager.MapViewModel(entity);
-                return View(model);
+                return BadRequest();
             }
-            return RedirectToAction(nameof(Index));
+            var model = await _userManager.MapViewModel(entity);
+            return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> AddToRoleAsync(string userId, string roleName)
@@ -112,7 +112,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             {
                 return BadRequest();
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(ManageRoles), await _userManager.MapViewModel(entity));
         }
         [HttpPost]
         public async Task<IActionResult> RemoveFromRoleAsync(string userId, string roleName)
@@ -131,18 +131,24 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             {
                 return BadRequest();
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(ManageRoles), await _userManager.MapViewModel(entity));
         }
 
         public async Task<IActionResult> ManageAccess(string id, string keyword)
         {
             var model = await _userManager.FindByIdAsync(id);
-            if (model != null)
+            if (model == null)
             {
-                model.IsActive = !model.IsActive;
-                await _userManager.UpdateAsync(model);
+                return BadRequest();
             }
+            model.IsActive = !model.IsActive;
+            await _userManager.UpdateAsync(model);
             return RedirectToAction(nameof(Index),"Administration", new { keyword = $"{keyword}"});
+        }
+
+        public IActionResult ChangePassword(string id)
+        {
+            return View();
         }
     }
 }

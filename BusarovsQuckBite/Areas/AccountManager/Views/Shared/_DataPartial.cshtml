@@ -12,4 +12,5 @@
     <td>@Html.ActionLink($"{(Model.IsActive ? "Deactivate" : "Activate")}", "ManageAccess", "Administration", new { id = @Model.Id, keyword = ViewBag.Keyword }, new { @class = $"{(Model.IsActive ? "btn btn-danger" : "btn btn-success")}" })</td>
     <td>@Html.ActionLink("Password", "ChangePassword", "Administration", new { id = @Model.Id }, new { @class = "btn btn-secondary" })</td>
     <td>@Html.ActionLink("Roles", "ManageRoles", "Administration", new { id = @Model.Id }, new { @class = "btn btn-primary" })</td>
+    <td><p class="text-danger test">@Model.RemainingLockoutTime sec.</p></td>
 </tr>

@@ -85,6 +85,7 @@ namespace BusarovsQuckBite.Services
                     Email = c.Email,
                     FirstName = c.FirstName == "" ? "" : _protectionService.Decrypt(c.FirstName!),
                     LastName = c.LastName == "" ? "" : _protectionService.Decrypt(c.LastName!),
+                    RemainingLockoutTime = c.LockoutEnd == null ? 0 : c.LockoutEnd <= DateTimeOffset.Now ? 0 : (int)Math.Ceiling((c.LockoutEnd.Value - DateTimeOffset.Now).TotalSeconds),
                     PhoneNumber = c.PhoneNumber,
                     TransactionDateAndTime = c.TransactionDateAndTime,
                     Roles = _store.Context.UserRoles

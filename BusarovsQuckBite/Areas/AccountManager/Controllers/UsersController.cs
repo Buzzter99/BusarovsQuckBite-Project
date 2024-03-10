@@ -82,7 +82,7 @@ namespace BusarovsQuckBite.Areas.Users.Controllers
                 {
                     if (ModelState.IsValid)
                     {
-                        var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: false);
+                        var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: true);
                         if (result.Succeeded)
                         {
                             _logger.LogInformation($"User with id {user.Id} logged in.");
@@ -93,7 +93,7 @@ namespace BusarovsQuckBite.Areas.Users.Controllers
                         {
                             _logger.LogWarning($"User account with id {user.Id} is locked out.");
                             ModelState.AddModelError(nameof(model.Password), "Account is Locked! Please try again later.");
-                            return RedirectToAction(nameof(Login));
+                            return View(model);
                         }
                         ModelState.AddModelError(nameof(model.Password), "Invalid username or password.");
                         return View(model);

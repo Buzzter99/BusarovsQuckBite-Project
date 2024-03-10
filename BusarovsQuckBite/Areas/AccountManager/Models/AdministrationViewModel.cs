@@ -21,5 +21,6 @@ namespace BusarovsQuckBite.Areas.AccountManager.Models
         public string PhoneNumber { get; set; } = string.Empty;
         public string? FirstName { get; set; } = string.Empty;
         public string? LastName { get; set; } = string.Empty;
+        public int RemainingLockoutTime { get; set; }
     }
 }
