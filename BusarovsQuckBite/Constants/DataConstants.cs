@@ -7,7 +7,7 @@
             public const int StreetMinLength = 5;
             public const int StreetMaxLength = 250;
             public const int CityMinLength = 5;
-            public const int CityMaxLength = 50;
+            public const int CityMaxLength = 250;
 
         }
 

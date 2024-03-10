@@ -3,7 +3,8 @@
 <td>@Model.Street</td>
 <td>
     @Html.ActionLink("Edit Address", "EditAddress", "Address", new { }, new { @class = "btn btn-primary" })
-    @Html.ActionLink("Delete Address", "DeleteAddress", "Address", new { }, new { @class = "btn btn-danger" })
+    @Html.ActionLink($"{(Model.IsDeleted ? "Activate" : "Deactivate")}", "DeactivateAddress", "Address", new { addressId = @Model.AddressId }, new { @class = $"{(Model.IsDeleted ? "btn btn-success" : "btn btn-danger")}" })
+
 </td>
 <td>
     @if (Model.IsDeleted)

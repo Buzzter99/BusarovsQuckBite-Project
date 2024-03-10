@@ -1,21 +1,17 @@
-﻿using BusarovsQuckBite.Contracts;
+﻿using BusarovsQuckBite.Constants;
+using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Services;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Principal;
-using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BusarovsQuckBite.Controllers
 {
     public class AddressController : BaseController
     {
         private readonly IAddressService _addressService;
-        private readonly ApplicationUserManager<ApplicationUser> _userManager;
-        public AddressController(IAddressService addressService, ApplicationUserManager<ApplicationUser> userManager)
+        public AddressController(IAddressService addressService)
         {
             _addressService = addressService;
-            _userManager = userManager;
         }
         public async Task<IActionResult> All()
         {
@@ -39,11 +35,23 @@ namespace BusarovsQuckBite.Controllers
             }
             catch (InvalidOperationException e)
             {
-                ModelState.AddModelError(string.Empty, e.Message);
+                ModelState.AddModelError(string.Empty, ErrorMessagesConstants.AddressShouldIncludeStreetNumber);
                 return View(model);
             }
             TempData["Success"] = string.Format(SuccessMessageConstants.SuccessfullyAdded,nameof(Address));
             return View(model);
+        }
+        public async Task<IActionResult> DeactivateAddress(int addressId)
+        {
+            try
+            {
+                await _addressService.DeleteAddress(addressId, GetUserId());
+            }
+            catch (InvalidOperationException e)
+            {
+                return BadRequest();
+            }
+            return RedirectToAction(nameof(All));
         }
     }
 }
