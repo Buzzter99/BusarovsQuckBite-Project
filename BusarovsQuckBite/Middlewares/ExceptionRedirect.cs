@@ -1,6 +1,4 @@
-﻿using BusarovsQuckBite.Constants;
-
-namespace BusarovsQuckBite.Middlewares
+﻿namespace BusarovsQuckBite.Middlewares
 {
     public class ExceptionRedirect
     {
@@ -21,14 +19,7 @@ namespace BusarovsQuckBite.Middlewares
             }
             catch (Exception ex)
             {
-                if (ex is InvalidOperationException && ex.Message.Contains(ErrorMessagesConstants.EntityNotFoundExceptionMessage))
-                {
-                    _logger.LogError(ex, "A caught exception occurred");
-                }
-                else
-                {
-                    _logger.LogError(ex, ex.Message);
-                }
+                _logger.LogError(ex, ex.Message);
                 context.Response.Redirect("/Home/InvalidOperation");
             }
         }

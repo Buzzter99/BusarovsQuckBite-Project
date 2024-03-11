@@ -30,15 +30,15 @@ namespace BusarovsQuckBite.Services
         }
         private bool ContainsStreetNumber(string streetNumber)
         {
-            return streetNumber.Any(char.IsDigit);
-        }
-        public async Task AddAddress(AddressViewModel model, string userId)
-        {
-            var streetValidation = ContainsStreetNumber(model.Street);
-            if (!streetValidation)
+            if (!streetNumber.Any(char.IsDigit))
             {
                 throw new InvalidOperationException(ErrorMessagesConstants.AddressShouldIncludeStreetNumber);
             }
+            return true;
+        }
+        public async Task AddAddress(AddressViewModel model, string userId)
+        {
+            ContainsStreetNumber(model.Street);
             var entity = new Address()
             {
                 City = _protectionService.Encrypt(model.City),
@@ -50,18 +50,22 @@ namespace BusarovsQuckBite.Services
             await _context.Addresses.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
-        public async Task<Address> GetByIdForUser(int addressId, string userId)
+        public async Task<AddressViewModel> GetByIdForUser(int addressId, string userId)
         {
             var entity = await _context.Addresses.FirstOrDefaultAsync(x => x.Id == addressId && x.Who == userId);
             if (entity == null)
             {
                 throw new InvalidOperationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
             }
-            return entity;
+            return MapViewModel(entity);
         }
         public async Task DeleteAddress(int addressId, string userId)
         {
-            var address = await GetByIdForUser(addressId,userId);
+            var address = await _context.Addresses.FirstOrDefaultAsync(x => x.Id ==addressId && x.Who == userId);
+            if (address == null)
+            {
+                throw new InvalidOperationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
+            }
             address.IsDeleted = !address.IsDeleted;
             await _context.SaveChangesAsync();
         }
@@ -70,10 +74,23 @@ namespace BusarovsQuckBite.Services
             return new AddressViewModel()
             {
                 AddressId = address.Id,
-                Street = address.Street,
+                Street = _protectionService.Decrypt(address.Street),
                 IsDeleted = address.IsDeleted,
-                City = address.City
+                City = _protectionService.Decrypt(address.City)
             };
+        }
+
+        public async Task EditAddress(AddressViewModel model, string userId)
+        {
+            ContainsStreetNumber(model.Street);
+            var address = await _context.Addresses.FirstOrDefaultAsync(x => x.Who == userId && x.Id == model.AddressId);
+            if (address == null)
+            {
+                throw new InvalidOperationException(ErrorMessagesConstants.OwnerIsInvalid);
+            }
+            address.City = _protectionService.Encrypt(model.City);
+            address.Street = _protectionService.Encrypt(model.Street);
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -7,7 +7,8 @@ namespace BusarovsQuckBite.Contracts
     {
         Task<List<AddressViewModel>> GetAddressesForUserAsync(string userId);
         Task AddAddress(AddressViewModel model, string userId);
-        Task<Address> GetByIdForUser(int addressId, string userId);
+        Task<AddressViewModel> GetByIdForUser(int addressId, string userId);
         Task DeleteAddress(int addressId, string userId);
+        Task EditAddress(AddressViewModel model, string userId);
     }
 }

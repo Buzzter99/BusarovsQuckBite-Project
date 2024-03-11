@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using System.Security.Claims;
 
 namespace BusarovsQuckBite.Services
 {
@@ -59,10 +58,10 @@ namespace BusarovsQuckBite.Services
                 TransactionDateAndTime = user.TransactionDateAndTime
             };
         }
-        public async Task<bool> IsInRoleAsyncById(string userId, string roleId)
+        public async Task<bool> IsInRoleAsyncById(string userId, string roleName)
         {
             var user = await _store.FindByIdAsync(userId);
-            var role = await _store.Context.Roles.FirstOrDefaultAsync(x => x.Id == roleId);
+            var role = await _store.Context.Roles.FirstOrDefaultAsync(x => x.Name == roleName);
             if (role == null || user == null)
             {
                 throw new InvalidOperationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
@@ -93,7 +92,7 @@ namespace BusarovsQuckBite.Services
                         .Where(ur => ur.UserId == c.Id)
                         .Select(ur => ur.RoleId)
                         .Join(_store.Context.Roles, ur => ur, r => r.Id, (ur, r) => 
-                            new RoleViewModel { Id = r.Id, Name = r.Name })
+                            new RoleViewModel { Name = r.Name })
                         .ToList()
                 })
                 .AsNoTracking()
@@ -109,22 +108,22 @@ namespace BusarovsQuckBite.Services
             }
             return base.UpdateAsync(user);
         }
-        private Task<List<IdentityError>> ValidateUser(TUser user, IQueryable<TUser> collection)
+        private async Task<List<IdentityError>> ValidateUser(TUser user, IQueryable<TUser> collection)
         {
             var errors = new List<IdentityError>();
-            if (collection.Any(x => x.UserName == user.UserName))
+            if (await collection.FirstOrDefaultAsync(x => x.UserName == user.UserName) != null)
             {
                 errors.Add(new IdentityError { Description = "Username is already registered" });
             }
-            if (collection.Any(x => x.Email == user.Email))
+            if (await collection.FirstOrDefaultAsync(x => x.Email == user.Email) != null)
             {
                 errors.Add(new IdentityError { Description = "Email is already registered" });
             }
-            if (collection.Any(x => x.PhoneNumber == user.PhoneNumber))
+            if (await collection.FirstOrDefaultAsync(x => x.PhoneNumber == user.PhoneNumber) != null)
             {
                 errors.Add(new IdentityError { Description = "Phone number is already registered" });
             }
-            return Task.FromResult(errors);
+            return await Task.FromResult(errors);
         }
 
 

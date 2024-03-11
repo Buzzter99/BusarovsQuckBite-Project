@@ -2,9 +2,15 @@
 <td>@Model.City</td>
 <td>@Model.Street</td>
 <td>
-    @Html.ActionLink("Edit Address", "EditAddress", "Address", new { }, new { @class = "btn btn-primary" })
-    @Html.ActionLink($"{(Model.IsDeleted ? "Activate" : "Deactivate")}", "DeactivateAddress", "Address", new { addressId = @Model.AddressId }, new { @class = $"{(Model.IsDeleted ? "btn btn-success" : "btn btn-danger")}" })
-
+    <div class="d-flex align-items-center">
+        @Html.ActionLink("Edit Address", "EditAddress", "Address", new { addressId = @Model.AddressId }, new { @class = "btn btn-primary me-2" })
+        @using (Html.BeginForm("DeactivateAddress", "Address", new { addressId = @Model.AddressId }, FormMethod.Post))
+        {
+            <button type="submit" class="@(Model.IsDeleted ? "btn btn-success" : "btn btn-danger")">
+                @(Model.IsDeleted ? "Activate" : "Deactivate")
+            </button>
+        }
+    </div>
 </td>
 <td>
     @if (Model.IsDeleted)
