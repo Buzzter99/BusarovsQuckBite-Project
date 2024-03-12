@@ -16,19 +16,20 @@ namespace BusarovsQuckBite.Controllers
         }
         public async Task<IActionResult> All(string? keyword = "All")
         {
-            ViewBag.Category = keyword + " " + "Categories";
+            TempData["keyword"] = keyword + " " + "Categories";
             var models = await _categoryService.GetCategoriesForUserByStatusAsync(keyword);
             return View(models);
         }
-        public async Task<IActionResult> Delete(int categoryId,string currentTab)
+        public async Task<IActionResult> Delete(int categoryId, string currentTab)
         {
             try
             {
                 await _categoryService.DeleteCategoryAsync(categoryId, GetUserId());
             }
-            catch (InvalidOperationException ioe) when(ioe.Message.Contains(ErrorMessagesConstants.OwnerIsInvalid) || ioe.Message.Contains(ErrorMessagesConstants.EntityNotFoundExceptionMessage))
+            catch (InvalidOperationException ioe) when (ioe.Message.Contains(ErrorMessagesConstants.OwnerIsInvalid) || ioe.Message.Contains(ErrorMessagesConstants.EntityNotFoundExceptionMessage))
             {
                 TempData["Failed"] = ioe.Message;
+                return RedirectToAction(nameof(All));
             }
             return RedirectToAction(nameof(All), "Category", new { keyword = currentTab.Split(" ")[0] });
         }

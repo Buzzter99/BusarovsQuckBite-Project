@@ -21,3 +21,13 @@
 </table>
 @Html.ActionLink("Add New", "AddAddress", "Address", new { }, new { @class = "btn btn-success" })
 @Html.ActionLink("Back To Home", "Index", "Home", new { }, new { @class = "btn btn-primary" })
+<div style="margin-top: 20px;"></div>
+@{
+    if (TempData["Failed"] != null)
+    {
+        <div class="alert alert-danger errorMessageToHide" role="alert">
+            @TempData["Failed"]
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+    }
+}

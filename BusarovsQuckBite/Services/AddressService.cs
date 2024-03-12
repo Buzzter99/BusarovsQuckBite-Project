@@ -52,19 +52,27 @@ namespace BusarovsQuckBite.Services
         }
         public async Task<AddressViewModel> GetByIdForUser(int addressId, string userId)
         {
-            var entity = await _context.Addresses.FirstOrDefaultAsync(x => x.Id == addressId && x.Who == userId);
+            var entity = await _context.Addresses.FirstOrDefaultAsync(x => x.Id == addressId);
             if (entity == null)
             {
                 throw new InvalidOperationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
+            }
+            if (entity.Who != userId)
+            {
+                throw new InvalidOperationException(ErrorMessagesConstants.OwnerIsInvalid);
             }
             return MapViewModel(entity);
         }
         public async Task DeleteAddress(int addressId, string userId)
         {
-            var address = await _context.Addresses.FirstOrDefaultAsync(x => x.Id ==addressId && x.Who == userId);
+            var address = await _context.Addresses.FirstOrDefaultAsync(x => x.Id == addressId);
             if (address == null)
             {
                 throw new InvalidOperationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
+            }
+            if (address.Who != userId)
+            {
+                throw new InvalidOperationException(ErrorMessagesConstants.OwnerIsInvalid);
             }
             address.IsDeleted = !address.IsDeleted;
             await _context.SaveChangesAsync();
@@ -83,8 +91,12 @@ namespace BusarovsQuckBite.Services
         public async Task EditAddress(AddressViewModel model, string userId)
         {
             ContainsStreetNumber(model.Street);
-            var address = await _context.Addresses.FirstOrDefaultAsync(x => x.Who == userId && x.Id == model.AddressId);
+            var address = await _context.Addresses.FirstOrDefaultAsync(x => x.Id == model.AddressId);
             if (address == null)
+            {
+                throw new InvalidOperationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
+            }
+            if (address.Who != userId)
             {
                 throw new InvalidOperationException(ErrorMessagesConstants.OwnerIsInvalid);
             }
@@ -92,5 +104,6 @@ namespace BusarovsQuckBite.Services
             address.Street = _protectionService.Encrypt(model.Street);
             await _context.SaveChangesAsync();
         }
+
     }
 }

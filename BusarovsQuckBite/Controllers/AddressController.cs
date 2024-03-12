@@ -48,9 +48,11 @@ namespace BusarovsQuckBite.Controllers
             {
                 await _addressService.DeleteAddress(addressId, GetUserId());
             }
-            catch (InvalidOperationException e) when (e.Message.Contains(ErrorMessagesConstants.EntityNotFoundExceptionMessage))
+            catch (InvalidOperationException e) when (e.Message.Contains(ErrorMessagesConstants.EntityNotFoundExceptionMessage) ||
+                                                      e.Message.Contains(ErrorMessagesConstants.OwnerIsInvalid))
             {
-                return BadRequest();
+                TempData["Failed"] = e.Message;
+                return RedirectToAction(nameof(All));
             }
             return RedirectToAction(nameof(All));
         }
@@ -61,15 +63,27 @@ namespace BusarovsQuckBite.Controllers
             {
                 address = await _addressService.GetByIdForUser(addressId, GetUserId());
             }
-            catch (InvalidOperationException e) when (e.Message.Contains(ErrorMessagesConstants.EntityNotFoundExceptionMessage))
+            catch (InvalidOperationException e) when (e.Message.Contains(ErrorMessagesConstants.EntityNotFoundExceptionMessage) ||
+                                                      e.Message.Contains(ErrorMessagesConstants.OwnerIsInvalid))
             {
-                return BadRequest();
+                TempData["Failed"] = e.Message;
+                return RedirectToAction(nameof(All));
             }
             return View(address);
         }
         [HttpPost]
         public async Task<IActionResult> EditAddress(AddressViewModel address)
         {
+            try
+            {
+                await _addressService.GetByIdForUser(address.AddressId, GetUserId());
+            }
+            catch (InvalidOperationException ioe) when (ioe.Message.Contains(ErrorMessagesConstants.EntityNotFoundExceptionMessage) || 
+                                                        ioe.Message.Contains(ErrorMessagesConstants.OwnerIsInvalid))
+            {
+                TempData["Failed"] = ioe.Message;
+                return RedirectToAction(nameof(All));
+            }
             if (!ModelState.IsValid)
             {
                 return View(address);
@@ -78,8 +92,7 @@ namespace BusarovsQuckBite.Controllers
             {
                 await _addressService.EditAddress(address, GetUserId());
             }
-            catch (InvalidOperationException e) when (e.Message.Contains(ErrorMessagesConstants.AddressShouldIncludeStreetNumber)
-                                                      || e.Message.Contains(ErrorMessagesConstants.OwnerIsInvalid))
+            catch (InvalidOperationException e) when (e.Message.Contains(ErrorMessagesConstants.AddressShouldIncludeStreetNumber))
             {
                 ModelState.AddModelError(string.Empty, e.Message);
                 return View(address);

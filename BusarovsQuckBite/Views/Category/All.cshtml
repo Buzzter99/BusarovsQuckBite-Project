@@ -12,7 +12,7 @@
     </div>
 </nav>
 <div class="container" id="listing">
-    <h3>@ViewBag.Category</h3>
+    <h3>@TempData["keyword"]</h3>
     <a href="#" class="btn btn-primary"><i class="fa-regular fa-circle-check"></i> Add New Category</a>
     <table class="table table-striped">
         <thead>
@@ -38,11 +38,13 @@
     </table>
 </div>
 @Html.ActionLink("Back To Home", "Index", "Home", new { }, new { @class = "btn btn-primary" })
+<div style="margin-top: 20px;"></div>
 @{
     if (TempData["Failed"] != null)
     {
         <div class="alert alert-danger errorMessageToHide" role="alert">
             @TempData["Failed"]
+            <i class="fa-solid fa-triangle-exclamation"></i>
         </div>
     }
 }

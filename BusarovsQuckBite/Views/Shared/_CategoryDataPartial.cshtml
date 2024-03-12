@@ -7,7 +7,7 @@
     <div style="display: inline-block;">
         @if (!@Model.IsDeleted)
         {
-            @using (Html.BeginForm("Delete", "Category", new { categoryId = @Model.Id, currentTab = @ViewBag.Category }, FormMethod.Post))
+            @using (Html.BeginForm("Delete", "Category", new { categoryId = @Model.Id, currentTab = @TempData["keyword"] }, FormMethod.Post))
             {
                 <button type="submit" class="btn btn-danger">
                     <i class="fa-solid fa-x"></i>
@@ -17,7 +17,7 @@
         }
         else
         {
-            @using (Html.BeginForm("Delete", "Category", new { categoryId = @Model.Id, currentTab = @ViewBag.Category }, FormMethod.Post))
+            @using (Html.BeginForm("Delete", "Category", new { categoryId = @Model.Id, currentTab = @TempData["keyword"] }, FormMethod.Post))
             {
                 <button type="submit" class="btn btn-success">
                     <i class="fa-solid fa-check"></i>
