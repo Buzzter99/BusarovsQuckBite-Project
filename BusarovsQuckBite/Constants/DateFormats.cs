@@ -1,6 +1,6 @@
 ﻿namespace BusarovsQuckBite.Constants
 {
-    public static class DateFormatConstants
+    public static class DateFormats
     {
         public const string DefaultDateFormat = "dd/MM/yyyy";
     }

@@ -22,6 +22,7 @@ namespace BusarovsQuckBite
                 options.UseSqlServer(connectionString).UseLazyLoadingProxies());
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             builder.Services.AddScoped<IAddressService, AddressService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IDataProtectionService, DataProtectionService>();
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
                 {

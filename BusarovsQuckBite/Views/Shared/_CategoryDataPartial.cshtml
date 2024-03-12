@@ -1,0 +1,38 @@
+﻿@model CategoryViewModel
+<td>@Model.Name</td>
+<td>@Model.TransactionDateAndTime</td>
+<td>@Model.Creator</td>
+<td>@(Model.IsDeleted == true ? "Deleted Category" : "Active Category")</td>
+<td>
+    <div style="display: inline-block;">
+        @if (@Model.IsDeleted)
+        {
+            @using (Html.BeginForm("Delete", "Category", new { categoryId = @Model.Id }, FormMethod.Post))
+            {
+                <button type="submit" class="btn btn-success">
+                    <i class="fa-solid fa-check"></i>
+                    @(Model.IsDeleted ? "Activate" : "Deactivate")
+                </button>
+            }
+        }
+        else
+        {
+            @using (Html.BeginForm("Delete", "Category", new { categoryId = @Model.Id }, FormMethod.Post))
+            {
+                <button type="submit" class="btn btn-danger">
+                    <i class="fa-solid fa-check"></i>
+                    @(Model.IsDeleted ? "Activate" : "Deactivate")
+                </button>
+            }
+        }
+    </div>
+    <div style="display: inline-block;">
+        @using (Html.BeginForm("Edit", "Category", new { categoryId = @Model.Id }, FormMethod.Get))
+        {
+            <button type="submit" class="btn btn-info">
+                <i style="color: black;" class="fa-solid fa-pen-to-square"></i>
+                <span style="color: black;">Edit Category</span>
+            </button>
+        }
+    </div>
+</td>
