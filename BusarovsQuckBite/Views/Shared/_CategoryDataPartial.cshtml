@@ -5,21 +5,21 @@
 <td>@(Model.IsDeleted == true ? "Deleted Category" : "Active Category")</td>
 <td>
     <div style="display: inline-block;">
-        @if (@Model.IsDeleted)
+        @if (!@Model.IsDeleted)
         {
-            @using (Html.BeginForm("Delete", "Category", new { categoryId = @Model.Id }, FormMethod.Post))
+            @using (Html.BeginForm("Delete", "Category", new { categoryId = @Model.Id, currentTab = @ViewBag.Category }, FormMethod.Post))
             {
-                <button type="submit" class="btn btn-success">
-                    <i class="fa-solid fa-check"></i>
+                <button type="submit" class="btn btn-danger">
+                    <i class="fa-solid fa-x"></i>
                     @(Model.IsDeleted ? "Activate" : "Deactivate")
                 </button>
             }
         }
         else
         {
-            @using (Html.BeginForm("Delete", "Category", new { categoryId = @Model.Id }, FormMethod.Post))
+            @using (Html.BeginForm("Delete", "Category", new { categoryId = @Model.Id, currentTab = @ViewBag.Category }, FormMethod.Post))
             {
-                <button type="submit" class="btn btn-danger">
+                <button type="submit" class="btn btn-success">
                     <i class="fa-solid fa-check"></i>
                     @(Model.IsDeleted ? "Activate" : "Deactivate")
                 </button>

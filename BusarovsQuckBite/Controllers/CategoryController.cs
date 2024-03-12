@@ -16,11 +16,11 @@ namespace BusarovsQuckBite.Controllers
         }
         public async Task<IActionResult> All(string? keyword = "All")
         {
-            TempData["category"] = keyword + " " + "Categories";
+            ViewBag.Category = keyword + " " + "Categories";
             var models = await _categoryService.GetCategoriesForUserByStatusAsync(keyword);
             return View(models);
         }
-        public async Task<IActionResult> Delete(int categoryId)
+        public async Task<IActionResult> Delete(int categoryId,string currentTab)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace BusarovsQuckBite.Controllers
             {
                 TempData["Failed"] = ioe.Message;
             }
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(All), "Category", new { keyword = currentTab.Split(" ")[0] });
         }
     }
 }
