@@ -5,9 +5,12 @@ using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using System.Drawing.Printing;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace BusarovsQuckBite.Services
 {
@@ -69,13 +72,9 @@ namespace BusarovsQuckBite.Services
             return await IsInRoleAsync(user, role.Name);
         }
 
-        public async Task<List<AdministrationViewModel>> GetAllUsersByStatusAsync(bool? status)
+        public async Task<List<AdministrationViewModel>> GetAllUsersByStatusAsync(string keyword,int pageSize, int page = 1)
         {
             IQueryable<ApplicationUser> query = _store.Context.Users;
-            if (status.HasValue)
-            {
-                query = query.Where(x => x.IsActive == status);
-            }
             var usersWithRoles = await query
                 .Select(c => new AdministrationViewModel()
                 {
@@ -97,7 +96,24 @@ namespace BusarovsQuckBite.Services
                 })
                 .AsNoTracking()
                 .ToListAsync();
+            switch (keyword)
+            {
+                
+                case "Active":
+                    usersWithRoles = usersWithRoles.Where(x => x.IsActive).ToList();
+                    break;
+                case "Deactivated":
+                    usersWithRoles = usersWithRoles.Where(x => !x.IsActive).ToList();
+                    break;
+            }
+            usersWithRoles = usersWithRoles.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             return usersWithRoles;
+        }
+
+        public async Task<int> CalculateTotalPages(int pageSize)
+        {
+            var totalPages = await _store.Users.ToListAsync();
+            return (int)Math.Ceiling((double)(totalPages.Count) / pageSize);
         }
         public override Task<IdentityResult> UpdateAsync(TUser user)
         {

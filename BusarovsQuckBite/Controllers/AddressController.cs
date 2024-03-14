@@ -97,6 +97,11 @@ namespace BusarovsQuckBite.Controllers
                 ModelState.AddModelError(string.Empty, e.Message);
                 return View(address);
             }
+            catch (InvalidOperationException ioe) when (ioe.Message.Contains(ErrorMessagesConstants.OwnerIsInvalid))
+            {
+                TempData["Failed"] = ioe.Message;
+                return RedirectToAction(nameof(All));
+            }
             TempData["Success"] = string.Format(SuccessMessageConstants.SuccessfullyModified, nameof(Address));
             return View(address);
         }

@@ -27,28 +27,12 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(string keyword = "All", int page = 1, int pageSize = 10)
         {
-            List<AdministrationViewModel> model;
+            List<AdministrationViewModel> model = await _userManager.GetAllUsersByStatusAsync(keyword, pageSize, page);
             ViewBag.Keyword = keyword;
-            switch (keyword)
-            {
-                case "All":
-                    model = await _userManager.GetAllUsersByStatusAsync(null);
-                    break;
-                case "Active":
-                    model = await _userManager.GetAllUsersByStatusAsync(true); 
-                    break;
-                case "Deactivated":
-                    model = await _userManager.GetAllUsersByStatusAsync(false);
-                    break;
-                default: model = await _userManager.GetAllUsersByStatusAsync(null);
-                    ViewBag.Keyword = "All";
-                    break;
-            }
-            var currentPageItems = model.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             ViewBag.PageNumber = page;
-            ViewBag.TotalPages = (int)Math.Ceiling((double)(model.Count) / pageSize);
+            ViewBag.TotalPages = await _userManager.CalculateTotalPages(pageSize);
             ViewBag.PageSize = pageSize;
-            return View(currentPageItems);
+            return View(model);
         }
 
         public IActionResult Edit(AdministrationViewModel model)
@@ -60,7 +44,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Edit), model);
+                return View(nameof(Edit), model);
             }
             var entity = await _userManager.FindByIdAsync(id);
             if (entity == null)
