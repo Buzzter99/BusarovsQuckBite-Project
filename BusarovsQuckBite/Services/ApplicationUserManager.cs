@@ -72,7 +72,7 @@ namespace BusarovsQuckBite.Services
             return await IsInRoleAsync(user, role.Name);
         }
 
-        public async Task<List<AdministrationViewModel>> GetAllUsersByStatusAsync(string keyword,int pageSize, int page = 1)
+        public async Task<(List<AdministrationViewModel>, int)> GetAllUsersByStatusAsync(string keyword, int pageSize, int page)
         {
             IQueryable<ApplicationUser> query = _store.Context.Users;
             var usersWithRoles = await query
@@ -106,14 +106,9 @@ namespace BusarovsQuckBite.Services
                     usersWithRoles = usersWithRoles.Where(x => !x.IsActive).ToList();
                     break;
             }
+            int totalPages = (int)Math.Ceiling((double)(usersWithRoles.Count) / pageSize);
             usersWithRoles = usersWithRoles.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-            return usersWithRoles;
-        }
-
-        public async Task<int> CalculateTotalPages(int pageSize)
-        {
-            var totalPages = await _store.Users.ToListAsync();
-            return (int)Math.Ceiling((double)(totalPages.Count) / pageSize);
+            return (usersWithRoles, totalPages);
         }
         public override Task<IdentityResult> UpdateAsync(TUser user)
         {

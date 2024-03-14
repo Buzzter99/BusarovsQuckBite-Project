@@ -1,5 +1,6 @@
 ﻿using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
+using BusarovsQuckBite.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +15,7 @@ namespace BusarovsQuckBite.Controllers
         {
             _categoryService = categoryService;
         }
-        public async Task<IActionResult> All(string? keyword = "All")
+        public async Task<IActionResult> All(FilterEnum keyword = FilterEnum.All)
         {
             TempData["keyword"] = keyword + " " + "Categories";
             var models = await _categoryService.GetCategoriesForUserByStatusAsync(keyword);

@@ -7,7 +7,7 @@
         @using (Html.BeginForm("DeactivateAddress", "Address", new { addressId = @Model.AddressId }, FormMethod.Post))
         {
             <button type="submit" class="@(Model.IsDeleted ? "btn btn-success" : "btn btn-danger")">
-                @(Model.IsDeleted ? "Activate" : "Deactivate")
+                @(Model.IsDeleted ? "Activate" : "Delete")
             </button>
         }
     </div>
@@ -16,7 +16,7 @@
     @if (Model.IsDeleted)
     {
         <div class="badge bg-danger text-wrap">
-            Deactivated
+            Deleted
         </div>
     }
     else

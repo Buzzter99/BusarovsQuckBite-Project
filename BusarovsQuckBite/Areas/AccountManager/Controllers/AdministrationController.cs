@@ -27,12 +27,12 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(string keyword = "All", int page = 1, int pageSize = 10)
         {
-            List<AdministrationViewModel> model = await _userManager.GetAllUsersByStatusAsync(keyword, pageSize, page);
+            var model = await _userManager.GetAllUsersByStatusAsync(keyword,pageSize, page);
             ViewBag.Keyword = keyword;
             ViewBag.PageNumber = page;
-            ViewBag.TotalPages = await _userManager.CalculateTotalPages(pageSize);
+            ViewBag.TotalPages =  model.Item2;
             ViewBag.PageSize = pageSize;
-            return View(model);
+            return View(model.Item1);
         }
 
         public IActionResult Edit(AdministrationViewModel model)

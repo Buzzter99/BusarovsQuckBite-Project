@@ -2,6 +2,7 @@
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Models;
+using BusarovsQuckBite.Models.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace BusarovsQuckBite.Services
@@ -14,7 +15,7 @@ namespace BusarovsQuckBite.Services
         {
             _context = context;
         }
-        public async Task<List<CategoryViewModel>> GetCategoriesForUserByStatusAsync(string? keyword = "")
+        public async Task<List<CategoryViewModel>> GetCategoriesForUserByStatusAsync(FilterEnum keyword)
         {
             var categories = await _context.Categories.Select(c => new CategoryViewModel()
             {
@@ -27,10 +28,10 @@ namespace BusarovsQuckBite.Services
             }).AsNoTracking().ToListAsync();
             switch (keyword)
             {
-                case "Deleted":
+                case FilterEnum.Deleted:
                     categories = categories.Where(x => x.IsDeleted).ToList();
                     break;
-                case "Active":
+                case FilterEnum.Active:
                     categories = categories.Where(x => !x.IsDeleted).ToList();
                     break;
             }
