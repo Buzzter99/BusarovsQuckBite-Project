@@ -2,7 +2,8 @@
 {
     public static class SuccessMessageConstants
     {
-        public static string SuccessfullyModified = "Entity modified successfully";
-        public static string SuccessfullyAdded = "{0} was successfully Added";
+        public const string SuccessfullyModified = "Entity modified successfully";
+        public const string SuccessfullyAdded = "{0} was successfully Added";
+        public const string SuccessMessageKey = "Success";
     }
 }

@@ -44,10 +44,6 @@ namespace BusarovsQuckBite.Services
             {
                 throw new InvalidOperationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
             }
-            if (category.Who != owner)
-            {
-                throw new InvalidOperationException(ErrorMessagesConstants.OwnerIsInvalid);
-            }
             category.IsDeleted = !category.IsDeleted;
             await _context.SaveChangesAsync();
         }

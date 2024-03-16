@@ -19,7 +19,11 @@ namespace BusarovsQuckBite.Areas.AccountManager.Models
         [Required]
         [RegularExpression(Constants.UserConstants.PhoneNumberValidationRegex, ErrorMessage = "Please provide valid Phone Number!")]
         public string PhoneNumber { get; set; } = string.Empty;
+        [MinLength(UserConstants.FirstNameMinLength)]
+        [MaxLength(UserConstants.FirstNameMaxLength)]
         public string? FirstName { get; set; } = string.Empty;
+        [MinLength(UserConstants.LastNameMinLength)]
+        [MaxLength(UserConstants.LastNameMaxLength)]
         public string? LastName { get; set; } = string.Empty;
         public int RemainingLockoutTime { get; set; }
     }

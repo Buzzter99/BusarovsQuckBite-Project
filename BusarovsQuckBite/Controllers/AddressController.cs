@@ -38,7 +38,7 @@ namespace BusarovsQuckBite.Controllers
                 ModelState.AddModelError(string.Empty, e.Message);
                 return View(model);
             }
-            TempData["Success"] = string.Format(SuccessMessageConstants.SuccessfullyAdded, nameof(Address));
+            TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyAdded, nameof(Address));
             return View(model);
         }
         [HttpPost]
@@ -51,7 +51,7 @@ namespace BusarovsQuckBite.Controllers
             catch (InvalidOperationException e) when (e.Message.Contains(ErrorMessagesConstants.EntityNotFoundExceptionMessage) ||
                                                       e.Message.Contains(ErrorMessagesConstants.OwnerIsInvalid))
             {
-                TempData["Failed"] = e.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = e.Message;
                 return RedirectToAction(nameof(All));
             }
             return RedirectToAction(nameof(All));
@@ -66,7 +66,7 @@ namespace BusarovsQuckBite.Controllers
             catch (InvalidOperationException e) when (e.Message.Contains(ErrorMessagesConstants.EntityNotFoundExceptionMessage) ||
                                                       e.Message.Contains(ErrorMessagesConstants.OwnerIsInvalid))
             {
-                TempData["Failed"] = e.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = e.Message;
                 return RedirectToAction(nameof(All));
             }
             return View(address);
@@ -81,7 +81,7 @@ namespace BusarovsQuckBite.Controllers
             catch (InvalidOperationException ioe) when (ioe.Message.Contains(ErrorMessagesConstants.EntityNotFoundExceptionMessage) || 
                                                         ioe.Message.Contains(ErrorMessagesConstants.OwnerIsInvalid))
             {
-                TempData["Failed"] = ioe.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ioe.Message;
                 return RedirectToAction(nameof(All));
             }
             if (!ModelState.IsValid)
@@ -99,10 +99,10 @@ namespace BusarovsQuckBite.Controllers
             }
             catch (InvalidOperationException ioe) when (ioe.Message.Contains(ErrorMessagesConstants.OwnerIsInvalid))
             {
-                TempData["Failed"] = ioe.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ioe.Message;
                 return RedirectToAction(nameof(All));
             }
-            TempData["Success"] = string.Format(SuccessMessageConstants.SuccessfullyModified, nameof(Address));
+            TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyModified, nameof(Address));
             return View(address);
         }
     }

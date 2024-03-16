@@ -1,0 +1,16 @@
+﻿@using BusarovsQuckBite.Constants
+@{
+    if (TempData[ErrorMessagesConstants.FailedMessageKey] != null)
+    {
+        <div class="alert alert-danger errorMessageToHide" role="alert">
+            @TempData[ErrorMessagesConstants.FailedMessageKey]
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+    }
+    if (TempData[SuccessMessageConstants.SuccessMessageKey] != null)
+    {
+        <div class="alert alert-success successMessageToHide" role="alert">
+            @TempData[SuccessMessageConstants.SuccessMessageKey]
+        </div>
+    }
+}

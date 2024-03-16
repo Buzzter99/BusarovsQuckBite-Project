@@ -3,14 +3,12 @@ using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
+using BusarovsQuckBite.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using System.Drawing.Printing;
-using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace BusarovsQuckBite.Services
 {
@@ -46,7 +44,7 @@ namespace BusarovsQuckBite.Services
                 Name = c.Name
             }).AsNoTracking().ToListAsync();
         }
-        public async Task<AdministrationViewModel> MapViewModel<TUser>(TUser user) where TUser : ApplicationUser
+        public async Task<AdministrationViewModel> MapViewModel(ApplicationUser user)
         {
             return new AdministrationViewModel()
             {
@@ -61,6 +59,14 @@ namespace BusarovsQuckBite.Services
                 TransactionDateAndTime = user.TransactionDateAndTime
             };
         }
+        public  ChangePasswordViewModel MapPasswordViewModel(ApplicationUser user)
+        {
+            return new ChangePasswordViewModel()
+            {
+                Id = user.Id,
+                Username = user.UserName
+            };
+        }
         public async Task<bool> IsInRoleAsyncById(string userId, string roleName)
         {
             var user = await _store.FindByIdAsync(userId);
@@ -72,9 +78,21 @@ namespace BusarovsQuckBite.Services
             return await IsInRoleAsync(user, role.Name);
         }
 
-        public async Task<(List<AdministrationViewModel>, int)> GetAllUsersByStatusAsync(string keyword, int pageSize, int page)
+        public async Task<(List<AdministrationViewModel>, int)> GetAllUsersByStatusAsync(FilterEnum e, int pageSize, int page)
         {
-            IQueryable<ApplicationUser> query = _store.Context.Users;
+            IQueryable<ApplicationUser> query;
+            switch (e)
+            {
+                case FilterEnum.Active:
+                    query = _store.Context.Users.Where(x => x.IsActive);
+                    break;
+                case FilterEnum.Deleted:
+                    query = _store.Context.Users.Where(x => !x.IsActive);
+                    break;
+                default:
+                    query = _store.Context.Users;
+                    break;
+            }
             var usersWithRoles = await query
                 .Select(c => new AdministrationViewModel()
                 {
@@ -96,16 +114,6 @@ namespace BusarovsQuckBite.Services
                 })
                 .AsNoTracking()
                 .ToListAsync();
-            switch (keyword)
-            {
-                
-                case "Active":
-                    usersWithRoles = usersWithRoles.Where(x => x.IsActive).ToList();
-                    break;
-                case "Deactivated":
-                    usersWithRoles = usersWithRoles.Where(x => !x.IsActive).ToList();
-                    break;
-            }
             int totalPages = (int)Math.Ceiling((double)(usersWithRoles.Count) / pageSize);
             usersWithRoles = usersWithRoles.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             return (usersWithRoles, totalPages);
@@ -118,6 +126,15 @@ namespace BusarovsQuckBite.Services
                 return Task.FromResult(IdentityResult.Failed(validateUser.Result.ToArray()));
             }
             return base.UpdateAsync(user);
+        }
+        public ApplicationUser EditRequiredUserData(ApplicationUser entity, AdministrationViewModel model)
+        {
+            entity.Email = model.Email.Trim();
+            entity.FirstName = model.FirstName == null ? "" : _protectionService.Encrypt(model.FirstName!);
+            entity.LastName = model.LastName == null ? "" : _protectionService.Encrypt(model.LastName!);
+            entity.PhoneNumber = model.PhoneNumber.Trim();
+            entity.UserName = model.Username.Trim();
+            return entity;
         }
         private async Task<List<IdentityError>> ValidateUser(TUser user, IQueryable<TUser> collection)
         {
@@ -136,7 +153,5 @@ namespace BusarovsQuckBite.Services
             }
             return await Task.FromResult(errors);
         }
-
-
     }
 }

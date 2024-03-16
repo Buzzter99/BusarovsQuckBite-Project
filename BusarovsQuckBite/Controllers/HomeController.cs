@@ -1,8 +1,6 @@
 ﻿using BusarovsQuckBite.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System.Diagnostics;
-using BusarovsQuckBite.Constants;
 
 namespace BusarovsQuckBite.Controllers
 {

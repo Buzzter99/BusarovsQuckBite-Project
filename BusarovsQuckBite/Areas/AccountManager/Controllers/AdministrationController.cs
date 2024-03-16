@@ -2,11 +2,11 @@
 using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data.Models;
+using BusarovsQuckBite.Models.Enums;
 using BusarovsQuckBite.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
 namespace BusarovsQuckBite.Areas.AccountManager.Controllers
 {
     [Authorize(Roles = RoleConstants.AdminRoleName)]
@@ -25,12 +25,12 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             _roleManager = roleManager;
         }
         [HttpGet]
-        public async Task<IActionResult> Index(string keyword = "All", int page = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(FilterEnum keyword = FilterEnum.All, int page = 1, int pageSize = 10)
         {
-            var model = await _userManager.GetAllUsersByStatusAsync(keyword,pageSize, page);
+            var model = await _userManager.GetAllUsersByStatusAsync(keyword, pageSize, page);
             ViewBag.Keyword = keyword;
             ViewBag.PageNumber = page;
-            ViewBag.TotalPages =  model.Item2;
+            ViewBag.TotalPages = model.Item2;
             ViewBag.PageSize = pageSize;
             return View(model.Item1);
         }
@@ -40,7 +40,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             return View(model);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(string id,AdministrationViewModel model)
+        public async Task<IActionResult> Edit(string id, AdministrationViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -49,32 +49,30 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             var entity = await _userManager.FindByIdAsync(id);
             if (entity == null)
             {
-                return BadRequest();
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ErrorMessagesConstants.EntityNotFoundExceptionMessage;
+                return View(nameof(Edit), model);
             }
-            entity.Email = model.Email.Trim();
-            entity.FirstName = model.FirstName == null ? "": _dataProtectionService.Encrypt(model.FirstName!);
-            entity.LastName = model.LastName == null ? "" : _dataProtectionService.Encrypt(model.LastName!);
-            entity.PhoneNumber = model.PhoneNumber.Trim();
-            entity.UserName = model.Username.Trim();
-            var operation = await _userManager.UpdateAsync(entity);
+            var user = _userManager.EditRequiredUserData(entity, model);
+            var operation = await _userManager.UpdateAsync(user);
             if (!operation.Succeeded)
             {
                 foreach (var error in operation.Errors)
                 {
-                    ModelState.AddModelError(string.Empty,error.Description);
+                    ModelState.AddModelError(string.Empty, error.Description);
                 }
                 return View(model);
             }
-            TempData["Success"] = SuccessMessageConstants.SuccessfullyModified;
+            TempData[SuccessMessageConstants.SuccessMessageKey] = SuccessMessageConstants.SuccessfullyModified;
             return View(model);
         }
         [HttpGet]
-        public async Task<IActionResult> ManageRoles(string id)
+        public async Task<IActionResult> ManageRoles(string id, FilterEnum keyword)
         {
             var entity = await _userManager.FindByIdAsync(id);
             if (entity == null)
             {
-                return BadRequest();
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ErrorMessagesConstants.EntityNotFoundExceptionMessage;
+                return RedirectToAction(nameof(Index), new { keyword = ViewBag.Keyword });
             }
             var model = await _userManager.MapViewModel(entity);
             return View(model);
@@ -91,12 +89,10 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 {
                     return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
                 }
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ErrorMessagesConstants.EntityNotFoundExceptionMessage;
+                return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
             }
-            else
-            {
-                return BadRequest();
-            }
-            return RedirectToAction(nameof(ManageRoles), await _userManager.MapViewModel(entity));
+            return BadRequest();
         }
         [HttpPost]
         public async Task<IActionResult> RemoveFromRoleAsync(string userId, string roleName)
@@ -110,38 +106,33 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 {
                     return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
                 }
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ErrorMessagesConstants.EntityNotFoundExceptionMessage;
+                return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
             }
-            else
-            {
-                return BadRequest();
-            }
-            return RedirectToAction(nameof(ManageRoles), await _userManager.MapViewModel(entity));
+            return BadRequest();
         }
-
-        public async Task<IActionResult> ManageAccess(string id, string keyword)
+        public async Task<IActionResult> ManageAccess(string id, FilterEnum keyword)
         {
             var model = await _userManager.FindByIdAsync(id);
             if (model == null)
             {
-                return BadRequest();
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ErrorMessagesConstants.EntityNotFoundExceptionMessage;
+                return RedirectToAction(nameof(Index), new { keyword = keyword });
             }
             model.IsActive = !model.IsActive;
             await _userManager.UpdateAsync(model);
-            return RedirectToAction(nameof(Index),"Administration", new { keyword = $"{keyword}"});
+            return RedirectToAction(nameof(Index), new { keyword = keyword });
         }
 
-        public async Task<IActionResult> ChangePassword(string id)
+        public async Task<IActionResult> ChangePassword(string id, FilterEnum keyword)
         {
             var entity = await _userManager.FindByIdAsync(id);
             if (entity == null)
             {
-                return BadRequest();
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ErrorMessagesConstants.EntityNotFoundExceptionMessage;
+                return RedirectToAction(nameof(Index), new { keyword = keyword });
             }
-            return View(new ChangePasswordViewModel()
-            {
-                Id = entity.Id,
-                Username = entity.UserName
-            });
+            return View(_userManager.MapPasswordViewModel(entity));
         }
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
@@ -153,13 +144,14 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             var entity = await _userManager.FindByIdAsync(model.Id);
             if (entity == null)
             {
-                return BadRequest();
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ErrorMessagesConstants.EntityNotFoundExceptionMessage;
+                return View(model);
             }
             var token = await _userManager.GeneratePasswordResetTokenAsync(entity);
             var result = await _userManager.ResetPasswordAsync(entity, token, model.Password);
             if (result.Succeeded)
             {
-                TempData["Success"] = SuccessMessageConstants.SuccessfullyModified;
+                TempData[SuccessMessageConstants.SuccessMessageKey] = SuccessMessageConstants.SuccessfullyModified;
                 return View(model);
             }
             foreach (var kvp in result.Errors)

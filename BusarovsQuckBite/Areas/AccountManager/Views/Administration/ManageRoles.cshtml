@@ -45,3 +45,6 @@
     </tbody>
 </table>
 <td>@Html.ActionLink("Back to Administration", "Index", "Administration", new { }, new { @class = "btn btn-primary" })</td>
+@{
+    await Html.RenderPartialAsync("_MessagePartial", TempData);
+}

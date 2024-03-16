@@ -1,7 +1,6 @@
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Middlewares;
 using BusarovsQuckBite.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -24,14 +23,14 @@ namespace BusarovsQuckBite
             builder.Services.AddScoped<IAddressService, AddressService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IDataProtectionService, DataProtectionService>();
-            builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+            builder.Services.AddIdentity<ApplicationUser,ApplicationRole>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = false;
                     options.Password.RequireDigit = false;
                     options.Password.RequireLowercase = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireNonAlphanumeric = false;
-                }).AddRoles<ApplicationRole>()
+                })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddSignInManager<ApplicationSignInManager<ApplicationUser>>()
                 .AddUserManager<ApplicationUserManager<ApplicationUser>>()
@@ -58,8 +57,8 @@ namespace BusarovsQuckBite
 
                 app.UseHsts();
             }
-            //app.UseMiddleware<IdentityPathMiddleware>();
-            //app.UseMiddleware<ExceptionRedirect>();
+            //app.UseMiddleware<BadResponseCodeRedirect>();
+            //app.UseMiddleware<ExceptionLogger>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();

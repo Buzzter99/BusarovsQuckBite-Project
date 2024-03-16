@@ -1,11 +1,11 @@
 ﻿namespace BusarovsQuckBite.Middlewares
 {
-    public class ExceptionRedirect
+    public class ExceptionLogger
     {
         private readonly RequestDelegate _next;
         private readonly ILogger _logger;
 
-        public ExceptionRedirect(RequestDelegate next, ILogger<ExceptionRedirect> logger)
+        public ExceptionLogger(RequestDelegate next, ILogger<ExceptionLogger> logger)
         {
             _next = next;
             _logger = logger;

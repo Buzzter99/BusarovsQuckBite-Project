@@ -27,12 +27,7 @@
                             </p>
                         </form>
                         @{
-                            if (TempData["Success"] != null)
-                            {
-                                <div class="alert alert-success successMessageToHide" role="alert">
-                                    @TempData["Success"]
-                                </div>
-                            }
+                            await Html.RenderPartialAsync("_MessagePartial", TempData);
                         }
                     </div>
                 </div>
