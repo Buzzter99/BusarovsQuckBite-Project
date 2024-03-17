@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "AddCategory";
+}
+@model CategoryViewModel
+<div class="mask d-flex align-items-center h-100 gradient-custom-3">
+    <div class="container h-100">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-md-8 col-lg-6">
+                <div class="card" style="border-radius: 15px;">
+                    <div class="card-body p-5">
+                        <h2 class="text-center mb-5">Add Category</h2>
+                        <form asp-area="" asp-controller="Category" asp-action="Add" method="post">
+                            <div class="form-group mb-3">
+                                <label class="form-label">Category Name</label>
+                                <input asp-for="Name" type="text" class="form-control form-control-lg" />
+                            </div>
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="d-grid">
+                                <input type="submit" class="btn btn-primary btn-lg gradient-custom-4 text-body" value="Add Category">
+                            </div>
+                            <p class="text-center text-muted mt-3 mb-0">
+                                <a asp-controller="Category" asp-action="All" asp-area="" class="fw-bold text-body"><u> Back To All Categories</u></a>
+                            </p>
+                        </form>
+                        <div style="margin-top: 20px;"></div>
+                        @{
+                            await Html.RenderPartialAsync("_MessagePartial", TempData);
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

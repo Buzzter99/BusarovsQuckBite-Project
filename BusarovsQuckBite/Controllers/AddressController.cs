@@ -39,7 +39,8 @@ namespace BusarovsQuckBite.Controllers
                 return View(model);
             }
             TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyAdded, nameof(Address));
-            return View(model);
+            ModelState.Clear();
+            return View();
         }
         [HttpPost]
         public async Task<IActionResult> DeactivateAddress(int addressId)

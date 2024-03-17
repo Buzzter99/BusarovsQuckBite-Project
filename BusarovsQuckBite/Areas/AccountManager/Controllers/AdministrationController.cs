@@ -89,7 +89,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 {
                     return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
                 }
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ErrorMessagesConstants.EntityNotFoundExceptionMessage;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = string.Join(Environment.NewLine, result.Errors.Select(c => c.Description));
                 return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
             }
             return BadRequest();
@@ -106,7 +106,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 {
                     return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
                 }
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ErrorMessagesConstants.EntityNotFoundExceptionMessage;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = string.Join(Environment.NewLine, result.Errors.Select(c => c.Description));
                 return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
             }
             return BadRequest();

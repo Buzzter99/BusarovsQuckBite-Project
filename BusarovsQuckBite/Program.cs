@@ -23,18 +23,21 @@ namespace BusarovsQuckBite
             builder.Services.AddScoped<IAddressService, AddressService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IDataProtectionService, DataProtectionService>();
-            builder.Services.AddIdentity<ApplicationUser,ApplicationRole>(options =>
+            //builder.Services.Configure<CustomTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromMinutes(1));
+            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = false;
                     options.Password.RequireDigit = false;
                     options.Password.RequireLowercase = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireNonAlphanumeric = false;
+                    //options.Tokens.PasswordResetTokenProvider = typeof(CustomTokenProvider<ApplicationUser>).Name;
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddSignInManager<ApplicationSignInManager<ApplicationUser>>()
                 .AddUserManager<ApplicationUserManager<ApplicationUser>>()
                 .AddDefaultTokenProviders();
+                //.AddTokenProvider<CustomTokenProvider<ApplicationUser>>(typeof(CustomTokenProvider<ApplicationUser>).Name);
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/AccountManager/Users/Login";
