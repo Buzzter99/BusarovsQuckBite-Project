@@ -44,6 +44,10 @@ namespace BusarovsQuckBite.Services
         public async Task DeleteCategoryAsync(int id)
         {
             var category = await GetByIdAsync(id);
+            if (category.Products.Any())
+            {
+                throw new InvalidOperationException(ErrorMessagesConstants.CannotDeleteProductInCategory);
+            }
             category.IsDeleted = !category.IsDeleted;
             await _context.SaveChangesAsync();
         }

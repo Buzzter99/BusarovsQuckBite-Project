@@ -19,7 +19,7 @@ namespace BusarovsQuckBite.Controllers
         }
         public async Task<IActionResult> All(FilterEnum keyword = FilterEnum.All)
         {
-            TempData["keyword"] = keyword + " " + "Categories";
+            TempData["keyword"] = keyword;
             var models = await _categoryService.GetCategoriesForUserByStatusAsync(keyword);
             return View(models);
         }
@@ -30,7 +30,8 @@ namespace BusarovsQuckBite.Controllers
             {
                 await _categoryService.DeleteCategoryAsync(categoryId);
             }
-            catch (InvalidOperationException ioe) when (ioe.Message.Contains(ErrorMessagesConstants.EntityNotFoundExceptionMessage))
+            catch (InvalidOperationException ioe) when (ioe.Message.Contains(ErrorMessagesConstants.EntityNotFoundExceptionMessage ) || 
+                                                        ioe.Message.Contains(ErrorMessagesConstants.CannotDeleteProductInCategory))
             {
                 TempData[ErrorMessagesConstants.FailedMessageKey] = ioe.Message;
                 return RedirectToAction(nameof(All));
@@ -86,29 +87,18 @@ namespace BusarovsQuckBite.Controllers
             TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyModified);
             return View(model);
         }
-        public async Task<IActionResult> Search(string keyword, string? name)
+        public async Task<IActionResult> Search(FilterEnum keyword, string? name)
         {
             name = name ?? "";
-            if (Enum.TryParse(keyword.Split(" ")[0], out FilterEnum parsedEnum))
-            {
-                var items = await _categoryService.SearchByNameAsync(parsedEnum, name);
-                TempData["keyword"] = keyword.Split(" ")[0] + " " + "Categories";
-                return View(nameof(All), items);
-            }
-            TempData[ErrorMessagesConstants.FailedMessageKey] = string.Format(ErrorMessagesConstants.GeneralErrorMessage);
-            return RedirectToAction(nameof(All));
+            var items = await _categoryService.SearchByNameAsync(keyword, name);
+            TempData["keyword"] = keyword;
+            return View(nameof(All), items);
         }
-
-        public async Task<IActionResult> ClearFilter(string keyword)
+        public async Task<IActionResult> ClearFilter(FilterEnum keyword)
         {
-            if (Enum.TryParse(keyword.Split(" ")[0], out FilterEnum parsedEnum))
-            {
-                var items = await _categoryService.GetCategoriesForUserByStatusAsync(parsedEnum);
-                TempData["keyword"] = keyword.Split(" ")[0] + " " + "Categories";
-                return View(nameof(All), items);
-            }
-            TempData[ErrorMessagesConstants.FailedMessageKey] = string.Format(ErrorMessagesConstants.GeneralErrorMessage);
-            return RedirectToAction(nameof(All));
+            var items = await _categoryService.GetCategoriesForUserByStatusAsync(keyword);
+            TempData["keyword"] = keyword;
+            return View(nameof(All), items);
         }
     }
 }

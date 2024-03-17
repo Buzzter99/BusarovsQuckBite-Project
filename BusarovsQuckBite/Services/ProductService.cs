@@ -1,4 +1,5 @@
-﻿using BusarovsQuckBite.Contracts;
+﻿using BusarovsQuckBite.Constants;
+using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Models;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,13 @@ namespace BusarovsQuckBite.Services
                 Description = c.Description,
                 Price = c.Price,
                 QtyAvailable = c.Quantity,
-                ImageFullPath = c.Img.RelativePath + c.Img.Name
+                ImageRelativePath = c.Img.RelativePath + c.Img.Name,
+                Category = new CategoryViewModel()
+                {
+                    Id = c.Category.Id,
+                    Name = c.Category.Name,
+                },
+                CreatedOn = c.TransactionDateAndTime.ToString(DateFormatConstants.DefaultDateFormat)
             }).ToListAsync();
         }
     }

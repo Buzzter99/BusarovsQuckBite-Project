@@ -22,6 +22,7 @@ namespace BusarovsQuckBite
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             builder.Services.AddScoped<IAddressService, AddressService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IDataProtectionService, DataProtectionService>();
             //builder.Services.Configure<CustomTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromMinutes(1));
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>

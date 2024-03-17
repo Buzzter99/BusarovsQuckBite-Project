@@ -14,11 +14,14 @@ namespace BusarovsQuckBite.Models
         public decimal Price { get; set; }
         [Required]
         public int QtyAvailable { get; set; }
-        public List<CategoryViewModel> Categories { get; set; } = new List<CategoryViewModel>();
+        [Required]
+        public CategoryViewModel Category { get; set; } = null!;
         [Required]
         public string Creator { get; set; } = string.Empty;
         [Required]
-        public string ImageFullPath { get; set; } = string.Empty;
+        public string ImageRelativePath { get; set; } = string.Empty;
+        [Required]
+        public string CreatedOn { get; set; } = string.Empty;
 
     }
 }

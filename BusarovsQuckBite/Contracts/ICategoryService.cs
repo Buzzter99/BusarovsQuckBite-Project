@@ -1,5 +1,4 @@
-﻿using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Models;
+﻿using BusarovsQuckBite.Models;
 using BusarovsQuckBite.Models.Enums;
 
 namespace BusarovsQuckBite.Contracts
