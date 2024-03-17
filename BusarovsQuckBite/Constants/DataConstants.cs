@@ -37,5 +37,17 @@
             public const int PricePrecision = 18;
             public const int PriceScale = 2;
         }
+        public static class ImgConstants
+        {
+            public const int NameMaxLength = 100;
+            public const int NameMinLength = 5;
+            public const int FullPathMaxLength = 150;
+            public const int FullPathMinLength = 20;
+            public const int RelativePathMaxLength = 100;
+            public const int RelativePathMinLength = 5;
+            public const string ImgBasePath =
+                "C:/Users/GRIGS/source/repos/BusarovsQuckBite/BusarovsQuckBite/wwwroot/Images";
+            public const string ImgRelativePath = "~/Images";
+        }
     }
 }

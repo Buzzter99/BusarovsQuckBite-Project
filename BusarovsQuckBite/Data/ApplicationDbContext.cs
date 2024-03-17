@@ -1,6 +1,5 @@
 ﻿using BusarovsQuckBite.Data.Configuration;
 using BusarovsQuckBite.Data.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +22,7 @@ namespace BusarovsQuckBite.Data
             builder.ApplyConfiguration(new RoleConfiguration());
             builder.ApplyConfiguration(new UserRoleConfiguration());
             builder.ApplyConfiguration(new CategoryConfiguration());
+            builder.ApplyConfiguration(new ImgConfiguration());
             builder.ApplyConfiguration(new ProductConfiguration());
             builder.ApplyConfiguration(new OrderConfiguration());
             base.OnModelCreating(builder);
@@ -34,5 +34,6 @@ namespace BusarovsQuckBite.Data
         public DbSet<CartProduct> CartProducts { get; set; }
         public override DbSet<ApplicationUser> Users { get; set; }
         public override DbSet<ApplicationRole> Roles { get; set; }
+        public DbSet<Img> Img { get; set; }
     }
 }

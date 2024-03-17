@@ -30,7 +30,10 @@ namespace BusarovsQuckBite.Data.Models
         [Required]
         public DateTime TransactionDateAndTime { get; set; }
         [Required]
-        public byte[] Image { get; set; } = null!;
+        public virtual Img Img { get; set; } = null!;
+        [Required]
+        [ForeignKey(nameof(Img))]
+        public int ImageId { get; set; }
         [Required]
         [MaxLength(UserConstants.UserIdMaxLength)]
         public string Who { get; set; } = string.Empty;

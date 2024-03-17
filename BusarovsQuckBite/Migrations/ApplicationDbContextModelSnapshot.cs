@@ -92,34 +92,34 @@ namespace BusarovsQuckBite.Migrations
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "053d0133-c1bf-4e88-84f0-7341fa631790",
+                            ConcurrencyStamp = "2920bbdf-90cb-4702-b315-ee0eb0721415",
                             Name = "Admin",
                             NormalizedName = "ADMIN",
-                            TransactionDateAndTime = new DateTime(2024, 3, 11, 0, 10, 31, 505, DateTimeKind.Local).AddTicks(2418)
+                            TransactionDateAndTime = new DateTime(2024, 3, 17, 17, 40, 16, 870, DateTimeKind.Local).AddTicks(5738)
                         },
                         new
                         {
                             Id = "fa175b24-e5a7-41ab-8237-94734f2b5408",
-                            ConcurrencyStamp = "fe7670f0-26d1-4ce4-a518-e1f0469f1dde",
+                            ConcurrencyStamp = "707946d8-52b9-4284-a4f8-fc31a1b999e6",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER",
-                            TransactionDateAndTime = new DateTime(2024, 3, 11, 0, 10, 31, 505, DateTimeKind.Local).AddTicks(2430)
+                            TransactionDateAndTime = new DateTime(2024, 3, 17, 17, 40, 16, 870, DateTimeKind.Local).AddTicks(5744)
                         },
                         new
                         {
                             Id = "22ccb117-1c50-47a5-bc43-1d9a84879e10",
-                            ConcurrencyStamp = "5fcfb600-50d8-43b2-9e40-ca8a459edb45",
+                            ConcurrencyStamp = "b4d00143-b984-4c19-b478-2add6d9f7d1a",
                             Name = "Delivery Driver",
                             NormalizedName = "DELIVERY DRIVER",
-                            TransactionDateAndTime = new DateTime(2024, 3, 11, 0, 10, 31, 505, DateTimeKind.Local).AddTicks(2435)
+                            TransactionDateAndTime = new DateTime(2024, 3, 17, 17, 40, 16, 870, DateTimeKind.Local).AddTicks(5774)
                         },
                         new
                         {
                             Id = "a1a8637e-6e83-4ee9-adef-09cd724473a7",
-                            ConcurrencyStamp = "c29129fd-5472-4880-a626-92b57dade153",
+                            ConcurrencyStamp = "c0354bff-3b49-42d5-9121-74b9b2194a53",
                             Name = "Cooking Staff",
                             NormalizedName = "COOKING STAFF",
-                            TransactionDateAndTime = new DateTime(2024, 3, 11, 0, 10, 31, 505, DateTimeKind.Local).AddTicks(2440)
+                            TransactionDateAndTime = new DateTime(2024, 3, 17, 17, 40, 16, 870, DateTimeKind.Local).AddTicks(5782)
                         });
                 });
 
@@ -211,7 +211,7 @@ namespace BusarovsQuckBite.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c0ba3068-7237-4abb-a950-269fdc0803e8",
+                            ConcurrencyStamp = "b644fbfb-9e04-44ae-9941-8178a33315a4",
                             Email = "brandabg1@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "",
@@ -220,11 +220,11 @@ namespace BusarovsQuckBite.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "BRANDABG1@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEP/XGnmWATAGPQTrvgH3EMkSJcTXEPHnBGucECMz7BtvtAfTq6LKKyr02hnmsb4kAA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHaNyBRjqBiUKArv/+lx02Am1/yePLyTL4UV7LT4pg0oxmukJcTm/XI9e/e7I6mDCQ==",
                             PhoneNumber = "0896722926",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "c5a86a4a-73e3-4348-b32a-aa85ef728267",
-                            TransactionDateAndTime = new DateTime(2024, 3, 11, 0, 10, 31, 505, DateTimeKind.Local).AddTicks(2262),
+                            SecurityStamp = "9c96e412-5b3d-44db-9b76-949a2f27fa7a",
+                            TransactionDateAndTime = new DateTime(2024, 3, 17, 17, 40, 16, 870, DateTimeKind.Local).AddTicks(5529),
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
@@ -304,7 +304,7 @@ namespace BusarovsQuckBite.Migrations
                             Id = 1,
                             IsDeleted = false,
                             Name = "Snacks",
-                            TransactionDateAndTime = new DateTime(2024, 3, 11, 0, 10, 31, 505, DateTimeKind.Local).AddTicks(3291),
+                            TransactionDateAndTime = new DateTime(2024, 3, 17, 17, 40, 16, 870, DateTimeKind.Local).AddTicks(6722),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -312,7 +312,7 @@ namespace BusarovsQuckBite.Migrations
                             Id = 2,
                             IsDeleted = false,
                             Name = "Burgers",
-                            TransactionDateAndTime = new DateTime(2024, 3, 11, 0, 10, 31, 505, DateTimeKind.Local).AddTicks(3301),
+                            TransactionDateAndTime = new DateTime(2024, 3, 17, 17, 40, 16, 870, DateTimeKind.Local).AddTicks(6732),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -320,7 +320,7 @@ namespace BusarovsQuckBite.Migrations
                             Id = 3,
                             IsDeleted = false,
                             Name = "Drinks",
-                            TransactionDateAndTime = new DateTime(2024, 3, 11, 0, 10, 31, 505, DateTimeKind.Local).AddTicks(3304),
+                            TransactionDateAndTime = new DateTime(2024, 3, 17, 17, 40, 16, 870, DateTimeKind.Local).AddTicks(6734),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -328,7 +328,7 @@ namespace BusarovsQuckBite.Migrations
                             Id = 4,
                             IsDeleted = false,
                             Name = "Pizzas",
-                            TransactionDateAndTime = new DateTime(2024, 3, 11, 0, 10, 31, 505, DateTimeKind.Local).AddTicks(3305),
+                            TransactionDateAndTime = new DateTime(2024, 3, 17, 17, 40, 16, 870, DateTimeKind.Local).AddTicks(6736),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -336,7 +336,7 @@ namespace BusarovsQuckBite.Migrations
                             Id = 5,
                             IsDeleted = false,
                             Name = "Pasta",
-                            TransactionDateAndTime = new DateTime(2024, 3, 11, 0, 10, 31, 505, DateTimeKind.Local).AddTicks(3307),
+                            TransactionDateAndTime = new DateTime(2024, 3, 17, 17, 40, 16, 870, DateTimeKind.Local).AddTicks(6738),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -344,7 +344,7 @@ namespace BusarovsQuckBite.Migrations
                             Id = 6,
                             IsDeleted = false,
                             Name = "Sandwiches",
-                            TransactionDateAndTime = new DateTime(2024, 3, 11, 0, 10, 31, 505, DateTimeKind.Local).AddTicks(3310),
+                            TransactionDateAndTime = new DateTime(2024, 3, 17, 17, 40, 16, 870, DateTimeKind.Local).AddTicks(6741),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -352,8 +352,59 @@ namespace BusarovsQuckBite.Migrations
                             Id = 7,
                             IsDeleted = false,
                             Name = "Desserts",
-                            TransactionDateAndTime = new DateTime(2024, 3, 11, 0, 10, 31, 505, DateTimeKind.Local).AddTicks(3311),
+                            TransactionDateAndTime = new DateTime(2024, 3, 17, 17, 40, 16, 870, DateTimeKind.Local).AddTicks(6742),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
+                        });
+                });
+
+            modelBuilder.Entity("BusarovsQuckBite.Data.Models.Img", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("FullPath")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("RelativePath")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Img");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            FullPath = "C:/Users/GRIGS/source/repos/BusarovsQuckBite/BusarovsQuckBite/wwwroot/Images/download.jpg",
+                            Name = "download.jpg",
+                            RelativePath = "~/Images/"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            FullPath = "C:/Users/GRIGS/source/repos/BusarovsQuckBite/BusarovsQuckBite/wwwroot/Images/global_tuborg-green.png",
+                            Name = "global_tuborg-green.png",
+                            RelativePath = "~/Images/"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            FullPath = "C:/Users/GRIGS/source/repos/BusarovsQuckBite/BusarovsQuckBite/wwwroot/Images/hamburger-baked-in-oven.jpg",
+                            Name = "hamburger-baked-in-oven.jpg",
+                            RelativePath = "~/Images/"
                         });
                 });
 
@@ -408,9 +459,8 @@ namespace BusarovsQuckBite.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<byte[]>("Image")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                    b.Property<int>("ImageId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -439,9 +489,52 @@ namespace BusarovsQuckBite.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("ImageId");
+
                     b.HasIndex("Who");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 4,
+                            Description = "Pizza",
+                            ImageId = 1,
+                            IsDeleted = false,
+                            Name = "Pepperoni Pizza",
+                            Price = 15.00m,
+                            Quantity = 10,
+                            TransactionDateAndTime = new DateTime(2024, 3, 17, 17, 40, 16, 870, DateTimeKind.Local).AddTicks(7567),
+                            Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 3,
+                            Description = "Beer",
+                            ImageId = 2,
+                            IsDeleted = false,
+                            Name = "Tuborg Beer",
+                            Price = 5.00m,
+                            Quantity = 50,
+                            TransactionDateAndTime = new DateTime(2024, 3, 17, 17, 40, 16, 870, DateTimeKind.Local).AddTicks(7578),
+                            Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 2,
+                            Description = "Burger",
+                            ImageId = 3,
+                            IsDeleted = false,
+                            Name = "Hamburger",
+                            Price = 8.50m,
+                            Quantity = 15,
+                            TransactionDateAndTime = new DateTime(2024, 3, 17, 17, 40, 16, 870, DateTimeKind.Local).AddTicks(7580),
+                            Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -497,12 +590,10 @@ namespace BusarovsQuckBite.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -546,12 +637,10 @@ namespace BusarovsQuckBite.Migrations
                         .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -640,6 +729,12 @@ namespace BusarovsQuckBite.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BusarovsQuckBite.Data.Models.Img", "Img")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BusarovsQuckBite.Data.Models.ApplicationUser", "User")
                         .WithMany("Products")
                         .HasForeignKey("Who")
@@ -647,6 +742,8 @@ namespace BusarovsQuckBite.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("Img");
 
                     b.Navigation("User");
                 });

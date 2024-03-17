@@ -1,0 +1,43 @@
+﻿@using BusarovsQuckBite.Models.Enums
+@model List<ProductViewModel>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+        </div>
+    </div>
+</nav>
+<div class="container" id="listing">
+    <h3>@TempData["keyword"]</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Product Description</th>
+                <th>Product Price</th>
+                <th>Product Available Quantity</th>
+                <th>Product Category</th>
+                <th>Product Creator</th>
+                <th>Product Date Of Creation</th>
+            </tr>
+        </thead>
+        <tbody>
+            @* @foreach (var kvp in Model) *@
+            @* { *@
+            @*     <tr> *@
+            @*         @{ *@
+            @*             await Html.RenderPartialAsync("", kvp); *@
+            @*         } *@
+            @*     </tr> *@
+            @* } *@
+
+        </tbody>
+    </table>
+</div>
+@Html.ActionLink("Back To Home", "Index", "Home", new { }, new { @class = "btn btn-primary" })
+<div style="margin-top: 20px;"></div>
+@{
+    await Html.RenderPartialAsync("_MessagePartial", TempData);
+}
