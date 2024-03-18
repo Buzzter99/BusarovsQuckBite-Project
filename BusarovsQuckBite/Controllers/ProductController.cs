@@ -5,7 +5,6 @@ using BusarovsQuckBite.Models;
 using BusarovsQuckBite.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace BusarovsQuckBite.Controllers
 {
