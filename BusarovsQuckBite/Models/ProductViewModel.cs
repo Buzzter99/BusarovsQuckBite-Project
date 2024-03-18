@@ -22,7 +22,7 @@ namespace BusarovsQuckBite.Models
         [Required]
         public string CreatedOn { get; set; } = string.Empty;
         public string ImageRelativePath { get; set; } = string.Empty;
-        public List<CategoryViewModel> CategoriesWithProducts { get; set; } = new List<CategoryViewModel>();
+        public bool IsDeleted { get; set; }
 
     }
 }

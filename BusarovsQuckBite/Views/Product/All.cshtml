@@ -1,44 +1,49 @@
-﻿@model List<ProductViewModel>
-@if (Model.Count > 0)
-{
-    <nav class="nav nav-pills flex-column flex-sm-row">
-        @foreach (var item in Model[0].CategoriesWithProducts)
+﻿@model ProductAllViewModel
+
+<nav class="nav nav-pills flex-column flex-sm-row">
+    @foreach (var item in Model.CategoriesWithProducts)
+    {
+        @if (ViewBag.Category == item.Name)
         {
-            @if (ViewBag.Category == item.Name)
-            {
-                <span class="mx-2">
-                    <a class="flex-sm-fill text-sm-center nav-link border border-dark rounded-pill px-3 py-2 my-1 bg-warning text-white"
-                       asp-action="All" asp-controller="Product" asp-route-category="@item.Name">@item.Name Category <i class="fa-solid fa-filter"></i></a>
-                </span>
-            }
-            else
-            {
-                <span class="mx-2">
-                    <a class="flex-sm-fill text-sm-center nav-link border border-dark rounded-pill px-3 py-2 my-1 bg-secondary text-white"
-                       asp-action="All" asp-controller="Product" asp-route-category="@item.Name">
-                        @item.Name Category
-                    </a>
-                </span>
-            }
+            <span class="mx-2">
+                <a class="flex-sm-fill text-sm-center nav-link border border-dark rounded-pill px-3 py-2 my-1 bg-warning text-white"
+                   asp-action="All" asp-controller="Product" asp-route-statusFilter="@ViewBag.Filter" asp-route-category="@item.Name">@item.Name Category
+                    <i class="fa-solid fa-filter"></i></a>
+            </span>
         }
-    </nav>
-    <a asp-action="Add" class="btn btn-success rounded-pill"><i class="fa-regular fa-circle-check"></i> Add New Product</a>
-    <a asp-action="All" asp-route-category="" class="btn btn-success rounded-pill"><i class="fa-solid fa-broom"></i> Clear Category Filter</a>
-    <div style="margin-top: 20px;"></div>
-    <div class="card-group">
-        @foreach (var product in Model)
+        else
         {
-            await Html.RenderPartialAsync("_ProductCardPartial", product);
+            <span class="mx-2">
+                <a class="flex-sm-fill text-sm-center nav-link border border-dark rounded-pill px-3 py-2 my-1 bg-secondary text-white"
+                   asp-action="All" asp-controller="Product" asp-route-statusFilter="@ViewBag.Filter" asp-route-category="@item.Name">
+                    @item.Name Category
+                </a>
+            </span>
+        }
+    }
+</nav>
+<a asp-action="Add" class="btn btn-success rounded-pill"><i class="fa-regular fa-circle-check"></i> Add New Product</a>
+<a asp-action="All" asp-route-category="" asp-route-statusFilter="@ViewBag.Filter" class="btn btn-success rounded-pill"><i class="fa-solid fa-broom"></i> Clear Category Filter</a>
+<div style="margin-top: 20px;"></div>
+<div class="dropdown">
+    <button class="btn btn-primary dropdown-toggle rounded-pill" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Filter By Status
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        @foreach (var option in Model.FilterOptions)
+        {
+            <a class="dropdown-item" asp-action="All" asp-controller="Product" asp-route-category="@ViewBag.Category" asp-route-page="@ViewBag.PageNumber" asp-route-statusFilter="@option.Value">@option.Text</a>
         }
     </div>
-}
-else
-{
-    <div class="alert alert-info" role="alert">
-        No items found.
-    </div>
-    @Html.ActionLink("Back To All Products", "All", "Product", new { }, new { @class = "btn btn-primary" })
-}
+</div>
+<div style="margin-top: 20px;"></div>
+<div class="card-group">
+    @foreach (var product in Model.Products)
+    {
+        await Html.RenderPartialAsync("_ProductCardPartial", product);
+    }
+</div>
+
 <div style="margin-top: 20px;"></div>
 @Html.ActionLink("Back To Home", "Index", "Home", new { }, new { @class = "btn btn-primary" })
 <div style="margin-top: 20px;"></div>

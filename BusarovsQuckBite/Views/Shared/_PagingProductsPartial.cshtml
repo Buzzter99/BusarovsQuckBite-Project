@@ -3,18 +3,18 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
                 <li class="page-item @((ViewBag.PageNumber == 1) ? "disabled" : "")">
-                    <a class="page-link" href="@Url.Action("All","Product", new { page = ViewBag.PageNumber - 1, pageSize = ViewBag.PageSize,category = ViewBag.Category })" aria-label="Previous">
+                    <a class="page-link" href="@Url.Action("All","Product", new { page = @ViewBag.PageNumber - 1, pageSize = @ViewBag.PageSize,category = @ViewBag.Category, statusFilter = @ViewBag.Filter })" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
                 @for (int i = 1; i <= ViewBag.TotalPages; i++)
                 {
                     <li class="page-item @(i == ViewBag.PageNumber ? "active" : "")">
-                        <a class="page-link" href="@Url.Action("All","Product", new { page = i, pageSize = ViewBag.PageSize,category = ViewBag.Category }) ">@i</a>
+                        <a class="page-link" href="@Url.Action("All","Product", new { page = i, pageSize = @ViewBag.PageSize,category = @ViewBag.Category,statusFilter = @ViewBag.Filter }) ">@i</a>
                     </li>
                 }
                 <li class="page-item @((ViewBag.PageNumber == ViewBag.TotalPages) ? "disabled" : "")">
-                    <a class="page-link" href="@Url.Action("All","Product", new { page = ViewBag.PageNumber + 1, pageSize = ViewBag.PageSize,category = ViewBag.Category })" aria-label="Next">
+                    <a class="page-link" href="@Url.Action("All","Product", new { page = @ViewBag.PageNumber + 1, pageSize = @ViewBag.PageSize,category = @ViewBag.Category,statusFilter = @ViewBag.Filter })" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>

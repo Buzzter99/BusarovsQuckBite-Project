@@ -19,13 +19,21 @@ namespace BusarovsQuckBite.Controllers
             _productService = productService;
             _categoryService = categoryService;
         }
-        public async Task<IActionResult> All(string category, int page = 1, int pageSize = 5)
+        public async Task<IActionResult> All(string category, int page = 1, int pageSize = 5, FilterEnum statusFilter = FilterEnum.All)
         {
-            var model = await _productService.GetAllProductsAsync(pageSize, page, category);
+            var model = await _productService.GetAllProductsAsync(pageSize, page, category,statusFilter);
+            if (statusFilter != FilterEnum.All)
+            {
+                if (page > model.Item2)
+                {
+                    return RedirectToAction("All", new { page = 1, pageSize, category, statusFilter });
+                }
+            }
             ViewBag.PageNumber = page;
             ViewBag.TotalPages = model.Item2;
             ViewBag.PageSize = pageSize;
             ViewBag.Category = category;
+            ViewBag.Filter = statusFilter;
             return View(model.Item1);
         }
         [HttpPost]
@@ -59,6 +67,25 @@ namespace BusarovsQuckBite.Controllers
                 ActiveCategories = await _categoryService.GetCategoriesForUserByStatusAsync(FilterEnum.Active)
             };
             return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id, string category, int page,FilterEnum statusFilter)
+        {
+            try
+            {
+                await _productService.DeleteProduct(id);
+            }
+            catch (InvalidOperationException ioe)
+            {
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ioe.Message;
+                return RedirectToAction(nameof(All), new { category = category, page = page });
+            }
+            TempData[SuccessMessageConstants.SuccessMessageKey] = SuccessMessageConstants.SuccessfullyModified;
+            return RedirectToAction(nameof(All), new { category = category, page = page,statusFilter = statusFilter });
+        }
+        public async Task<IActionResult> Edit(int id)
+        {
+            return View();
         }
     }
 }

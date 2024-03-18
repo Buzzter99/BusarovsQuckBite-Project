@@ -25,5 +25,40 @@
         <p class="card-text mb-1">
             <span class="fw-bold">Quantity Available:</span> @Model.QtyAvailable
         </p>
+        <p class="card-text mb-1">
+            <span class="fw-bold">Status:</span> @(Model.IsDeleted ? "Deleted Product" : "Active Product")
+        </p>
+        <div style="display: inline-block;">
+            @if (!@Model.IsDeleted)
+            {
+                @using (Html.BeginForm("Delete", "Product", new { id = @Model.Id, category = ViewBag.Category, page = ViewBag.PageNumber, statusFilter = @ViewBag.Filter }, FormMethod.Post))
+                {
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fa-solid fa-x"></i>
+                        @(Model.IsDeleted ? "Activate" : "Delete")
+                    </button>
+                }
+            }
+            else
+            {
+                @using (Html.BeginForm("Delete", "Product", new { id = @Model.Id, category = ViewBag.Category, page = ViewBag.PageNumber, statusFilter = @ViewBag.Filter }, FormMethod.Post))
+                {
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa-solid fa-check"></i>
+                        @(Model.IsDeleted ? "Activate" : "Delete")
+                    </button>
+                }
+            }
+        </div>
+        <div style="display: inline-block;">
+            @using (Html.BeginForm("Edit", "Product", new { id = @Model.Id }, FormMethod.Post))
+            {
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    Edit
+                </button>
+            }
+
+        </div>
     </div>
 </div>

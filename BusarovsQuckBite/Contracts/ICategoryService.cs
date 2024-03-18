@@ -1,4 +1,5 @@
-﻿using BusarovsQuckBite.Models;
+﻿using BusarovsQuckBite.Data.Models;
+using BusarovsQuckBite.Models;
 using BusarovsQuckBite.Models.Enums;
 
 namespace BusarovsQuckBite.Contracts
@@ -11,5 +12,6 @@ namespace BusarovsQuckBite.Contracts
         Task<CategoryViewModel> GetCategoryMappedByIdAsync(int id);
         Task<CategoryViewModel> EditCategoryAsync(CategoryViewModel model);
         Task<List<CategoryViewModel>> SearchByNameAsync(FilterEnum keyword, string name);
+        Task<Category> GetByIdAsync(int id);
     }
 }

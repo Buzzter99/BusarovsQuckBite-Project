@@ -1,31 +1,26 @@
-﻿using BusarovsQuckBite.Areas.AccountManager.Models;
-using BusarovsQuckBite.Constants;
+﻿using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using BusarovsQuckBite.Models.Enums;
 using Microsoft.EntityFrameworkCore;
-using System.Drawing.Printing;
-
 namespace BusarovsQuckBite.Services
 {
     public class ProductService : IProductService
     {
         private readonly ApplicationDbContext _context;
         private readonly IImgService _imgService;
-        public ProductService(ApplicationDbContext context, IImgService imgService)
+        private readonly ICategoryService _categoryService;
+        public ProductService(ApplicationDbContext context, IImgService imgService, ICategoryService categoryService)
         {
             _context = context;
             _imgService = imgService;
+            _categoryService = categoryService;
         }
-        public async Task<(List<ProductViewModel>, int)> GetAllProductsAsync(int pageSize, int page, string? category = null)
+        public async Task<(ProductAllViewModel, int)> GetAllProductsAsync(int pageSize, int page, string? category = null, FilterEnum statusFilter = FilterEnum.All)
         {
-            var categories = await _context.Categories.Where(x => x.Products.Any() && !x.IsDeleted).Select(b => new CategoryViewModel()
-            {
-                Id = b.Id,
-                Name = b.Name,
-            }).ToListAsync();
+            var categories = await _categoryService.GetCategoriesForUserByStatusAsync(FilterEnum.Active);
             var model = await _context.Products.Select(c => new ProductViewModel()
             {
                 Id = c.Id,
@@ -41,29 +36,46 @@ namespace BusarovsQuckBite.Services
                     Name = c.Category.Name,
                 },
                 CreatedOn = c.TransactionDateAndTime.ToString(DateFormatConstants.DefaultDateFormat),
+                IsDeleted = c.IsDeleted,
             }).ToListAsync();
             if (category != null)
             {
                 model = model.Where(x => x.Category.Name == category).ToList();
             }
+            switch (statusFilter)
+            {
+                case FilterEnum.Deleted:
+                    model = model.Where(x => x.IsDeleted).ToList();
+                    break;
+                case FilterEnum.Active:
+                    model = model.Where(x => !x.IsDeleted).ToList();
+                    break;
+            }
             int totalPages = (int)Math.Ceiling((double)(model.Count) / pageSize);
             model = model.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-            if (model.Any())
+            var result = new ProductAllViewModel()
             {
-                model[0].CategoriesWithProducts = categories;
-            }
-            return (model, totalPages);
+                CategoriesWithProducts = categories,
+                Products = model,
+                FilterOptions = EnumHelper.GetEnumSelectList<FilterEnum>()
+            };
+            return (result, totalPages);
         }
         public async Task AddProduct(ProductFormViewModel model, string userId)
         {
             if (model.Price <= 0)
             {
-                throw new InvalidOperationException("Price Cannot be less or equal to 0");
+                throw new InvalidOperationException("Price Cannot be less or equal to 0!");
             }
             if (model.QtyAvailable <= 0)
             {
-                throw new InvalidOperationException("Quantity Cannot be less or equal to 0");
-            } 
+                throw new InvalidOperationException("Quantity Cannot be less or equal to 0!");
+            }
+            var category = await _categoryService.GetByIdAsync(model.CategoryId);
+            if (category.IsDeleted)
+            {
+                throw new InvalidOperationException("Cannot add product to Deleted Category!");
+            }
             model.ImageId = await _imgService.AddImg(model.ImageFile);
             var product = new Product()
             {
@@ -79,6 +91,22 @@ namespace BusarovsQuckBite.Services
             };
             await _context.AddAsync(product);
             await _context.SaveChangesAsync();
+        }
+        public async Task DeleteProduct(int id)
+        {
+            var entity = await GetProductByIdAsync(id);
+            entity.IsDeleted = !entity.IsDeleted;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Product> GetProductByIdAsync(int productId)
+        {
+            var entity = await _context.Products.FirstOrDefaultAsync(x => x.Id == productId);
+            if (entity == null)
+            {
+                throw new InvalidOperationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
+            }
+            return entity;
         }
     }
 }

@@ -1,11 +1,14 @@
-﻿using BusarovsQuckBite.Areas.AccountManager.Models;
+﻿using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models;
+using BusarovsQuckBite.Models.Enums;
 
 namespace BusarovsQuckBite.Contracts
 {
     public interface IProductService
     {
-        Task<(List<ProductViewModel>,int)> GetAllProductsAsync(int pageSize, int page, string? category);
+        Task<(ProductAllViewModel,int)> GetAllProductsAsync(int pageSize, int page, string? category,FilterEnum filter);
         Task AddProduct(ProductFormViewModel model, string userId);
+        Task DeleteProduct(int id);
+        Task<Product> GetProductByIdAsync(int productId);
     }
 }

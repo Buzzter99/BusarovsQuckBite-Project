@@ -104,7 +104,7 @@ namespace BusarovsQuckBite.Services
             return await model.ToListAsync();
         }
 
-        private async Task<Category> GetByIdAsync(int id)
+        public async Task<Category> GetByIdAsync(int id)
         {
             var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
             if (category == null)
