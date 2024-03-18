@@ -4,12 +4,22 @@
     <nav class="nav nav-pills flex-column flex-sm-row">
         @foreach (var item in Model[0].CategoriesWithProducts)
         {
-            <span class="mx-2">
-                <a class="flex-sm-fill text-sm-center nav-link border border-dark rounded-pill px-3 py-2 my-1 bg-secondary text-white"
-                   asp-action="All" asp-controller="Product" asp-route-category="@item.Name">
-                    @item.Name Category
-                </a>
-            </span>
+            @if (ViewBag.Category == item.Name)
+            {
+                <span class="mx-2">
+                    <a class="flex-sm-fill text-sm-center nav-link border border-dark rounded-pill px-3 py-2 my-1 bg-warning text-white"
+                       asp-action="All" asp-controller="Product" asp-route-category="@item.Name">@item.Name Category <i class="fa-solid fa-filter"></i></a>
+                </span>
+            }
+            else
+            {
+                <span class="mx-2">
+                    <a class="flex-sm-fill text-sm-center nav-link border border-dark rounded-pill px-3 py-2 my-1 bg-secondary text-white"
+                       asp-action="All" asp-controller="Product" asp-route-category="@item.Name">
+                        @item.Name Category
+                    </a>
+                </span>
+            }
         }
     </nav>
     <a asp-action="Add" class="btn btn-success rounded-pill"><i class="fa-regular fa-circle-check"></i> Add New Product</a>
@@ -34,28 +44,5 @@ else
 <div style="margin-top: 20px;"></div>
 @{
     await Html.RenderPartialAsync("_MessagePartial", TempData);
+    await Html.RenderPartialAsync("_PagingProductsPartial");
 }
-<div class="row">
-    <div class="col">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                <li class="page-item @((ViewBag.PageNumber == 1) ? "disabled" : "")">
-                    <a class="page-link" href="@Url.Action("All","Product", new { page = ViewBag.PageNumber - 1, pageSize = ViewBag.PageSize,keyword = ViewBag.Keyword })" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                @for (int i = 1; i <= ViewBag.TotalPages; i++)
-                {
-                    <li class="page-item @(i == ViewBag.PageNumber ? "active" : "")">
-                        <a class="page-link" href="@Url.Action("All","Product", new { page = i, pageSize = ViewBag.PageSize,keyword = ViewBag.Keyword }) ">@i</a>
-                    </li>
-                }
-                <li class="page-item @((ViewBag.PageNumber == ViewBag.TotalPages) ? "disabled" : "")">
-                    <a class="page-link" href="@Url.Action("All","Product", new { page = ViewBag.PageNumber + 1, pageSize = ViewBag.PageSize,keyword = ViewBag.Keyword })" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-</div>

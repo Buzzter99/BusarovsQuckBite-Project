@@ -25,6 +25,7 @@ namespace BusarovsQuckBite.Controllers
             ViewBag.PageNumber = page;
             ViewBag.TotalPages = model.Item2;
             ViewBag.PageSize = pageSize;
+            ViewBag.Category = category;
             return View(model.Item1);
         }
         [HttpPost]
