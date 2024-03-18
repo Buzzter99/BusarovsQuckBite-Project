@@ -4,6 +4,7 @@ using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models;
 using BusarovsQuckBite.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusarovsQuckBite.Controllers
@@ -22,12 +23,13 @@ namespace BusarovsQuckBite.Controllers
         public async Task<IActionResult> All(string category, int page = 1, int pageSize = 5, FilterEnum statusFilter = FilterEnum.All)
         {
             var model = await _productService.GetAllProductsAsync(pageSize, page, category,statusFilter);
-            if (statusFilter != FilterEnum.All)
+            if (!HttpContext.Request.GetDisplayUrl().Contains(nameof(pageSize)))
             {
-                if (page > model.Item2)
-                {
-                    return RedirectToAction("All", new { page = 1, pageSize, category, statusFilter });
-                }
+                page = 1;
+            }
+            if (model.Item2 == 0)
+            {
+                model.Item2++;
             }
             ViewBag.PageNumber = page;
             ViewBag.TotalPages = model.Item2;
