@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BusarovsQuckBite.Data.Models;
 
 namespace BusarovsQuckBite.Models
 {
@@ -19,9 +20,9 @@ namespace BusarovsQuckBite.Models
         [Required]
         public string Creator { get; set; } = string.Empty;
         [Required]
-        public string ImageRelativePath { get; set; } = string.Empty;
-        [Required]
         public string CreatedOn { get; set; } = string.Empty;
+        public string ImageRelativePath { get; set; } = string.Empty;
+        public List<CategoryViewModel> CategoriesWithProducts { get; set; } = new List<CategoryViewModel>();
 
     }
 }

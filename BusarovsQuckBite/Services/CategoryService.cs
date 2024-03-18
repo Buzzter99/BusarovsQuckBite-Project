@@ -19,8 +19,7 @@ namespace BusarovsQuckBite.Services
         public async Task<List<CategoryViewModel>> GetCategoriesForUserByStatusAsync(FilterEnum keyword)
         {
             var categories = await _context.Categories
-                .OrderBy(x => x.IsDeleted)
-                .ThenByDescending(x => x.TransactionDateAndTime).Select(c => new CategoryViewModel()
+                .OrderByDescending(x => x.TransactionDateAndTime).Select(c => new CategoryViewModel()
                 {
                     Id = c.Id,
                     Name = c.Name,
@@ -44,7 +43,7 @@ namespace BusarovsQuckBite.Services
         public async Task DeleteCategoryAsync(int id)
         {
             var category = await GetByIdAsync(id);
-            if (category.Products.Any())
+            if (category.Products.Any(x => !x.Category.IsDeleted))
             {
                 throw new InvalidOperationException(ErrorMessagesConstants.CannotDeleteProductInCategory);
             }
@@ -84,8 +83,7 @@ namespace BusarovsQuckBite.Services
         public async Task<List<CategoryViewModel>> SearchByNameAsync(FilterEnum keyword, string name)
         {
             var model = _context.Categories.Where(x => x.Name.ToUpper().Contains(name.ToUpper()))
-                .OrderBy(x => x.IsDeleted)
-                .ThenByDescending(x => x.TransactionDateAndTime)
+                .OrderByDescending(x => x.TransactionDateAndTime)
                 .Select(c => new CategoryViewModel()
                 {
                     Id = c.Id,

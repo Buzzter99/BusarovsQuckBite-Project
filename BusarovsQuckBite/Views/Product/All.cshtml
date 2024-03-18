@@ -1,18 +1,33 @@
-﻿@using BusarovsQuckBite.Models.Enums
-@model List<ProductViewModel>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-        </div>
-    </div>
-</nav>
-@foreach (var test in Model)
+﻿@model List<ProductViewModel>
+@if (Model.Count > 0)
 {
-    <div><img src="@Url.Content(test.ImageRelativePath)" /></div>
-    
+    <nav class="nav nav-pills flex-column flex-sm-row">
+        @foreach (var item in Model[0].CategoriesWithProducts)
+        {
+            <span class="mx-2">
+                <a class="flex-sm-fill text-sm-center nav-link border border-dark rounded-pill px-3 py-2 my-1 bg-secondary text-white"
+                   asp-action="All" asp-controller="Product" asp-route-category="@item.Name">
+                    @item.Name Category
+                </a>
+            </span>
+        }
+    </nav>
+    <a asp-action="Add" class="btn btn-success rounded-pill"><i class="fa-regular fa-circle-check"></i> Add New Product</a>
+    <a asp-action="All" asp-route-category="" class="btn btn-success rounded-pill"><i class="fa-solid fa-broom"></i> Clear Category Filter</a>
+    <div style="margin-top: 20px;"></div>
+    <div class="card-group">
+        @foreach (var product in Model)
+        {
+            await Html.RenderPartialAsync("_ProductCardPartial", product);
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        No items found.
+    </div>
+    @Html.ActionLink("Back To All Products", "All", "Product", new { }, new { @class = "btn btn-primary" })
 }
 <div style="margin-top: 20px;"></div>
 @Html.ActionLink("Back To Home", "Index", "Home", new { }, new { @class = "btn btn-primary" })
@@ -20,3 +35,27 @@
 @{
     await Html.RenderPartialAsync("_MessagePartial", TempData);
 }
+<div class="row">
+    <div class="col">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @((ViewBag.PageNumber == 1) ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("All","Product", new { page = ViewBag.PageNumber - 1, pageSize = ViewBag.PageSize,keyword = ViewBag.Keyword })" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.PageNumber ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("All","Product", new { page = i, pageSize = ViewBag.PageSize,keyword = ViewBag.Keyword }) ">@i</a>
+                    </li>
+                }
+                <li class="page-item @((ViewBag.PageNumber == ViewBag.TotalPages) ? "disabled" : "")">
+                    <a class="page-link" href="@Url.Action("All","Product", new { page = ViewBag.PageNumber + 1, pageSize = ViewBag.PageSize,keyword = ViewBag.Keyword })" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
