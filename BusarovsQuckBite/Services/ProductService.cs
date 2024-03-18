@@ -21,7 +21,7 @@ namespace BusarovsQuckBite.Services
         public async Task<(ProductAllViewModel, int)> GetAllProductsAsync(int pageSize, int page, string? category = null, FilterEnum statusFilter = FilterEnum.All)
         {
             var categories = await _categoryService.GetCategoriesForUserByStatusAsync(FilterEnum.Active);
-            var model = await _context.Products.Select(c => new ProductViewModel()
+            var model = _context.Products.Select(c => new ProductViewModel()
             {
                 Id = c.Id,
                 Name = c.Name,
@@ -37,28 +37,28 @@ namespace BusarovsQuckBite.Services
                 },
                 CreatedOn = c.TransactionDateAndTime.ToString(DateFormatConstants.DefaultDateFormat),
                 IsDeleted = c.IsDeleted,
-            }).ToListAsync();
+            });
             if (category != null)
             {
-                model = model.Where(x => x.Category.Name == category).ToList();
+                model = model.Where(x => x.Category.Name == category);
             }
             switch (statusFilter)
             {
                 case FilterEnum.Deleted:
-                    model = model.Where(x => x.IsDeleted).ToList();
+                    model = model.Where(x => x.IsDeleted);
                     break;
                 case FilterEnum.Active:
-                    model = model.Where(x => !x.IsDeleted).ToList();
+                    model = model.Where(x => !x.IsDeleted);
                     break;
             }
-            int totalPages = (int)Math.Ceiling((double)(model.Count) / pageSize);
-            model = model.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             var result = new ProductAllViewModel()
             {
                 CategoriesWithProducts = categories,
-                Products = model,
+                Products = await model.ToListAsync(),
                 FilterOptions = EnumHelper.GetEnumSelectList<FilterEnum>()
             };
+            int totalPages = (int)Math.Ceiling((double)(result.Products.Count) / pageSize);
+            result.Products = result.Products.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             return (result, totalPages);
         }
         public async Task AddProduct(ProductFormViewModel model, string userId)
