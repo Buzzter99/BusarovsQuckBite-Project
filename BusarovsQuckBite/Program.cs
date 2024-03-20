@@ -1,6 +1,7 @@
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
+using BusarovsQuckBite.ModelBinders;
 using BusarovsQuckBite.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +49,7 @@ namespace BusarovsQuckBite
             builder.Services.AddControllersWithViews(options =>
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                options.ModelBinderProviders.Insert(0, new DecimalModelBinderProvider());
             });
             builder.Services.AddRazorPages();
             var app = builder.Build();

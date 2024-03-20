@@ -6,6 +6,7 @@ using BusarovsQuckBite.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BusarovsQuckBite.Controllers
 {
@@ -87,7 +88,33 @@ namespace BusarovsQuckBite.Controllers
         }
         public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            ProductFormViewModel model;
+            try
+            {
+               model = await _productService.MapProductAsync(id);
+            }
+            catch (InvalidOperationException ioe)
+            {
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ioe.Message;
+                return RedirectToAction(nameof(All));
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(ProductFormViewModel model)
+        {
+            model.ActiveCategories = await _categoryService.GetCategoriesForUserByStatusAsync(FilterEnum.Active);
+            try
+            {
+                await _productService.EditProductAsync(model);
+            }
+            catch (InvalidOperationException ioe)
+            {
+                ModelState.AddModelError(string.Empty,ioe.Message);
+                return View(model);
+            }
+            TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyModified);
+            return View(model);
         }
     }
 }

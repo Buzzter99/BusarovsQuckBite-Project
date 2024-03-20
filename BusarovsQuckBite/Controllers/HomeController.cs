@@ -1,20 +1,27 @@
 ﻿using BusarovsQuckBite.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using BusarovsQuckBite.Contracts;
+using BusarovsQuckBite.Data;
 
 namespace BusarovsQuckBite.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IProductService _productService;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IProductService productService, ApplicationDbContext context)
         {
             _logger = logger;
+            _productService = productService;
+            _context = context;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var entities = await _productService.GetProductsForHomePageAsync();
+            return View(entities);
         }
         public IActionResult BadRequestView()
         {

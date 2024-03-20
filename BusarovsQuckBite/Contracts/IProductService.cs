@@ -10,5 +10,8 @@ namespace BusarovsQuckBite.Contracts
         Task AddProduct(ProductFormViewModel model, string userId);
         Task DeleteProduct(int id);
         Task<Product> GetProductByIdAsync(int productId);
+        Task<ProductFormViewModel> MapProductAsync(int id);
+        Task EditProductAsync(ProductFormViewModel model);
+        Task<List<ProductViewModel>> GetProductsForHomePageAsync();
     }
 }

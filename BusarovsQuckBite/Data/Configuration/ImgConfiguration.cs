@@ -21,8 +21,8 @@ namespace BusarovsQuckBite.Data.Configuration
                 new Img()
                 {
                     Id = 2,
-                    Name = "global_tuborg-green.png",
-                    FullPath = $"{DataConstants.ImgConstants.ImgBasePath}/global_tuborg-green.png",
+                    Name = "tuborg.jpg",
+                    FullPath = $"{DataConstants.ImgConstants.ImgBasePath}/tuborg.jpg",
                     RelativePath = $"{DataConstants.ImgConstants.ImgRelativePath}/"
                 },
                 new Img()

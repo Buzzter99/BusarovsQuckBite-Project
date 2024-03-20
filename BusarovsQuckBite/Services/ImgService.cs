@@ -2,6 +2,7 @@
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusarovsQuckBite.Services
 {
@@ -30,6 +31,15 @@ namespace BusarovsQuckBite.Services
             string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Images");
             string uniqueFileName = file.FileName;
             string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+            if (File.Exists(filePath))
+            {
+                var exists = await _context.Img.FirstOrDefaultAsync(x => x.Name == uniqueFileName);
+                if (exists != null)
+                {
+                    return exists.Id;
+                }
+                throw new InvalidOperationException(ErrorMessagesConstants.GeneralErrorMessage);
+            }
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
                 file.CopyTo(fileStream);
@@ -44,6 +54,15 @@ namespace BusarovsQuckBite.Services
             await _context.SaveChangesAsync();
             return entity.Id;
         }
-
+        public async Task DeleteUnusedImages()
+        {
+            var unusedImages = _context.Img.Where(x => !x.Products.Any()).ToList();
+            foreach (var img in unusedImages)
+            {
+                File.Delete(img.FullPath);
+                _context.Img.Remove(img);
+            }
+            await _context.SaveChangesAsync();
+        }
     }
 }

@@ -108,5 +108,67 @@ namespace BusarovsQuckBite.Services
             }
             return entity;
         }
+
+        public async Task<ProductFormViewModel> MapProductAsync(int id)
+        {
+            var product = await GetProductByIdAsync(id);
+            var model = new ProductFormViewModel
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                QtyAvailable = product.Quantity,
+                CategoryId = product.CategoryId,
+                ActiveCategories = await _categoryService.GetCategoriesForUserByStatusAsync(FilterEnum.Active),
+                ImageId = product.ImageId,
+            };
+            return model;
+        }
+        public async Task EditProductAsync(ProductFormViewModel model)
+        {
+            if (model.Price <= 0)
+            {
+                throw new InvalidOperationException("Price Cannot be less or equal to 0!");
+            }
+            if (model.QtyAvailable <= 0)
+            {
+                throw new InvalidOperationException("Quantity Cannot be less or equal to 0!");
+            }
+            var category = await _categoryService.GetByIdAsync(model.CategoryId);
+            if (category.IsDeleted)
+            {
+                throw new InvalidOperationException("Cannot add product to Deleted Category!");
+            }
+            var entity = await GetProductByIdAsync(model.Id);
+            model.ImageId = await _imgService.AddImg(model.ImageFile);
+            entity.Name = model.Name;
+            entity.Description = model.Description;
+            entity.Price = model.Price;
+            entity.Quantity = model.QtyAvailable;
+            entity.CategoryId = model.CategoryId;
+            entity.ImageId = model.ImageId;
+            await _context.SaveChangesAsync();
+            await _imgService.DeleteUnusedImages();
+        }
+
+        public async Task<List<ProductViewModel>> GetProductsForHomePageAsync()
+        {
+            var model = await _context.Products.Where(x => !x.IsDeleted && x.Quantity > 0)
+                .OrderByDescending(x => x.TransactionDateAndTime)
+                .ThenBy(x => x.Price).Take(3).Select(c => new ProductViewModel
+                {
+                    Name = c.Name,
+                    Description = c.Description,
+                    Price = c.Price,
+                    QtyAvailable = c.Quantity,
+                    ImageRelativePath = c.Img.RelativePath + c.Img.Name,
+                    Category = new CategoryViewModel()
+                    {
+                        Name = c.Category.Name,
+                    },
+                }).ToListAsync();
+            return model;
+        }
     }
 }

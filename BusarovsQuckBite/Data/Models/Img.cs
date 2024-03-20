@@ -16,5 +16,6 @@ namespace BusarovsQuckBite.Data.Models
         [Required]
         [MaxLength(DataConstants.ImgConstants.RelativePathMaxLength)]
         public string RelativePath { get; set; } = string.Empty;
+        public virtual ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }

@@ -1,1 +1,63 @@
-﻿edit view
+﻿@{
+    ViewData["Title"] = "EditProduct";
+}
+@model ProductFormViewModel
+<div class="mask d-flex align-items-center h-100 gradient-custom-3">
+    <div class="container h-100">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-md-8 col-lg-6">
+                <div class="card" style="border-radius: 15px;">
+                    <div class="card-body p-5">
+                        <h2 class="text-center mb-5">Edit Product</h2>
+                        <form asp-area="" asp-controller="Product" asp-action="Edit" enctype="multipart/form-data" method="post">
+                            <div class="form-group mb-3">
+                                <label class="form-label">Product Name</label>
+                                <input asp-for="Name" type="text" class="form-control form-control-lg" />
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="form-label">Product Description</label>
+                                <input asp-for="Description" type="text" class="form-control form-control-lg" />
+                            </div>
+                            <label class="form-label">Select Product Category</label>
+                            <select asp-for="CategoryId" class="form-select form-select-lg" aria-label="Product Category">
+                                @foreach (var category in Model.ActiveCategories)
+                                {
+                                    <option value="@category.Id">@category.Name</option>
+                                }
+                            </select>
+                            <div class="form-group mb-3">
+                                <label class="form-label">Product Price</label>
+                                <input asp-for="Price" type="number" class="form-control form-control-lg" />
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="form-label">Product Quantity</label>
+                                <input asp-for="QtyAvailable" type="number" class="form-control form-control-lg" />
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="form-label">Product Image</label>
+                                <input asp-for="ImageFile" name="ImageFile" type="file" class="form-control form-control-lg" />
+                            </div>
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="d-grid">
+                                <input type="submit" class="btn btn-primary btn-lg gradient-custom-4 text-body" value="Edit Product">
+                            </div>
+                            <p class="text-center text-muted mt-3 mb-0">
+                                <a asp-controller="Product" asp-action="All" asp-area="" class="fw-bold text-body"><u> Back To All Products</u></a>
+                            </p>
+                        </form>
+                        <div style="margin-top: 20px;"></div>
+                        @{
+                            await Html.RenderPartialAsync("_MessagePartial", TempData);
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
