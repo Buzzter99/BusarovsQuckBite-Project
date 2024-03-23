@@ -6,7 +6,7 @@ using BusarovsQuckBite.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuckBite.Controllers
 {
@@ -51,9 +51,9 @@ namespace BusarovsQuckBite.Controllers
             {
                 await _productService.AddProduct(model,GetUserId());
             }
-            catch (InvalidOperationException ioe)
+            catch (ApplicationException ae)
             {
-                ModelState.AddModelError(string.Empty,ioe.Message);
+                ModelState.AddModelError(string.Empty,ae.Message);
                 return View(model);
             }
             ModelState.Clear();
@@ -78,9 +78,9 @@ namespace BusarovsQuckBite.Controllers
             {
                 await _productService.DeleteProduct(id);
             }
-            catch (InvalidOperationException ioe)
+            catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ioe.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
                 return RedirectToAction(nameof(All), new { category = category, page = page });
             }
             TempData[SuccessMessageConstants.SuccessMessageKey] = SuccessMessageConstants.SuccessfullyModified;
@@ -93,9 +93,9 @@ namespace BusarovsQuckBite.Controllers
             {
                model = await _productService.MapProductAsync(id);
             }
-            catch (InvalidOperationException ioe)
+            catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ioe.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
                 return RedirectToAction(nameof(All));
             }
             return View(model);
@@ -108,9 +108,9 @@ namespace BusarovsQuckBite.Controllers
             {
                 await _productService.EditProductAsync(model);
             }
-            catch (InvalidOperationException ioe)
+            catch (ApplicationException ae)
             {
-                ModelState.AddModelError(string.Empty,ioe.Message);
+                ModelState.AddModelError(string.Empty,ae.Message);
                 return View(model);
             }
             TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyModified);

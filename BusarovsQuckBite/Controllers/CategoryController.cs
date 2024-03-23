@@ -5,6 +5,7 @@ using BusarovsQuckBite.Models;
 using BusarovsQuckBite.Models.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuckBite.Controllers
 {
@@ -30,10 +31,9 @@ namespace BusarovsQuckBite.Controllers
             {
                 await _categoryService.DeleteCategoryAsync(categoryId);
             }
-            catch (InvalidOperationException ioe) when (ioe.Message.Contains(ErrorMessagesConstants.EntityNotFoundExceptionMessage ) || 
-                                                        ioe.Message.Contains(ErrorMessagesConstants.CannotDeleteProductInCategory))
+            catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ioe.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
                 return RedirectToAction(nameof(All));
             }
             return RedirectToAction(nameof(All), "Category", new { keyword = currentTab.Split(" ")[0] });
@@ -61,9 +61,9 @@ namespace BusarovsQuckBite.Controllers
             {
                 model = await _categoryService.GetCategoryMappedByIdAsync(id);
             }
-            catch (InvalidOperationException ioe) when(ioe.Message.Contains(ErrorMessagesConstants.EntityNotFoundExceptionMessage))
+            catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ioe.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
                 return View();
             }
             return View(model);
@@ -79,9 +79,9 @@ namespace BusarovsQuckBite.Controllers
             {
                 await _categoryService.EditCategoryAsync(model);
             }
-            catch (InvalidOperationException ioe) when (ioe.Message.Contains(ErrorMessagesConstants.EntityNotFoundExceptionMessage))
+            catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ioe.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
                 return View();
             }
             TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyModified);

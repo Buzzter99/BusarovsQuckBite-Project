@@ -19,7 +19,7 @@
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ex.Message);
+                _logger.LogError(ex, $"Exception occured at path{context.Request.Path} at {DateTime.Now:dd/MM/yyyy HH:m:ss}");
                 context.Response.Redirect("/Home/InvalidOperation");
             }
         }

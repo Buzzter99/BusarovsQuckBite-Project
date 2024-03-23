@@ -1,6 +1,5 @@
 ﻿using BusarovsQuckBite.Areas.AccountManager.Models;
 using BusarovsQuckBite.Constants;
-using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models.Enums;
 using BusarovsQuckBite.Services;
@@ -13,15 +12,12 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
     public class AdministrationController : BaseAreaController
     {
         private readonly ApplicationUserManager<ApplicationUser> _userManager;
-        private readonly IDataProtectionService _dataProtectionService;
         private readonly RoleManager<ApplicationRole> _roleManager;
 
         public AdministrationController(ApplicationUserManager<ApplicationUser> userManager,
-            IDataProtectionService protectionService,
             RoleManager<ApplicationRole> roleManager)
         {
             _userManager = userManager;
-            _dataProtectionService = protectionService;
             _roleManager = roleManager;
         }
         [HttpGet]

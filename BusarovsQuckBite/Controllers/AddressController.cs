@@ -3,6 +3,7 @@ using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models;
 using Microsoft.AspNetCore.Mvc;
+using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuckBite.Controllers
 {
@@ -33,9 +34,9 @@ namespace BusarovsQuckBite.Controllers
             {
                 await _addressService.AddAddress(model, GetUserId());
             }
-            catch (InvalidOperationException e) when (e.Message.Contains(ErrorMessagesConstants.AddressShouldIncludeStreetNumber))
+            catch (ApplicationException ae)
             {
-                ModelState.AddModelError(string.Empty, e.Message);
+                ModelState.AddModelError(string.Empty, ae.Message);
                 return View(model);
             }
             TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyAdded, nameof(Address));
@@ -49,10 +50,9 @@ namespace BusarovsQuckBite.Controllers
             {
                 await _addressService.DeleteAddress(addressId, GetUserId());
             }
-            catch (InvalidOperationException e) when (e.Message.Contains(ErrorMessagesConstants.EntityNotFoundExceptionMessage) ||
-                                                      e.Message.Contains(ErrorMessagesConstants.OwnerIsInvalid))
+            catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = e.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
                 return RedirectToAction(nameof(All));
             }
             return RedirectToAction(nameof(All));
@@ -64,10 +64,9 @@ namespace BusarovsQuckBite.Controllers
             {
                 address = await _addressService.GetByIdForUser(addressId, GetUserId());
             }
-            catch (InvalidOperationException e) when (e.Message.Contains(ErrorMessagesConstants.EntityNotFoundExceptionMessage) ||
-                                                      e.Message.Contains(ErrorMessagesConstants.OwnerIsInvalid))
+            catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = e.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
                 return RedirectToAction(nameof(All));
             }
             return View(address);
@@ -79,10 +78,9 @@ namespace BusarovsQuckBite.Controllers
             {
                 await _addressService.GetByIdForUser(address.AddressId, GetUserId());
             }
-            catch (InvalidOperationException ioe) when (ioe.Message.Contains(ErrorMessagesConstants.EntityNotFoundExceptionMessage) || 
-                                                        ioe.Message.Contains(ErrorMessagesConstants.OwnerIsInvalid))
+            catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ioe.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
                 return RedirectToAction(nameof(All));
             }
             if (!ModelState.IsValid)
@@ -93,15 +91,10 @@ namespace BusarovsQuckBite.Controllers
             {
                 await _addressService.EditAddress(address, GetUserId());
             }
-            catch (InvalidOperationException e) when (e.Message.Contains(ErrorMessagesConstants.AddressShouldIncludeStreetNumber))
+            catch (ApplicationException ae)
             {
-                ModelState.AddModelError(string.Empty, e.Message);
+                ModelState.AddModelError(string.Empty, ae.Message);
                 return View(address);
-            }
-            catch (InvalidOperationException ioe) when (ioe.Message.Contains(ErrorMessagesConstants.OwnerIsInvalid))
-            {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ioe.Message;
-                return RedirectToAction(nameof(All));
             }
             TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyModified, nameof(Address));
             return View(address);

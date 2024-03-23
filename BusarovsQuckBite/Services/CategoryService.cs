@@ -5,6 +5,7 @@ using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models;
 using BusarovsQuckBite.Models.Enums;
 using Microsoft.EntityFrameworkCore;
+using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuckBite.Services
 {
@@ -45,7 +46,7 @@ namespace BusarovsQuckBite.Services
             var category = await GetByIdAsync(id);
             if (category.Products.Any(x => !x.Category.IsDeleted))
             {
-                throw new InvalidOperationException(ErrorMessagesConstants.CannotDeleteProductInCategory);
+                throw new ApplicationException(ErrorMessagesConstants.CannotDeleteProductInCategory);
             }
             category.IsDeleted = !category.IsDeleted;
             await _context.SaveChangesAsync();
@@ -109,7 +110,7 @@ namespace BusarovsQuckBite.Services
             var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
             if (category == null)
             {
-                throw new InvalidOperationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
+                throw new ApplicationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
             }
             return category;
         }

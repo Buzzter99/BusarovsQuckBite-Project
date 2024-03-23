@@ -1,6 +1,7 @@
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
+using BusarovsQuckBite.Middlewares;
 using BusarovsQuckBite.ModelBinders;
 using BusarovsQuckBite.Services;
 using Microsoft.AspNetCore.Identity;
@@ -26,7 +27,7 @@ namespace BusarovsQuckBite
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IImgService, ImgService>();
             builder.Services.AddScoped<IDataProtectionService, DataProtectionService>();
-            //builder.Services.Configure<CustomTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromMinutes(1));
+            // builder.Services.Configure<CustomTokenProviderOptions>(options => { options.TokenLifespan = TimeSpan.FromSeconds(0);});
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = false;
@@ -34,13 +35,13 @@ namespace BusarovsQuckBite
                     options.Password.RequireLowercase = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireNonAlphanumeric = false;
-                    //options.Tokens.PasswordResetTokenProvider = typeof(CustomTokenProvider<ApplicationUser>).Name;
+                    // options.Tokens.PasswordResetTokenProvider = "Custom";
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddSignInManager<ApplicationSignInManager<ApplicationUser>>()
                 .AddUserManager<ApplicationUserManager<ApplicationUser>>()
                 .AddDefaultTokenProviders();
-                //.AddTokenProvider<CustomTokenProvider<ApplicationUser>>(typeof(CustomTokenProvider<ApplicationUser>).Name);
+                //.AddTokenProvider<CustomTokenProvider<ApplicationUser>>("Custom");
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/AccountManager/Users/Login";
@@ -57,15 +58,14 @@ namespace BusarovsQuckBite
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
+                // app.UseMiddleware<BadResponseCodeRedirect>();
+                // app.UseMiddleware<ExceptionLogger>();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-
                 app.UseHsts();
             }
-            //app.UseMiddleware<BadResponseCodeRedirect>();
-            //app.UseMiddleware<ExceptionLogger>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
@@ -82,7 +82,6 @@ namespace BusarovsQuckBite
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
-
             app.Run();
         }
     }

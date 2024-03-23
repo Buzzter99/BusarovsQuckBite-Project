@@ -3,6 +3,7 @@ using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuckBite.Services
 {
@@ -20,13 +21,13 @@ namespace BusarovsQuckBite.Services
         {
             if (file.Length > 2 * 1024 * 1024)
             {
-                throw new InvalidOperationException("File size should not exceed 2MB.");
+                throw new ApplicationException("File size should not exceed 2MB.");
             }
             string[] allowedExtensions = { ".png", ".jpg", ".jpeg" };
             string fileExtension = Path.GetExtension(file.FileName).ToLower();
             if (!allowedExtensions.Contains(fileExtension))
             {
-                throw new InvalidOperationException("Only PNG, JPG, and JPEG files are allowed.");
+                throw new ApplicationException("Only PNG, JPG, and JPEG files are allowed.");
             }
             string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "Images");
             string uniqueFileName = file.FileName;
@@ -38,18 +39,25 @@ namespace BusarovsQuckBite.Services
                 {
                     return exists.Id;
                 }
-                throw new InvalidOperationException(ErrorMessagesConstants.GeneralErrorMessage);
+                throw new ApplicationException(ErrorMessagesConstants.GeneralErrorMessage);
             }
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            string relativePath = DataConstants.ImgConstants.ImgRelativePath + "/";
+            string fullPath = DataConstants.ImgConstants.ImgBasePath + $"/{uniqueFileName}";
+            if (relativePath.Length > DataConstants.ImgConstants.RelativePathMaxLength || fullPath.Length > DataConstants.ImgConstants.FullPathMaxLength)
             {
-                file.CopyTo(fileStream);
+                throw new ApplicationException("Path exceeds max limit!");
             }
             var entity = new Img()
             {
                 Name = uniqueFileName,
-                RelativePath = DataConstants.ImgConstants.ImgRelativePath + "/",
-                FullPath = DataConstants.ImgConstants.ImgBasePath + $"/{uniqueFileName}"
+                RelativePath = relativePath,
+                FullPath = fullPath
             };
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                file.CopyTo(fileStream);
+            }
+            
             await _context.Img.AddAsync(entity);
             await _context.SaveChangesAsync();
             return entity.Id;

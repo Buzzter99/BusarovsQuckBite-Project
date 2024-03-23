@@ -5,6 +5,7 @@ using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models;
 using BusarovsQuckBite.Models.Enums;
 using Microsoft.EntityFrameworkCore;
+using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 namespace BusarovsQuckBite.Services
 {
     public class ProductService : IProductService
@@ -65,16 +66,16 @@ namespace BusarovsQuckBite.Services
         {
             if (model.Price <= 0)
             {
-                throw new InvalidOperationException("Price Cannot be less or equal to 0!");
+                throw new ApplicationException("Price Cannot be less or equal to 0!");
             }
             if (model.QtyAvailable <= 0)
             {
-                throw new InvalidOperationException("Quantity Cannot be less or equal to 0!");
+                throw new ApplicationException("Quantity Cannot be less or equal to 0!");
             }
             var category = await _categoryService.GetByIdAsync(model.CategoryId);
             if (category.IsDeleted)
             {
-                throw new InvalidOperationException("Cannot add product to Deleted Category!");
+                throw new ApplicationException("Cannot add product to Deleted Category!");
             }
             model.ImageId = await _imgService.AddImg(model.ImageFile);
             var product = new Product()
@@ -104,7 +105,7 @@ namespace BusarovsQuckBite.Services
             var entity = await _context.Products.FirstOrDefaultAsync(x => x.Id == productId);
             if (entity == null)
             {
-                throw new InvalidOperationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
+                throw new ApplicationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
             }
             return entity;
         }
@@ -129,16 +130,16 @@ namespace BusarovsQuckBite.Services
         {
             if (model.Price <= 0)
             {
-                throw new InvalidOperationException("Price Cannot be less or equal to 0!");
+                throw new ApplicationException("Price Cannot be less or equal to 0!");
             }
             if (model.QtyAvailable <= 0)
             {
-                throw new InvalidOperationException("Quantity Cannot be less or equal to 0!");
+                throw new ApplicationException("Quantity Cannot be less or equal to 0!");
             }
             var category = await _categoryService.GetByIdAsync(model.CategoryId);
             if (category.IsDeleted)
             {
-                throw new InvalidOperationException("Cannot add product to Deleted Category!");
+                throw new ApplicationException("Cannot add product to Deleted Category!");
             }
             var entity = await GetProductByIdAsync(model.Id);
             model.ImageId = await _imgService.AddImg(model.ImageFile);
@@ -155,8 +156,8 @@ namespace BusarovsQuckBite.Services
         public async Task<List<ProductViewModel>> GetProductsForHomePageAsync()
         {
             var model = await _context.Products.Where(x => !x.IsDeleted && x.Quantity > 0)
-                .OrderByDescending(x => x.TransactionDateAndTime)
-                .ThenBy(x => x.Price).Take(3).Select(c => new ProductViewModel
+                .OrderBy(x => x.Price)
+                .ThenByDescending(x => x.TransactionDateAndTime).Take(3).Select(c => new ProductViewModel
                 {
                     Name = c.Name,
                     Description = c.Description,

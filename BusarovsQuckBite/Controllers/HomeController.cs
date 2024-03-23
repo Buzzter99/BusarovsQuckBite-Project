@@ -1,8 +1,7 @@
-﻿using BusarovsQuckBite.Models;
+﻿using BusarovsQuckBite.Contracts;
+using BusarovsQuckBite.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using BusarovsQuckBite.Contracts;
-using BusarovsQuckBite.Data;
 
 namespace BusarovsQuckBite.Controllers
 {
@@ -10,13 +9,11 @@ namespace BusarovsQuckBite.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IProductService _productService;
-        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger, IProductService productService, ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger, IProductService productService)
         {
             _logger = logger;
             _productService = productService;
-            _context = context;
         }
         public async Task<IActionResult> Index()
         {
@@ -32,6 +29,10 @@ namespace BusarovsQuckBite.Controllers
             return View();
         }
         public IActionResult NotFoundView()
+        {
+            return View();
+        }
+        public IActionResult InternalServerError()
         {
             return View();
         }

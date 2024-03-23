@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuckBite.Services
 {
@@ -73,8 +74,8 @@ namespace BusarovsQuckBite.Services
             var role = await _store.Context.Roles.FirstOrDefaultAsync(x => x.Name == roleName);
             if (role == null || user == null)
             {
-                throw new InvalidOperationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
-            }
+                throw new ApplicationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
+            }   
             return await IsInRoleAsync(user, role.Name);
         }
 

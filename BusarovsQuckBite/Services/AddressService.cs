@@ -4,6 +4,7 @@ using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models;
 using Microsoft.EntityFrameworkCore;
+using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuckBite.Services
 {
@@ -32,7 +33,7 @@ namespace BusarovsQuckBite.Services
         {
             if (!streetNumber.Any(char.IsDigit))
             {
-                throw new InvalidOperationException(ErrorMessagesConstants.AddressShouldIncludeStreetNumber);
+                throw new ApplicationException(ErrorMessagesConstants.AddressShouldIncludeStreetNumber);
             }
             return true;
         }
@@ -55,11 +56,11 @@ namespace BusarovsQuckBite.Services
             var entity = await _context.Addresses.FirstOrDefaultAsync(x => x.Id == addressId);
             if (entity == null)
             {
-                throw new InvalidOperationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
+                throw new ApplicationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
             }
             if (entity.Who != userId)
             {
-                throw new InvalidOperationException(ErrorMessagesConstants.OwnerIsInvalid);
+                throw new ApplicationException(ErrorMessagesConstants.OwnerIsInvalid);
             }
             return MapViewModel(entity);
         }
@@ -68,11 +69,11 @@ namespace BusarovsQuckBite.Services
             var address = await _context.Addresses.FirstOrDefaultAsync(x => x.Id == addressId);
             if (address == null)
             {
-                throw new InvalidOperationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
+                throw new ApplicationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
             }
             if (address.Who != userId)
             {
-                throw new InvalidOperationException(ErrorMessagesConstants.OwnerIsInvalid);
+                throw new ApplicationException(ErrorMessagesConstants.OwnerIsInvalid);
             }
             address.IsDeleted = !address.IsDeleted;
             await _context.SaveChangesAsync();
@@ -94,11 +95,11 @@ namespace BusarovsQuckBite.Services
             var address = await _context.Addresses.FirstOrDefaultAsync(x => x.Id == model.AddressId);
             if (address == null)
             {
-                throw new InvalidOperationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
+                throw new ApplicationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
             }
             if (address.Who != userId)
             {
-                throw new InvalidOperationException(ErrorMessagesConstants.OwnerIsInvalid);
+                throw new ApplicationException(ErrorMessagesConstants.OwnerIsInvalid);
             }
             address.City = _protectionService.Encrypt(model.City);
             address.Street = _protectionService.Encrypt(model.Street);

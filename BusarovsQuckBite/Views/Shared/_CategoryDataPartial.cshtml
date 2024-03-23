@@ -27,7 +27,7 @@
         }
     </div>
     <div style="display: inline-block;">
-        @using (Html.BeginForm("Edit", "Category", new { id = @Model.Id }, FormMethod.Get))
+        @using (Html.BeginForm("Edit", "Category", new { @Model.Id }, FormMethod.Get))
         {
             <button type="submit" class="btn btn-info">
                 <i style="color: black;" class="fa-solid fa-pen-to-square"></i>

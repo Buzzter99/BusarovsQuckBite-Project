@@ -4,6 +4,6 @@ namespace BusarovsQuckBite.Providers
 {
     public class CustomTokenProviderOptions : DataProtectionTokenProviderOptions
     {
-        
+         
     }
 }

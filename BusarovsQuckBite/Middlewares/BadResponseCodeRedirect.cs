@@ -20,6 +20,10 @@
             {
                 context.Response.Redirect("/Home/NotFoundView");
             }
+            else if (context.Response.StatusCode == StatusCodes.Status500InternalServerError)
+            {
+                context.Response.Redirect("/Home/InternalServerError");
+            }
         }
     }
 }
