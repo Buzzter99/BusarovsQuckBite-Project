@@ -79,7 +79,7 @@ namespace BusarovsQuckBite.Services
             return await IsInRoleAsync(user, role.Name);
         }
 
-        public async Task<(List<AdministrationViewModel>, int)> GetAllUsersByStatusAsync(FilterEnum e, int pageSize, int page)
+        public async Task<AdministrationAllViewModel> GetAllUsersByStatusAsync(FilterEnum e, int pageSize, int page)
         {
             IQueryable<ApplicationUser> query;
             switch (e)
@@ -115,9 +115,12 @@ namespace BusarovsQuckBite.Services
                 })
                 .AsNoTracking()
                 .ToListAsync();
-            int totalPages = (int)Math.Ceiling((double)(usersWithRoles.Count) / pageSize);
-            usersWithRoles = usersWithRoles.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-            return (usersWithRoles, totalPages);
+            var filters = EnumHelper.GetEnumSelectList<FilterEnum>();
+            return new AdministrationAllViewModel()
+            {
+                AdministrationDataModel = usersWithRoles,
+                FilterOptions = filters
+            };
         }
         public override Task<IdentityResult> UpdateAsync(TUser user)
         {

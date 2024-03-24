@@ -1,7 +1,6 @@
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Middlewares;
 using BusarovsQuckBite.ModelBinders;
 using BusarovsQuckBite.Services;
 using Microsoft.AspNetCore.Identity;
@@ -26,8 +25,7 @@ namespace BusarovsQuckBite
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IImgService, ImgService>();
-            builder.Services.AddScoped<ICartService, CartService>();
-            builder.Services.AddScoped<IMenuService, MenuService>();
+            builder.Services.AddScoped<ICartService, CartService>(); 
             builder.Services.AddScoped<IDataProtectionService, DataProtectionService>();
             // builder.Services.Configure<CustomTokenProviderOptions>(options => { options.TokenLifespan = TimeSpan.FromSeconds(0);});
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>

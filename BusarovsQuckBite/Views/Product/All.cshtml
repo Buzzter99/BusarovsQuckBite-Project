@@ -3,23 +3,7 @@
 <nav class="nav nav-pills flex-column flex-sm-row">
     @foreach (var item in Model.CategoriesWithProducts)
     {
-        @if (ViewBag.Category == item.Name)
-        {
-            <span class="mx-2">
-                <a class="flex-sm-fill text-sm-center nav-link border border-dark rounded-pill px-3 py-2 my-1 bg-warning text-white"
-                   asp-action="All" asp-controller="Product" asp-route-statusFilter="@ViewBag.Filter" asp-route-category="@item.Name">@item.Name Category
-                    <i class="fa-solid fa-filter"></i></a>
-            </span>
-        }
-        else
-        {
-            <span class="mx-2">
-                <a class="flex-sm-fill text-sm-center nav-link border border-dark rounded-pill px-3 py-2 my-1 bg-secondary text-white"
-                   asp-action="All" asp-controller="Product" asp-route-statusFilter="@ViewBag.Filter" asp-route-category="@item.Name">
-                    @item.Name Category
-                </a>
-            </span>
-        }
+        await Html.RenderPartialAsync("_ProductCategoryPartial", item);
     }
 </nav>
 <a asp-action="Add" class="btn btn-success rounded-pill"><i class="fa-regular fa-circle-check"></i> Add New Product</a>

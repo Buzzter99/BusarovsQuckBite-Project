@@ -3,6 +3,7 @@ using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models;
 using BusarovsQuckBite.Models.Enums;
+using BusarovsQuckBite.Models.PageHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -21,23 +22,26 @@ namespace BusarovsQuckBite.Controllers
             _productService = productService;
             _categoryService = categoryService;
         }
-        public async Task<IActionResult> All(string category, int page = 1, int pageSize = 5, FilterEnum statusFilter = FilterEnum.All)
+        public async Task<IActionResult> All(string category, int page = 1, FilterEnum statusFilter = FilterEnum.All)
         {
+            int pageSize = 5;
             var model = await _productService.GetAllProductsAsync(pageSize, page, category,statusFilter);
+            int size = PageHelper.CalculateTotalPages(pageSize, model.Products);
             if (!HttpContext.Request.GetDisplayUrl().Contains(nameof(pageSize)))
             {
                 page = 1;
             }
-            if (model.Item2 == 0)
+            if (size == 0)
             {
-                model.Item2++;
+                size++;
             }
             ViewBag.PageNumber = page;
-            ViewBag.TotalPages = model.Item2;
+            ViewBag.TotalPages = size;
             ViewBag.PageSize = pageSize;
             ViewBag.Category = category;
             ViewBag.Filter = statusFilter;
-            return View(model.Item1);
+            model.Products = PageHelper.CalculateItemsForPage(page, pageSize, model.Products);
+            return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> Add(ProductFormViewModel model)

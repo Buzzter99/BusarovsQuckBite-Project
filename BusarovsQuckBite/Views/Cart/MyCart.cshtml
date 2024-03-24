@@ -9,35 +9,30 @@
                 <form asp-controller="Cart" asp-action="ValidateBeforeCheckout" method="post">
                     @for (var i = 0; i < Model.ProductAll.Count; i++)
                     {
-                        <input asp-for="@Model.ProductAll[i].Id" type="hidden"/>
-                        <div class="card rounded-3 mb-4">
-                            <div class="card-body p-4">
-                                <div class="row d-flex justify-content-between align-items-center">
-                                    <div class="col-md-2 col-lg-2 col-xl-2">
-                                        <img src="@Url.Content(Model.ProductAll[i].ImageRelativePath)" class="card-img-top" style="max-width: 100%; max-height: 100%;"
-                                             class="img-fluid rounded-3">
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-xl-3">
-                                        <p class="lead fw-normal mb-2">@Model.ProductAll[i].Name</p>
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                        <input asp-for="@Model.ProductAll[i].QtyAvailable" min="0" value="1" type="number" class="form-control form-control-sm"/>
-                                    </div>
-                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                        <h5 class="mb-0">$@Model.ProductAll[i].Price</h5>
-                                    </div>
-                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                        <a asp-action="RemoveItemFromCart" asp-route-productId="@Model.ProductAll[i].Id" class="text-danger"><i class="fas fa-trash fa-2x"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        await Html.RenderPartialAsync("_CartItemsPartial", Model.ProductAll[i]);
                     }
                     @if (Model.ProductAll.Any())
                     {
                         <div class="card">
                             <div class="card-body">
                                 <button type="submit" class="btn btn-warning btn-block btn-lg">Proceed to Checkout</button>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="container-fluid  mt-100">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-body cart">
+                                            <div class="col-sm-12 empty-cart-cls text-center">
+                                                <img src="https://i.imgur.com/dCdflKN.png" width="130" height="130" class="img-fluid mb-4 mr-3">
+                                                <h3><strong>Your Cart is Empty</strong></h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     }

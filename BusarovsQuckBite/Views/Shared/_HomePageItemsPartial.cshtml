@@ -1,0 +1,29 @@
+﻿@model ProductViewModel
+<div class="col">
+    <div class="card shadow-sm">
+        <div style="height: 200px;">
+            <img src="@Url.Content(Model.ImageRelativePath)" class="card-img-top" style="max-width: 100%; max-height: 100%;">
+        </div>
+        <div class="card-body text-center">
+            <h5 class="card-title">@Model.Name</h5>
+            <p class="card-text">@Model.Description</p>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Price: $@Model.Price</li>
+                <li class="list-group-item">Category: @Model.Category.Name</li>
+                <li class="list-group-item">Available Quantity: (@Model.QtyAvailable)</li>
+                @if (User.Identity!.IsAuthenticated)
+                {
+                    <li class="list-group-item">
+                        @using (Html.BeginForm("AddToCart", "Cart", new { productId = Model.Id }, FormMethod.Post))
+                        {
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa-solid fa-caret-right"></i>
+                                Add To Cart
+                            </button>
+                        }
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>

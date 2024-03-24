@@ -19,7 +19,7 @@ namespace BusarovsQuckBite.Services
             _imgService = imgService;
             _categoryService = categoryService;
         }
-        public async Task<(ProductAllViewModel, int)> GetAllProductsAsync(int pageSize, int page, string? category = null, FilterEnum statusFilter = FilterEnum.All)
+        public async Task<ProductAllViewModel> GetAllProductsAsync(int pageSize, int page, string? category = null, FilterEnum statusFilter = FilterEnum.All)
         {
             var categories = await _categoryService.GetCategoriesForUserByStatusAsync(FilterEnum.Active);
             var model = _context.Products.Select(c => new ProductViewModel()
@@ -58,9 +58,7 @@ namespace BusarovsQuckBite.Services
                 Products = await model.ToListAsync(),
                 FilterOptions = EnumHelper.GetEnumSelectList<FilterEnum>()
             };
-            int totalPages = (int)Math.Ceiling((double)(result.Products.Count) / pageSize);
-            result.Products = result.Products.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-            return (result, totalPages);
+            return result;
         }
         public async Task AddProduct(ProductFormViewModel model, string userId)
         {
@@ -171,30 +169,10 @@ namespace BusarovsQuckBite.Services
                 }).ToListAsync();
             return model;
         }
-        public async Task<List<ProductViewModel>> GetProductsForHomePageAsync()
+        public async Task<List<ProductViewModel>> GetAllProductsBySearchTerm(int page, int pageSize,string searchTerm = "")
         {
-            var model = await _context.Products.Where(x => !x.IsDeleted && x.Quantity > 0)
-                .OrderBy(x => x.Price)
-                .ThenByDescending(x => x.TransactionDateAndTime).Select(c => new ProductViewModel
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    Description = c.Description,
-                    Price = c.Price,
-                    QtyAvailable = c.Quantity,
-                    ImageRelativePath = c.Img.RelativePath + c.Img.Name,
-                    Category = new CategoryViewModel()
-                    {
-                        Name = c.Category.Name,
-                    },
-                }).ToListAsync();
-            return model;
-        }
-
-        public async Task<ProductAllViewModel> GetAllProductsBySearchTerm(string searchTerm)
-        {
-            ProductAllViewModel model = new ProductAllViewModel();
-            var entity = await _context.Products.Where(x => x.Name.ToUpper().Contains(searchTerm.ToUpper())
+            ProductViewModel model = new ProductViewModel();
+            var entity = await _context.Products.Where(x => !x.IsDeleted && x.Name.ToUpper().Contains(searchTerm.ToUpper())
                                                       || x.Category.Name.Contains(searchTerm.ToUpper())
                                                       || x.Description.ToUpper().Contains(searchTerm.ToUpper()))
                 .Select(c => new ProductViewModel()
@@ -214,8 +192,7 @@ namespace BusarovsQuckBite.Services
                     CreatedOn = c.TransactionDateAndTime.ToString(DateFormatConstants.DefaultDateFormat),
                     IsDeleted = c.IsDeleted,
                 }).ToListAsync();
-            model.Products = entity;
-            return model;
+            return entity;
         }
     }
 }

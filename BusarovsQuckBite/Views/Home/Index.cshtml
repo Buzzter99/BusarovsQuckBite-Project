@@ -7,7 +7,7 @@
         <div class="col-lg-6 col-md-8 mx-auto">
             <h1 class="fw-light">Welcome to QuickBite!</h1>
             <p class="lead text-muted">Here we deliver the best fast food that you wouldn't feel guilty about Eating! Make an account and order on the minute!</p>
-            <p class="lead text-muted">Take a look at our top @Model.Count foods and see if it suits your taste!</p>
+            <p class="lead text-muted">Take a look at our top @(Model.Count > 0 ? Model.Count : "") foods and see if it suits your taste!</p>
             @Html.ActionLink("Click Here to see the whole menu", "All", "Menu", new { }, new { @class = "btn btn-success" })
         </div>
     </div>
@@ -20,34 +20,7 @@
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             @foreach (var product in Model)
             {
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <div style="height: 200px;">
-                            <img src="@Url.Content(product.ImageRelativePath)" class="card-img-top" style="max-width: 100%; max-height: 100%;">
-                        </div>
-                        <div class="card-body text-center">
-                            <h5 class="card-title">@product.Name</h5>
-                            <p class="card-text">@product.Description</p>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Price: $@product.Price</li>
-                                <li class="list-group-item">Category: @product.Category.Name</li>
-                                <li class="list-group-item">Available Quantity: (@product.QtyAvailable)</li>
-                                @if (User.Identity!.IsAuthenticated)
-                                {
-                                    <li class="list-group-item">
-                                        @using (Html.BeginForm("AddToCart", "Cart", new { productId = product.Id }, FormMethod.Post))
-                                        {
-                                            <button type="submit" class="btn btn-primary">
-                                                <i class="fa-solid fa-caret-right"></i>
-                                                Add To Cart
-                                            </button>
-                                        }
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                await Html.RenderPartialAsync("_HomePageItemsPartial", product);
             }
         </div>
     </div>

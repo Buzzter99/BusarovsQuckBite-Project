@@ -1,16 +1,13 @@
 ﻿@using BusarovsQuckBite.Models.Enums
-@model List<AdministrationViewModel>
+@model AdministrationAllViewModel
 <div class="d-flex justify-content-center">
     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-        <li class="nav-item me-5" role="presentation">
-            @Html.ActionLink(FilterEnum.All.ToString(), "Index", "Administration", new { keyword = FilterEnum.All }, new { @class = "nav-link btn btn-lg px-5 " + (ViewBag.Keyword == FilterEnum.All ? "active" : "") })
-        </li>
-        <li class="nav-item me-5" role="presentation">
-            @Html.ActionLink(FilterEnum.Active.ToString(), "Index", "Administration", new { keyword = FilterEnum.Active }, new { @class = "nav-link btn btn-lg px-5 " + (ViewBag.Keyword == FilterEnum.Active ? "active" : "") })
-        </li>
-        <li class="nav-item me-5" role="presentation">
-            @Html.ActionLink(FilterEnum.Deleted.ToString(), "Index", "Administration", new { keyword = FilterEnum.Deleted }, new { @class = "nav-link btn btn-lg px-5 " + (ViewBag.Keyword == FilterEnum.Deleted ? "active" : "") })
-        </li>
+        @for (int i = 0; i < Model.FilterOptions.Count; i++)
+        {
+            <li class="nav-item me-5" role="presentation"> 
+                @Html.ActionLink(Model.FilterOptions[i].Value, "Index", "Administration", new { keyword = Model.FilterOptions[i].Value }, new { @class = "nav-link btn btn-lg px-5 " + (ViewBag.Keyword.ToString() == Model.FilterOptions[i].Value ? "active" : "") })
+            </li>
+        }
     </ul>
 </div>
 <div class="tab-content" id="pills-tabContent">
@@ -20,14 +17,16 @@
                 await Html.RenderPartialAsync("_UsersPartialHeader");
             }
             <tbody>
-                @foreach (var entity in Model)
-                {
-                    await Html.RenderPartialAsync("_DataPartial", entity);
-                }
+            @foreach (var entity in Model.AdministrationDataModel)
+            {
+                await Html.RenderPartialAsync("_DataPartial", entity);
+            }
             </tbody>
         </table>
     </div>
 </div>
+<div style="margin-top: 20px;"></div>
+@Html.ActionLink("Back To Home", "Index", "Home", new { area = "" }, new { @class = "btn btn-primary" })
 @{
     await Html.RenderPartialAsync("_PagingPartial");
     await Html.RenderPartialAsync("_MessagePartial", TempData);

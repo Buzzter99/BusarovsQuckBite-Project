@@ -1,12 +1,11 @@
 ﻿using BusarovsQuckBite.Constants;
-using Microsoft.AspNetCore.Authorization;
+using BusarovsQuckBite.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusarovsQuckBite.Areas.AccountManager.Controllers
 {
-    [Authorize]
     [Area(AreaConstants.UserArea)]
-    public abstract class BaseAreaController : Controller
+    public abstract class BaseAreaController : BaseController
     {
         
     }

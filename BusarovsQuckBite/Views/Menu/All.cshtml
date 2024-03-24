@@ -1,14 +1,13 @@
-﻿@model ProductAllViewModel
+﻿@model List<ProductViewModel>
 @{
     await Html.RenderPartialAsync("_MessagePartial", TempData);
 }
 <form asp-controller="Menu" asp-action="Search" method="get" class="mt-3">
     <div class="row">
         <div class="col-sm-8">
-            <input type="text" name="name" class="form-control" placeholder="Search by name...">
+            <input type="text" name="name" class="form-control" placeholder="Search by name,category,description...">
         </div>
         <div class="col-sm-4">
-            <input type="hidden" name="keyword" value="@TempData["keyword"]">
             <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
         </div>
     </div>
@@ -16,7 +15,6 @@
 <form asp-controller="Menu" asp-action="ClearFilter" method="get" class="mt-3">
     <div class="row">
         <div class="col-sm-4">
-            <input type="hidden" name="keyword" value="@TempData["keyword"]">
             <button type="submit" class="btn btn-primary btn-block"> <i class="fa-solid fa-list"></i> Clear Filter</button>
         </div>
     </div>
@@ -24,37 +22,13 @@
 <div class="album py-5 bg-light">
     <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            @foreach (var product in Model.Products)
+            @foreach (var product in Model)
             {
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <div style="height: 200px;">
-                            <img src="@Url.Content(product.ImageRelativePath)" class="card-img-top" style="max-width: 100%; max-height: 100%;">
-                        </div>
-                        <div class="card-body text-center">
-                            <h5 class="card-title">@product.Name</h5>
-                            <p class="card-text">@product.Description</p>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item">Price: $@product.Price</li>
-                                <li class="list-group-item">Category: @product.Category.Name</li>
-                                <li class="list-group-item">Available Quantity: (@product.QtyAvailable)</li>
-                                @if (User.Identity!.IsAuthenticated)
-                                {
-                                    <li class="list-group-item">
-                                        @using (Html.BeginForm("AddToCart", "Cart", new { productId = product.Id }, FormMethod.Post))
-                                        {
-                                            <button type="submit" class="btn btn-primary">
-                                                <i class="fa-solid fa-caret-right"></i>
-                                                Add To Cart
-                                            </button>
-                                        }
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                await Html.RenderPartialAsync("_HomePageItemsPartial", product);
             }
         </div>
     </div>
 </div>
+@{
+    await Html.RenderPartialAsync("_MenuPagingPartial");
+}
