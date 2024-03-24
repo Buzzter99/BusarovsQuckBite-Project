@@ -13,7 +13,7 @@
 
         public static class CartConstants
         {
-            
+            public const string CartTempDataKey = "CartItems";
         }
 
         public static class CategoryConstants

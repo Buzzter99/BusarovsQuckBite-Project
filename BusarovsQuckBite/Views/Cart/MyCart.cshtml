@@ -1,0 +1,54 @@
+﻿@model CartViewModel
+<section class="h-100" style="background-color: #eee;">
+    <div class="container h-100 py-5">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-10">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="fw-normal mb-0 text-black">Shopping Cart</h3>
+                </div>
+                <form asp-controller="Cart" asp-action="ValidateBeforeCheckout" method="post">
+                    @for (var i = 0; i < Model.ProductAll.Count; i++)
+                    {
+                        <input asp-for="@Model.ProductAll[i].Id" type="hidden"/>
+                        <div class="card rounded-3 mb-4">
+                            <div class="card-body p-4">
+                                <div class="row d-flex justify-content-between align-items-center">
+                                    <div class="col-md-2 col-lg-2 col-xl-2">
+                                        <img src="@Url.Content(Model.ProductAll[i].ImageRelativePath)" class="card-img-top" style="max-width: 100%; max-height: 100%;"
+                                             class="img-fluid rounded-3">
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-3">
+                                        <p class="lead fw-normal mb-2">@Model.ProductAll[i].Name</p>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                        <input asp-for="@Model.ProductAll[i].QtyAvailable" min="0" value="1" type="number" class="form-control form-control-sm"/>
+                                    </div>
+                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                        <h5 class="mb-0">$@Model.ProductAll[i].Price</h5>
+                                    </div>
+                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                        <a asp-action="RemoveItemFromCart" asp-route-productId="@Model.ProductAll[i].Id" class="text-danger"><i class="fas fa-trash fa-2x"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if (Model.ProductAll.Any())
+                    {
+                        <div class="card">
+                            <div class="card-body">
+                                <button type="submit" class="btn btn-warning btn-block btn-lg">Proceed to Checkout</button>
+                            </div>
+                        </div>
+                    }
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<div style="margin-top: 20px;"></div>
+@{
+    await Html.RenderPartialAsync("_MessagePartial", TempData);
+}
+<div style="margin-top: 20px;"></div>
+<a class="btn btn-primary btn-block btn-lg" asp-controller="Home" asp-action="Index">Back To Home</a>

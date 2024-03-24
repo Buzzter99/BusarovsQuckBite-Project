@@ -152,13 +152,13 @@ namespace BusarovsQuckBite.Services
             await _context.SaveChangesAsync();
             await _imgService.DeleteUnusedImages();
         }
-
-        public async Task<List<ProductViewModel>> GetProductsForHomePageAsync()
+        public async Task<List<ProductViewModel>> GetProductsForHomePageAsync(int count)
         {
             var model = await _context.Products.Where(x => !x.IsDeleted && x.Quantity > 0)
                 .OrderBy(x => x.Price)
-                .ThenByDescending(x => x.TransactionDateAndTime).Take(3).Select(c => new ProductViewModel
+                .ThenByDescending(x => x.TransactionDateAndTime).Take(count).Select(c => new ProductViewModel
                 {
+                    Id = c.Id,
                     Name = c.Name,
                     Description = c.Description,
                     Price = c.Price,
@@ -169,6 +169,52 @@ namespace BusarovsQuckBite.Services
                         Name = c.Category.Name,
                     },
                 }).ToListAsync();
+            return model;
+        }
+        public async Task<List<ProductViewModel>> GetProductsForHomePageAsync()
+        {
+            var model = await _context.Products.Where(x => !x.IsDeleted && x.Quantity > 0)
+                .OrderBy(x => x.Price)
+                .ThenByDescending(x => x.TransactionDateAndTime).Select(c => new ProductViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Description = c.Description,
+                    Price = c.Price,
+                    QtyAvailable = c.Quantity,
+                    ImageRelativePath = c.Img.RelativePath + c.Img.Name,
+                    Category = new CategoryViewModel()
+                    {
+                        Name = c.Category.Name,
+                    },
+                }).ToListAsync();
+            return model;
+        }
+
+        public async Task<ProductAllViewModel> GetAllProductsBySearchTerm(string searchTerm)
+        {
+            ProductAllViewModel model = new ProductAllViewModel();
+            var entity = await _context.Products.Where(x => x.Name.ToUpper().Contains(searchTerm.ToUpper())
+                                                      || x.Category.Name.Contains(searchTerm.ToUpper())
+                                                      || x.Description.ToUpper().Contains(searchTerm.ToUpper()))
+                .Select(c => new ProductViewModel()
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Creator = c.User.UserName,
+                    Description = c.Description,
+                    Price = c.Price,
+                    QtyAvailable = c.Quantity,
+                    ImageRelativePath = c.Img.RelativePath + c.Img.Name,
+                    Category = new CategoryViewModel()
+                    {
+                        Id = c.Category.Id,
+                        Name = c.Category.Name,
+                    },
+                    CreatedOn = c.TransactionDateAndTime.ToString(DateFormatConstants.DefaultDateFormat),
+                    IsDeleted = c.IsDeleted,
+                }).ToListAsync();
+            model.Products = entity;
             return model;
         }
     }

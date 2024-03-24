@@ -17,7 +17,7 @@ namespace BusarovsQuckBite.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var entities = await _productService.GetProductsForHomePageAsync();
+            var entities = await _productService.GetProductsForHomePageAsync(3);
             return View(entities);
         }
         public IActionResult BadRequestView()

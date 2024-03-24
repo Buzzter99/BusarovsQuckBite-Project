@@ -12,6 +12,9 @@
         </div>
     </div>
 </section>
+@{
+    await Html.RenderPartialAsync("_MessagePartial", TempData);
+}
 <div class="album py-5 bg-light">
     <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -29,6 +32,18 @@
                                 <li class="list-group-item">Price: $@product.Price</li>
                                 <li class="list-group-item">Category: @product.Category.Name</li>
                                 <li class="list-group-item">Available Quantity: (@product.QtyAvailable)</li>
+                                @if (User.Identity!.IsAuthenticated)
+                                {
+                                    <li class="list-group-item">
+                                        @using (Html.BeginForm("AddToCart", "Cart", new { productId = product.Id }, FormMethod.Post))
+                                        {
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fa-solid fa-caret-right"></i>
+                                                Add To Cart
+                                            </button>
+                                        }
+                                    </li>
+                                }
                             </ul>
                         </div>
                     </div>

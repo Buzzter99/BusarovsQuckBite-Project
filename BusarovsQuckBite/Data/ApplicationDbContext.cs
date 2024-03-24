@@ -32,6 +32,7 @@ namespace BusarovsQuckBite.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<CartProduct> CartProducts { get; set; }
+        public DbSet<Cart> Carts { get; set; }
         public override DbSet<ApplicationUser> Users { get; set; }
         public override DbSet<ApplicationRole> Roles { get; set; }
         public DbSet<Img> Img { get; set; }

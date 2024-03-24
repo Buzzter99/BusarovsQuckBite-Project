@@ -20,7 +20,7 @@ namespace BusarovsQuckBite.Data.Models
         [Required]
         public DateTime TransactionDateAndTime { get; set; }
         [Required]
-        public OrderStatus Status { get; set; }
+        public OrderStatus Status { get; set; } = OrderStatus.None;
         [Required]
         [Precision(TotalAmountPrecision,TotalAmountScale)]
         public decimal TotalAmount { get; set; }
@@ -29,6 +29,8 @@ namespace BusarovsQuckBite.Data.Models
         [Required]
         [ForeignKey(nameof(CartId))]
         public virtual Cart Cart { get; set; } = null!;
+        [Required]
+        public PaymentType PaymentType { get; set; } = PaymentType.Cash;
 
     }
 }

@@ -6,7 +6,7 @@
 {
     <ul class="navbar-nav">
         <li class="nav-item">
-            <a class="nav-link" asp-controller="Cart" asp-action="All" asp-area=""><i class="fa-solid fa-cart-shopping"></i> My Cart</a>
+            <a class="nav-link" asp-controller="Cart" asp-action="MyCart" asp-area=""><i class="fa-solid fa-cart-shopping"></i> My Cart</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#" class="navbar-text">Welcome, @UserManager.GetUserAsync(User).Result.UserName!</a>
