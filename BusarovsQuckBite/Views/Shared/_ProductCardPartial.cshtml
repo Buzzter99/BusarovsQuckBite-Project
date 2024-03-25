@@ -31,7 +31,7 @@
         <div style="display: inline-block;">
             @if (!@Model.IsDeleted)
             {
-                @using (Html.BeginForm("Delete", "Product", new { id = @Model.Id, category = ViewBag.Category, page = ViewBag.PageNumber, statusFilter = @ViewBag.Filter }, FormMethod.Post))
+                @using (Html.BeginForm("Delete", "Product", new { id = Model.Id, category = ViewBag.Category, page = ViewBag.PageNumber, statusFilter = ViewBag.Filter }, FormMethod.Post))
                 {
                     <button type="submit" class="btn btn-danger">
                         <i class="fa-solid fa-x"></i>
@@ -41,7 +41,7 @@
             }
             else
             {
-                @using (Html.BeginForm("Delete", "Product", new { id = @Model.Id, category = ViewBag.Category, page = ViewBag.PageNumber, statusFilter = @ViewBag.Filter }, FormMethod.Post))
+                @using (Html.BeginForm("Delete", "Product", new { id = Model.Id, category = ViewBag.Category, page = ViewBag.PageNumber, statusFilter = ViewBag.Filter }, FormMethod.Post))
                 {
                     <button type="submit" class="btn btn-success">
                         <i class="fa-solid fa-check"></i>
@@ -51,7 +51,7 @@
             }
         </div>
         <div style="display: inline-block;">
-            @using (Html.BeginForm("Edit", "Product", new { @Model.Id }, FormMethod.Get))
+            @using (Html.BeginForm("Edit", "Product", new { Model.Id }, FormMethod.Get))
             {
                 <button type="submit" class="btn btn-primary">
                     <i class="fa-solid fa-pen-to-square"></i>

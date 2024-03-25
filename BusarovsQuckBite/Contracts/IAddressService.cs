@@ -10,5 +10,6 @@ namespace BusarovsQuckBite.Contracts
         Task<AddressViewModel> GetByIdForUser(int addressId, string userId);
         Task DeleteAddress(int addressId, string userId);
         Task EditAddress(AddressViewModel model, string userId);
+        Task<List<AddressViewModel>> GetActiveAddressesForUser(string userId);
     }
 }

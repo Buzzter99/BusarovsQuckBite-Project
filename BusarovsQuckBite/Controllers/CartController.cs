@@ -1,7 +1,6 @@
 ﻿using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Models;
 using Microsoft.AspNetCore.Mvc;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
@@ -36,11 +35,6 @@ namespace BusarovsQuckBite.Controllers
             }
             TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyAdded,nameof(Product));
             return Redirect(callbackUrl);
-        }
-        [HttpPost]
-        public IActionResult ValidateBeforeCheckout(CartViewModel model)
-        {
-            return RedirectToAction(nameof(MyCart));
         }
         public async Task<IActionResult> RemoveItemFromCart(int productId)
         {

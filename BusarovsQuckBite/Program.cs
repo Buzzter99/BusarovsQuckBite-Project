@@ -25,7 +25,8 @@ namespace BusarovsQuckBite
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IImgService, ImgService>();
-            builder.Services.AddScoped<ICartService, CartService>(); 
+            builder.Services.AddScoped<ICartService, CartService>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IDataProtectionService, DataProtectionService>();
             // builder.Services.Configure<CustomTokenProviderOptions>(options => { options.TokenLifespan = TimeSpan.FromSeconds(0);});
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>

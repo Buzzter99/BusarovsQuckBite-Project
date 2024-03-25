@@ -1,0 +1,67 @@
+﻿@model OrderViewModel
+<form asp-controller="Orders" asp-action="PlaceOrder" method="post">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="text-center mb-4">Order Summary</h2>
+                @for (var i = 0; i < Model.Cart.ProductAll.Count; i++)
+                {
+                    <input type="hidden" asp-for="@Model.Cart.ProductAll[i].Id" />
+                    <div class="card rounded-3 mb-4">
+                        <div class="card-body p-4">
+                            <div class="row d-flex justify-content-between align-items-center">
+                                <div class="col-md-2 col-lg-2 col-xl-2">
+                                    <img src="@Url.Content(Model.Cart.ProductAll[i].ImageRelativePath)" class="card-img-top" style="max-width: 100%; max-height: 100%;" class="img-fluid rounded-3">
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-xl-3">
+                                    <p class="lead fw-normal mb-2">@Model.Cart.ProductAll[i].Name</p>
+                                </div>
+                                <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                    <input asp-for="@Model.Cart.ProductAll[i].QtyWanted" min="1" max="@Model.Cart.ProductAll[i].QtyAvailable" value="1" type="number" readonly="readonly" class="form-control form-control-sm" />
+                                </div>
+                                <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                    <h5 class="mb-0">$@Model.Cart.ProductAll[i].Price</h5>
+                                </div>
+                                <input asp-for="@Model.Cart.ProductAll[i].Category.Name" type="hidden" />
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="mb-3">
+                    <label for="finalPrice" class="form-label">Final Price:</label>
+                    <input id="finalPrice" type="text" class="form-control" readonly value="$@(Model.Cart.ProductAll.Sum(p => p.Price * p.QtyWanted))">
+                </div>
+                <div class="mb-3">
+                    <label for="paymentType" class="form-label">Payment Type:</label>
+                    <select id="paymentType" name="PaymentTypeValue" class="form-select">
+                        <option selected disabled>Select Payment Type</option>
+                        @foreach (var paymentType in Model.PaymentType)
+                        {
+                            <option value="@paymentType.Value">@paymentType.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="address" class="form-label">Delivery Address:</label>
+                    <select id="address" name="SelectedAddressId" class="form-select">
+                        <option selected disabled>Select Delivery Address</option>
+                        @foreach (var address in Model.Addresses)
+                        {
+                            <option value="@address.AddressId">@address.City, @address.Street</option>
+                        }
+                    </select>
+                </div>
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Place Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

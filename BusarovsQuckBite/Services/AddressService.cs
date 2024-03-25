@@ -106,5 +106,14 @@ namespace BusarovsQuckBite.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<AddressViewModel>> GetActiveAddressesForUser(string userId)
+        {
+            return await _context.Addresses.Where(x => x.User.Id == userId && !x.IsDeleted).Select(c => new AddressViewModel()
+            {
+                AddressId = c.Id,
+                Street = _protectionService.Decrypt(c.Street),
+                City = _protectionService.Decrypt(c.City),
+            }).ToListAsync();
+        }
     }
 }
