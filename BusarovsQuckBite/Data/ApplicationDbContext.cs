@@ -14,6 +14,11 @@ namespace BusarovsQuckBite.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<OrderProduct>().HasKey(x => new
+            {
+                x.OrderId,
+                x.ProductId
+            });
             builder.Entity<CartProduct>().HasKey(x => new
             {
                 x.CartId, x.ProductId
@@ -31,10 +36,11 @@ namespace BusarovsQuckBite.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<CartProduct> CartProducts { get; set; }
         public DbSet<Cart> Carts { get; set; }
+        public DbSet<Img> Img { get; set; }
         public override DbSet<ApplicationUser> Users { get; set; }
         public override DbSet<ApplicationRole> Roles { get; set; }
-        public DbSet<Img> Img { get; set; }
+        public DbSet<CartProduct> CartProducts { get; set; }
+        public DbSet<OrderProduct> OrdersProducts { get; set; }
     }
 }

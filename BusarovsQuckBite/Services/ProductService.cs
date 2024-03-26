@@ -172,9 +172,9 @@ namespace BusarovsQuckBite.Services
         public async Task<List<ProductViewModel>> GetAllProductsBySearchTerm(int page, int pageSize,string searchTerm = "")
         {
             ProductViewModel model = new ProductViewModel();
-            var entity = await _context.Products.Where(x => !x.IsDeleted && x.Name.ToUpper().Contains(searchTerm.ToUpper())
+            var entity = await _context.Products.Where(x => (!x.IsDeleted) && (x.Name.ToUpper().Contains(searchTerm.ToUpper())
                                                       || x.Category.Name.Contains(searchTerm.ToUpper())
-                                                      || x.Description.ToUpper().Contains(searchTerm.ToUpper()))
+                                                      || x.Description.ToUpper().Contains(searchTerm.ToUpper())))
                 .Select(c => new ProductViewModel()
                 {
                     Id = c.Id,

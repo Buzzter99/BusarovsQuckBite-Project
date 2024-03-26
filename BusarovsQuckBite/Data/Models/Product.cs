@@ -40,5 +40,6 @@ namespace BusarovsQuckBite.Data.Models
         [Required]
         [ForeignKey(nameof(Who))]
         public virtual ApplicationUser User { get; set; } = null!;
+        public virtual ICollection<OrderProduct> OrdersProducts { get; set; } = new List<OrderProduct>();
     }
 }

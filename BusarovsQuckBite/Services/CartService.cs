@@ -5,6 +5,7 @@ using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models;
 using Microsoft.EntityFrameworkCore;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
+using InvalidOperationException = System.InvalidOperationException;
 
 namespace BusarovsQuckBite.Services
 {
@@ -99,6 +100,17 @@ namespace BusarovsQuckBite.Services
             _context.CartProducts.Remove(product);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<Cart> GetCartByUserId(string userId)
+        {
+            var cart = await _context.Carts.FirstOrDefaultAsync(x => x.Who == userId);
+            if (cart == null)
+            {
+                throw new InvalidOperationException("Cart not found");
+            }
+            return cart;
+        }
+
         private async Task<bool> IsCartCreatedAsync(string userId)
         {
             return await _context.Carts.FirstOrDefaultAsync(x => x.Who == userId) != null;

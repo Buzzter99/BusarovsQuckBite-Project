@@ -20,17 +20,18 @@ namespace BusarovsQuckBite.Data.Models
         [Required]
         public DateTime TransactionDateAndTime { get; set; }
         [Required]
-        public OrderStatus Status { get; set; } = OrderStatus.None;
+        public OrderStatus Status { get; set; } 
         [Required]
         [Precision(TotalAmountPrecision,TotalAmountScale)]
         public decimal TotalAmount { get; set; }
         [Required]
-        public int CartId { get; set; }
+        public PaymentType PaymentType { get; set; }
         [Required]
-        [ForeignKey(nameof(CartId))]
-        public virtual Cart Cart { get; set; } = null!;
+        public int AddressId { get; set; }
         [Required]
-        public PaymentType PaymentType { get; set; } = PaymentType.Cash;
+        [ForeignKey(nameof(AddressId))]
+        public virtual Address Address { get; set; } = null!;
+        public virtual ICollection<OrderProduct> OrdersProducts { get; set; } = new List<OrderProduct>();
 
     }
 }

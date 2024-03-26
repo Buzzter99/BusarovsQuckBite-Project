@@ -8,9 +8,9 @@ namespace BusarovsQuckBite.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
-            builder.HasOne(e => e.Cart)
+            builder.HasOne(c => c.Address)
                 .WithMany()
-                .HasForeignKey(e => e.CartId)
+                .HasForeignKey(c => c.AddressId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

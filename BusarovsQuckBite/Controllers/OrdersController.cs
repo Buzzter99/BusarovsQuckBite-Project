@@ -9,20 +9,21 @@ namespace BusarovsQuckBite.Controllers
     public class OrdersController : BaseController
     {
         private readonly IOrderService _orderService;
-        private readonly IProductService _productService;
 
-        public OrdersController(IOrderService orderService, IProductService productService)
+        public OrdersController(IOrderService orderService)
         {
             _orderService = orderService;
-            _productService = productService;
         }
         [HttpPost]
         public async Task<IActionResult> MyOrder(CartViewModel model)
         {
-            OrderViewModel orderView = new OrderViewModel();
+            OrderViewModel orderView = new OrderViewModel()
+            {
+                Cart = model
+            };
             try
             {
-                orderView = await _orderService.ValidateOrderAsync(model, GetUserId());
+                orderView = await _orderService.ValidateOrderAsync(orderView, GetUserId());
             }
             catch (ApplicationException ae)
             {
@@ -37,7 +38,7 @@ namespace BusarovsQuckBite.Controllers
         {
             try
             {
-                model = await _orderService.ValidateOrderAsync(model.Cart, GetUserId());
+                model = await _orderService.ValidateOrderAsync(model, GetUserId());
             }
             catch (ApplicationException ae)
             {
@@ -48,11 +49,12 @@ namespace BusarovsQuckBite.Controllers
             {
                 return View(nameof(MyOrder), model);
             }
-            else
-            {
-                //place order
-            }
-            return RedirectToAction("Index", "Home");
+            await _orderService.PlaceOrder(model, GetUserId());
+            return RedirectToAction(nameof(Orders));
+        }
+        public async Task<IActionResult> Orders(CartViewModel model)
+        {
+            return View();
         }
     }
 }

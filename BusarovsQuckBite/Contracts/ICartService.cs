@@ -10,5 +10,6 @@ namespace BusarovsQuckBite.Contracts
         Task AddCartProduct(int productId, string userId);
         Task<List<ProductViewModel>> FindProductsForUserAndCart(string userId);
         Task RemoveProductFromCart(int productId, string userId);
+        Task<Cart> GetCartByUserId(string userId);
     }
 }
