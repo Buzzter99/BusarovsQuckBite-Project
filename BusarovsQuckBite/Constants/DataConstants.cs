@@ -11,11 +11,6 @@
 
         }
 
-        public static class CartConstants
-        {
-            public const string CartTempDataKey = "CartItems";
-        }
-
         public static class CategoryConstants
         {
             public const int CategoryMinLength = 5;

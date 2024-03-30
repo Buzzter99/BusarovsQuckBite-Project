@@ -21,7 +21,7 @@ namespace BusarovsQuckBite.Controllers
         public async Task<IActionResult> All(FilterEnum keyword = FilterEnum.All)
         {
             TempData["keyword"] = keyword;
-            var models = await _categoryService.GetCategoriesForUserByStatusAsync(keyword);
+            var models = _categoryService.GetAllCategoriesForView(await _categoryService.GetCategoriesForUserByStatusAsync(keyword));
             return View(models);
         }
         [HttpPost]
@@ -90,13 +90,13 @@ namespace BusarovsQuckBite.Controllers
         public async Task<IActionResult> Search(FilterEnum keyword, string? name)
         {
             name = name ?? "";
-            var items = await _categoryService.SearchByNameAsync(keyword, name);
+            var items = _categoryService.GetAllCategoriesForView(await _categoryService.SearchByNameAsync(keyword, name));
             TempData["keyword"] = keyword;
             return View(nameof(All), items);
         }
         public async Task<IActionResult> ClearFilter(FilterEnum keyword)
         {
-            var items = await _categoryService.GetCategoriesForUserByStatusAsync(keyword);
+            var items = _categoryService.GetAllCategoriesForView(await _categoryService.GetCategoriesForUserByStatusAsync(keyword));
             TempData["keyword"] = keyword;
             return View(nameof(All), items);
         }

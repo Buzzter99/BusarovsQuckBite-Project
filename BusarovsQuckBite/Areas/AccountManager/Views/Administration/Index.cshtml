@@ -1,11 +1,10 @@
-﻿@using BusarovsQuckBite.Models.Enums
-@model AdministrationAllViewModel
+﻿@model AdministrationAllViewModel
 <div class="d-flex justify-content-center">
     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-        @for (int i = 0; i < Model.FilterOptions.Count; i++)
+        @foreach (var element in Model.FilterOptions)
         {
-            <li class="nav-item me-5" role="presentation"> 
-                @Html.ActionLink(Model.FilterOptions[i].Value, "Index", "Administration", new { keyword = Model.FilterOptions[i].Value }, new { @class = "nav-link btn btn-lg px-5 " + (ViewBag.Keyword.ToString() == Model.FilterOptions[i].Value ? "active" : "") })
+            <li class="nav-item me-5" role="presentation">
+                @Html.ActionLink(element.Value, "Index", "Administration", new { keyword = element.Value }, new { @class = "nav-link btn btn-lg px-5 " + (ViewBag.Keyword.ToString() == element.Value ? "active" : "") })
             </li>
         }
     </ul>

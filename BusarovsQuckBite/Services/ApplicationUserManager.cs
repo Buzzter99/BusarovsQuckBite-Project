@@ -27,14 +27,14 @@ namespace BusarovsQuckBite.Services
             _protectionService = protectionService;
         }
 
-        public override Task<IdentityResult> CreateAsync(TUser user, string password)
+        public override async Task<IdentityResult> CreateAsync(TUser user, string password)
         {
-            var validateUser = ValidateUser(user, _store.Users);
-            if (validateUser.Result.Any())
+            var validateUser = await ValidateUser(user, _store.Users);
+            if (validateUser.Any())
             {
-                return Task.FromResult(IdentityResult.Failed(validateUser.Result.ToArray()));
+                return await Task.FromResult(IdentityResult.Failed(validateUser.ToArray()));
             }
-            return base.CreateAsync(user, password);
+            return await base.CreateAsync(user, password);
         }
         
         private async Task<List<RoleViewModel>> GetAllRoles()
@@ -79,7 +79,7 @@ namespace BusarovsQuckBite.Services
             return await IsInRoleAsync(user, role.Name);
         }
 
-        public async Task<AdministrationAllViewModel> GetAllUsersByStatusAsync(FilterEnum e, int pageSize, int page)
+        public async Task<AdministrationAllViewModel> GetAllUsersByStatusAsync(FilterEnum e)
         {
             IQueryable<ApplicationUser> query;
             switch (e)
@@ -122,14 +122,14 @@ namespace BusarovsQuckBite.Services
                 FilterOptions = filters
             };
         }
-        public override Task<IdentityResult> UpdateAsync(TUser user)
+        public override async Task<IdentityResult> UpdateAsync(TUser user)
         {
-            var validateUser = ValidateUser(user, _store.Users.Where(x => x.Id != user.Id));
-            if (validateUser.Result.Any())
+            var validateUser = await ValidateUser(user, _store.Users.Where(x => x.Id != user.Id));
+            if (validateUser.Any())
             {
-                return Task.FromResult(IdentityResult.Failed(validateUser.Result.ToArray()));
+                return await Task.FromResult(IdentityResult.Failed(validateUser.ToArray()));
             }
-            return base.UpdateAsync(user);
+            return await base.UpdateAsync(user);
         }
         public ApplicationUser EditRequiredUserData(ApplicationUser entity, AdministrationViewModel model)
         {

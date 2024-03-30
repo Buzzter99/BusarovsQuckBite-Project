@@ -13,5 +13,6 @@ namespace BusarovsQuckBite.Contracts
         Task<CategoryViewModel> EditCategoryAsync(CategoryViewModel model);
         Task<List<CategoryViewModel>> SearchByNameAsync(FilterEnum keyword, string name);
         Task<Category> GetByIdAsync(int id);
+        CategoryAllViewModel GetAllCategoriesForView(List<CategoryViewModel> model);
     }
 }

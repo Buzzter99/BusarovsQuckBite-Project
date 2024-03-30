@@ -25,12 +25,8 @@ namespace BusarovsQuckBite.Controllers
         public async Task<IActionResult> All(string category, int page = 1, FilterEnum statusFilter = FilterEnum.All)
         {
             int pageSize = 5;
-            var model = await _productService.GetAllProductsAsync(pageSize, page, category,statusFilter);
+            var model = await _productService.GetAllProductsAsync(category,statusFilter);
             int size = PageHelper.CalculateTotalPages(pageSize, model.Products);
-            if (!HttpContext.Request.GetDisplayUrl().Contains(nameof(pageSize)))
-            {
-                page = 1;
-            }
             if (size == 0)
             {
                 size++;

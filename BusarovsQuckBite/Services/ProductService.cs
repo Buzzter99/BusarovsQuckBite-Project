@@ -19,7 +19,7 @@ namespace BusarovsQuckBite.Services
             _imgService = imgService;
             _categoryService = categoryService;
         }
-        public async Task<ProductAllViewModel> GetAllProductsAsync(int pageSize, int page, string? category = null, FilterEnum statusFilter = FilterEnum.All)
+        public async Task<ProductAllViewModel> GetAllProductsAsync(string? category = null, FilterEnum statusFilter = FilterEnum.All)
         {
             var categories = await _categoryService.GetCategoriesForUserByStatusAsync(FilterEnum.Active);
             var model = _context.Products.Select(c => new ProductViewModel()
@@ -193,6 +193,23 @@ namespace BusarovsQuckBite.Services
                     IsDeleted = c.IsDeleted,
                 }).ToListAsync();
             return entity;
+        }
+        public async Task<List<ProductViewModel>> GetProductsForOrderAsync(int orderId)
+        {
+            return await _context.OrdersProducts.Where(x => x.OrderId == orderId).Select(c => new ProductViewModel
+            {
+                Id = c.ProductId,
+                Name = c.Product.Name,
+                Description = c.Product.Description,
+                Price = c.Product.Price,
+                Category = new CategoryViewModel
+                {
+                    Id = c.Product.CategoryId,
+                    Name = c.Product.Category.Name,
+                },
+                QtyWanted = c.QtyOrdered,
+                ImageRelativePath = c.Product.Img.RelativePath + c.Product.Img.Name,
+            }).ToListAsync();
         }
     }
 }

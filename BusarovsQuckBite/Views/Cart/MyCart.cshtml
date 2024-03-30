@@ -1,7 +1,8 @@
 ﻿@model CartViewModel
-<section class="h-100" style="background-color: #eee;">
-    <div class="container h-100 py-5">
-        <div class="row d-flex justify-content-center align-items-center h-100">
+<link rel="stylesheet" href="~/css/cart.css" />
+<section class="py-5">
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center">
             <div class="col-10">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h3 class="fw-normal mb-0 text-black">Shopping Cart</h3>
@@ -59,13 +60,13 @@
                         </div>
                     }
                 </form>
+                <div style="margin-top: 20px;"></div>
+                <a class="btn btn-primary btn-block btn-lg" asp-controller="Home" asp-action="Index">Back To Home</a>
+                <div style="margin-top: 20px;"></div>
             </div>
         </div>
     </div>
 </section>
-<div style="margin-top: 20px;"></div>
 @{
     await Html.RenderPartialAsync("_MessagePartial", TempData);
 }
-<div style="margin-top: 20px;"></div>
-<a class="btn btn-primary btn-block btn-lg" asp-controller="Home" asp-action="Index">Back To Home</a>

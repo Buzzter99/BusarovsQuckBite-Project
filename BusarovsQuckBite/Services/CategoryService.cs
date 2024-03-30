@@ -114,5 +114,14 @@ namespace BusarovsQuckBite.Services
             }
             return category;
         }
+
+        public CategoryAllViewModel GetAllCategoriesForView(List<CategoryViewModel> model)
+        {
+            return new CategoryAllViewModel
+            {
+                CategoryViewModel = model,
+                CategoryCriteria = EnumHelper.GetEnumSelectList<FilterEnum>()
+            };
+        }
     }
 }

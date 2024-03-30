@@ -1,14 +1,14 @@
-﻿@using BusarovsQuckBite.Models.Enums
-@model List<CategoryViewModel>
+﻿@model CategoryAllViewModel
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="nav-item nav-link" asp-action="All" asp-controller="Category" asp-route-keyword="@FilterEnum.All">All Categories</a>
-            <a class="nav-item nav-link" asp-action="All" asp-controller="Category" asp-route-keyword="@FilterEnum.Active">Active Categories</a>
-            <a class="nav-item nav-link" asp-action="All" asp-controller="Category" asp-route-keyword="@FilterEnum.Deleted">Deactivated Categories</a>
+            @foreach (var filter in Model.CategoryCriteria)
+            {
+                <a class="nav-item nav-link" asp-action="All" asp-controller="Category" asp-route-keyword="@filter.Value">@filter.Value Categories</a>
+            }
         </div>
     </div>
 </nav>
@@ -45,7 +45,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var kvp in Model)
+        @foreach (var kvp in Model.CategoryViewModel)
         {
             <tr>
                 @{

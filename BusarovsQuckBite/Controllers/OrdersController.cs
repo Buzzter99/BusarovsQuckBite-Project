@@ -1,11 +1,13 @@
 ﻿using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuckBite.Controllers
 {
+    [Authorize]
     public class OrdersController : BaseController
     {
         private readonly IOrderService _orderService;
@@ -49,12 +51,40 @@ namespace BusarovsQuckBite.Controllers
             {
                 return View(nameof(MyOrder), model);
             }
-            await _orderService.PlaceOrder(model, GetUserId());
+            try
+            {
+                await _orderService.PlaceOrder(model, GetUserId());
+            }
+            catch (ApplicationException ae)
+            {
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                return RedirectToAction("MyCart", "Cart");
+            }
             return RedirectToAction(nameof(Orders));
         }
-        public async Task<IActionResult> Orders(CartViewModel model)
+        public async Task<IActionResult> Orders()
+        {
+            var ordersForUser = await _orderService.GetOrdersForUser(GetUserId());
+            return View(ordersForUser);
+        }
+        public async Task<IActionResult> TrackOrder(int id)
+        {
+            int status;
+            try
+            {
+               status = await _orderService.GetOrderStatus(id, GetUserId());
+            }
+            catch (ApplicationException ae)
+            {
+                return RedirectToAction(nameof(Orders));
+            }
+            return View(status);
+        }
+        [Authorize(Roles = $"{RoleConstants.AdminRoleName},{RoleConstants.DeliveryDriverRoleName},{RoleConstants.CookingStaffRoleName}")]
+        public IActionResult OrderManagement()
         {
             return View();
         }
+
     }
 }

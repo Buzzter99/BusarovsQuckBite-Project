@@ -25,7 +25,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
         public async Task<IActionResult> Index(FilterEnum keyword = FilterEnum.All, int page = 1)
         {
             int pageSize = 10;
-            var model = await _userManager.GetAllUsersByStatusAsync(keyword, pageSize, page);
+            var model = await _userManager.GetAllUsersByStatusAsync(keyword);
             page = Math.Max(1, Math.Min(page, PageHelper.CalculateTotalPages(pageSize, model.AdministrationDataModel)));
             ViewBag.Keyword = keyword;
             ViewBag.PageNumber = page;

@@ -16,12 +16,23 @@ namespace BusarovsQuckBite.Services
         private readonly IAddressService _addressService;
         private readonly ApplicationDbContext _context;
         private readonly IProductService _productService;
-        public OrderService(ICartService cartService, IAddressService addressService,ApplicationDbContext context, IProductService productService)
+
+        public OrderService(ICartService cartService, IAddressService addressService, ApplicationDbContext context, IProductService productService)
         {
             _cartService = cartService;
             _addressService = addressService;
             _context = context;
             _productService = productService;
+        }
+
+        public async Task<int> GetOrderStatus(int id, string userId)
+        {
+            var model = await _context.Orders.Where(x => x.Id == id && x.Who == userId).FirstOrDefaultAsync();
+            if (model == null)
+            {
+                throw new ApplicationException("Order not found!");
+            }
+            return (int)model.Status;
         }
         public async Task<OrderViewModel> ValidateOrderAsync(OrderViewModel model, string userId)
         {
@@ -66,7 +77,7 @@ namespace BusarovsQuckBite.Services
                 PaymentTypeValue = model.PaymentTypeValue
             };
         }
-        public async Task PlaceOrder(OrderViewModel model, string userId)
+        public async Task<int> PlaceOrder(OrderViewModel model, string userId)
         {
             if (model.Cart.CartOwner != userId)
             {
@@ -74,10 +85,36 @@ namespace BusarovsQuckBite.Services
             }
             await _addressService.GetByIdForUser((int)model.SelectedAddressId!, userId);
             int orderId = await CreateAndGetOrderId(model, userId);
-            await DeleteCartProducts(model.Cart.ProductAll, userId,orderId);
+            await DeleteCartProducts(model.Cart.ProductAll, userId, orderId);
+            return orderId;
         }
 
-        private async Task DeleteCartProducts(IEnumerable<ProductViewModel> cartItems,string userId,int orderId)
+        public async Task<AllUserOrdersViewModel> GetOrdersForUser(string userId)
+        {
+            var collection = await _context.Orders.Where(x => x.Who == userId).OrderByDescending(x => x.TransactionDateAndTime).ThenByDescending(x => x.Status).Select(c => new OrderUserViewModel
+            {
+
+                Id = c.Id,
+                PaymentType = c.PaymentType,
+                OrderPlacedDate = c.TransactionDateAndTime.ToString(DateFormatConstants.DefaultDateFormat),
+                OrderStatus = c.Status,
+                AddressId = c.AddressId,
+                OrderWho = c.User.UserName
+            }).ToListAsync();
+            foreach (var kvp in collection)
+            {
+                kvp.OrderProducts = await _productService.GetProductsForOrderAsync(kvp.Id);
+                kvp.DeliveryAddress = await _addressService.GetByIdForUser(kvp.AddressId, userId);
+            }
+            var result = new AllUserOrdersViewModel
+            {
+                OrderModel = collection,
+                OrderStatuses = EnumHelper.GetEnumSelectList<OrderStatus>()
+            };
+            return result;
+        }
+
+        private async Task DeleteCartProducts(IEnumerable<ProductViewModel> cartItems, string userId, int orderId)
         {
             var cartService = await _cartService.GetCartByUserId(userId);
             foreach (var kvp in cartItems)
@@ -94,6 +131,7 @@ namespace BusarovsQuckBite.Services
                 {
                     OrderId = orderId,
                     ProductId = decreaseQty.Id,
+                    QtyOrdered = kvp.QtyWanted
                 };
                 await _context.AddAsync(orderProduct);
             }
@@ -106,11 +144,11 @@ namespace BusarovsQuckBite.Services
             {
                 throw new ApplicationException("Payment Type not supported yet!");
             }
-            var order =  new Order
+            var order = new Order
             {
                 Who = userId,
                 TransactionDateAndTime = DateTime.Now,
-                Status = OrderStatus.None,
+                Status = OrderStatus.Processing,
                 TotalAmount = model.Cart.ProductAll.Sum(x => x.QtyWanted * x.Price),
                 PaymentType = validPaymentType,
                 AddressId = (int)model.SelectedAddressId!,

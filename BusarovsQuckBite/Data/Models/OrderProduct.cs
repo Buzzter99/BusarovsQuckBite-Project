@@ -13,5 +13,7 @@ namespace BusarovsQuckBite.Data.Models
         public int ProductId { get; set; }
         [ForeignKey(nameof(ProductId))]
         public virtual Product Product { get; set; } = null!;
+        [Required]
+        public int QtyOrdered { get; set; }
     }
 }
