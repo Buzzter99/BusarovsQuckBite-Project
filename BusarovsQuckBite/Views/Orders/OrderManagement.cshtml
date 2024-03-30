@@ -1,1 +1,32 @@
-﻿view for administration of orders
+﻿@model AllUserOrdersViewModel
+<div class="tab-content" id="pills-tabContent">
+    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+        <table class="table">
+            <thead>
+            <tr>
+                @{
+                    await Html.RenderPartialAsync("_OrderManagementHeader");
+                }
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var entity in Model.OrderModel)
+            {
+                <tr>
+                    @{
+                        await Html.RenderPartialAsync("_OrderManagementData",entity);
+                    }
+
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+@{
+    await Html.RenderPartialAsync("_OrderManagementPartial");
+}
+<div style="margin-top: 20px;"></div>
+@{
+    await Html.RenderPartialAsync("_MessagePartial", TempData);
+}

@@ -1,13 +1,13 @@
 ﻿using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Models;
+using BusarovsQuckBite.Models.PageHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuckBite.Controllers
 {
-    [Authorize]
     public class OrdersController : BaseController
     {
         private readonly IOrderService _orderService;
@@ -62,9 +62,14 @@ namespace BusarovsQuckBite.Controllers
             }
             return RedirectToAction(nameof(Orders));
         }
-        public async Task<IActionResult> Orders()
+        public async Task<IActionResult> Orders(int page = 1)
         {
+            int pageSize = 1;
             var ordersForUser = await _orderService.GetOrdersForUser(GetUserId());
+            ViewBag.PageNumber = page;
+            ViewBag.TotalPages = PageHelper.CalculateTotalPages(pageSize, ordersForUser.OrderModel);
+            ViewBag.PageSize = pageSize;
+            ordersForUser.OrderModel = (PageHelper.CalculateItemsForPage(page, pageSize, ordersForUser.OrderModel));
             return View(ordersForUser);
         }
         public async Task<IActionResult> TrackOrder(int id)
@@ -72,18 +77,48 @@ namespace BusarovsQuckBite.Controllers
             int status;
             try
             {
-               status = await _orderService.GetOrderStatus(id, GetUserId());
+               status = await _orderService.GetOrderStatusAsync(id,GetUserId());
             }
             catch (ApplicationException ae)
             {
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
                 return RedirectToAction(nameof(Orders));
             }
             return View(status);
         }
         [Authorize(Roles = $"{RoleConstants.AdminRoleName},{RoleConstants.DeliveryDriverRoleName},{RoleConstants.CookingStaffRoleName}")]
-        public IActionResult OrderManagement()
+        public async Task<IActionResult> OrderManagement(int page = 1)
         {
-            return View();
+            int pageSize = 10;
+            AllUserOrdersViewModel allOrders;
+            try
+            {
+               allOrders = await _orderService.GetAllOrders();
+            }
+            catch (ApplicationException ae)
+            {
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                return RedirectToAction("Index","Home");
+            }
+            ViewBag.PageNumber = page;
+            ViewBag.TotalPages = PageHelper.CalculateTotalPages(pageSize, allOrders.OrderModel);
+            ViewBag.PageSize = pageSize;
+            allOrders.OrderModel = (PageHelper.CalculateItemsForPage(page, pageSize, allOrders.OrderModel));
+            return View(allOrders);
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateOrderStatus(int orderId, int pageNumber)
+        {
+            try
+            {
+                await _orderService.UpdateOrderStatus(orderId, GetUserId());
+            }
+            catch (ApplicationException ae)
+            {
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                return RedirectToAction(nameof(OrderManagement), new { page = pageNumber});
+            }
+            return RedirectToAction(nameof(OrderManagement), new { page = pageNumber });
         }
 
     }

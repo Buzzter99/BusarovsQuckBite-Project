@@ -1,5 +1,5 @@
-﻿using BusarovsQuckBite.Data.Enums;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using BusarovsQuckBite.Areas.AccountManager.Models;
+using BusarovsQuckBite.Data.Enums;
 
 namespace BusarovsQuckBite.Models
 {
@@ -11,7 +11,7 @@ namespace BusarovsQuckBite.Models
         public OrderStatus OrderStatus { get; set; }
         public AddressViewModel DeliveryAddress { get; set; } = null!;
         public List<ProductViewModel> OrderProducts { get; set; } = null!;
-        public string OrderWho = string.Empty;
+        public AdministrationViewModel User { get; set; } = null!;
         public int AddressId { get; set; }
     }
 }

@@ -5,7 +5,6 @@ using BusarovsQuckBite.Models;
 using BusarovsQuckBite.Models.Enums;
 using BusarovsQuckBite.Models.PageHelpers;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
@@ -111,6 +110,10 @@ namespace BusarovsQuckBite.Controllers
             catch (ApplicationException ae)
             {
                 ModelState.AddModelError(string.Empty,ae.Message);
+                return View(model);
+            }
+            if (!ModelState.IsValid)
+            {
                 return View(model);
             }
             TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyModified);

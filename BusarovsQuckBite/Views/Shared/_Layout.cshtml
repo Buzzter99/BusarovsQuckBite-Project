@@ -40,22 +40,25 @@
                                 <a class="nav-link" asp-controller="Orders" asp-action="Orders" asp-area="">My Orders</a>
                             </li>
                         }
-                        else
+                        @if ((User.IsInRole(RoleConstants.CookingStaffRoleName) 
+                             || User.IsInRole(RoleConstants.DeliveryDriverRoleName) 
+                             || User.IsInRole(RoleConstants.AdminRoleName))
+                             && User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Orders" asp-action="OrderManagement" asp-area="">Manage Orders</a>
                             </li>
+
                         }
                         @if (User.Identity!.IsAuthenticated)
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Address" asp-action="All" asp-area="">My Addresses</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Menu" asp-action="All" asp-area="">Order Menu</a>
-                            </li>
-
                         }
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Menu" asp-action="All" asp-area="">Order Menu</a>
+                        </li>
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

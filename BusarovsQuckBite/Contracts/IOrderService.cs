@@ -1,4 +1,5 @@
-﻿using BusarovsQuckBite.Models;
+﻿using BusarovsQuckBite.Data.Models;
+using BusarovsQuckBite.Models;
 
 namespace BusarovsQuckBite.Contracts
 {
@@ -7,7 +8,9 @@ namespace BusarovsQuckBite.Contracts
         Task<OrderViewModel> ValidateOrderAsync(OrderViewModel model, string userId);
         Task<int> PlaceOrder(OrderViewModel model, string userId);
         Task<AllUserOrdersViewModel> GetOrdersForUser(string userId);
-        Task<int> GetOrderStatus(int id, string userId);
-
+        Task<int> GetOrderStatusAsync(int id, string userId);
+        Task<AllUserOrdersViewModel> GetAllOrders();
+        Task<Order> GetByIdAsync(int id);
+        Task UpdateOrderStatus(int orderId, string userId);
     }
 }

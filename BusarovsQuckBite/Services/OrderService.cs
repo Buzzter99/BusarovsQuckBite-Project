@@ -16,21 +16,35 @@ namespace BusarovsQuckBite.Services
         private readonly IAddressService _addressService;
         private readonly ApplicationDbContext _context;
         private readonly IProductService _productService;
+        private readonly ApplicationUserManager<ApplicationUser> _userManager;
 
-        public OrderService(ICartService cartService, IAddressService addressService, ApplicationDbContext context, IProductService productService)
+        public OrderService(ICartService cartService, IAddressService addressService,
+            ApplicationDbContext context,
+            IProductService productService,
+            ApplicationUserManager<ApplicationUser> userManager)
         {
             _cartService = cartService;
             _addressService = addressService;
             _context = context;
             _productService = productService;
+            _userManager = userManager;
         }
 
-        public async Task<int> GetOrderStatus(int id, string userId)
+        public async Task<Order> GetByIdAsync(int id)
         {
-            var model = await _context.Orders.Where(x => x.Id == id && x.Who == userId).FirstOrDefaultAsync();
+            var model = await _context.Orders.Where(x => x.Id == id).FirstOrDefaultAsync();
             if (model == null)
             {
                 throw new ApplicationException("Order not found!");
+            }
+            return model;
+        }
+        public async Task<int> GetOrderStatusAsync(int id, string userId)
+        {
+            var model = await GetByIdAsync(id);
+            if (model.Who != userId)
+            {
+                throw new ApplicationException(ErrorMessagesConstants.OwnerIsInvalid);
             }
             return (int)model.Status;
         }
@@ -99,7 +113,6 @@ namespace BusarovsQuckBite.Services
                 OrderPlacedDate = c.TransactionDateAndTime.ToString(DateFormatConstants.DefaultDateFormat),
                 OrderStatus = c.Status,
                 AddressId = c.AddressId,
-                OrderWho = c.User.UserName
             }).ToListAsync();
             foreach (var kvp in collection)
             {
@@ -109,6 +122,39 @@ namespace BusarovsQuckBite.Services
             var result = new AllUserOrdersViewModel
             {
                 OrderModel = collection,
+                OrderStatuses = EnumHelper.GetEnumSelectList<OrderStatus>()
+            };
+            return result;
+        }
+        public async Task<AllUserOrdersViewModel> GetAllOrders()
+        {
+            var orders = await _context.Orders
+                .OrderByDescending(x => x.TransactionDateAndTime)
+                .ThenByDescending(x => x.Status).Include(order => order.User)
+                .ToListAsync();
+            var orderViewModels = new List<OrderUserViewModel>();
+            foreach (var order in orders)
+            {
+                var deliveryAddress = await _addressService.GetByIdForUser(order.AddressId, order.User.Id);
+                var orderProducts = await _productService.GetProductsForOrderAsync(order.Id);
+                var userViewModel = await _userManager.MapViewModel(order.User);
+
+                var orderViewModel = new OrderUserViewModel
+                {
+                    Id = order.Id,
+                    PaymentType = order.PaymentType,
+                    OrderPlacedDate = order.TransactionDateAndTime.ToString(DateFormatConstants.DefaultDateFormat),
+                    OrderStatus = order.Status,
+                    DeliveryAddress = deliveryAddress,
+                    OrderProducts = orderProducts,
+                    AddressId = order.AddressId,
+                    User = userViewModel
+                };
+                orderViewModels.Add(orderViewModel);
+            }
+            var result = new AllUserOrdersViewModel
+            {
+                OrderModel =  orderViewModels,
                 OrderStatuses = EnumHelper.GetEnumSelectList<OrderStatus>()
             };
             return result;
@@ -156,6 +202,34 @@ namespace BusarovsQuckBite.Services
             await _context.Orders.AddAsync(order);
             await _context.SaveChangesAsync();
             return order.Id;
+        }
+
+        public async Task UpdateOrderStatus(int orderId, string userId)
+        {
+            var order = await GetByIdAsync(orderId);
+            if (await _userManager.IsInRoleAsyncById(userId, RoleConstants.CookingStaffRoleName))
+            {
+                if (order.Status == OrderStatus.Processing)
+                {
+                    order.Status = OrderStatus.Preparing;
+                }
+                else if (order.Status == OrderStatus.Preparing)
+                {
+                    order.Status = OrderStatus.ReadyForDelivery;
+                }
+            }
+            if (await _userManager.IsInRoleAsyncById(userId, RoleConstants.DeliveryDriverRoleName))
+            {
+                if (order.Status == OrderStatus.ReadyForDelivery)
+                {
+                    order.Status = OrderStatus.OnTheWay;
+                }
+                else if (order.Status == OrderStatus.OnTheWay)
+                {
+                    order.Status = OrderStatus.Delivered;
+                }
+            }
+            await _context.SaveChangesAsync();
         }
     }
 }

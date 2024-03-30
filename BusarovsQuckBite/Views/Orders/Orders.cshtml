@@ -22,3 +22,10 @@
         </table>
     </div>
 </div>
+@{
+    await Html.RenderPartialAsync("_OrderPagingForUser");
+}
+<div style="margin-top: 20px;"></div>
+@{
+    await Html.RenderPartialAsync("_MessagePartial", TempData);
+}

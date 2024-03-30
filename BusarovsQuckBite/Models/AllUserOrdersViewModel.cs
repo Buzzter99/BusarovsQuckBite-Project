@@ -6,6 +6,5 @@ namespace BusarovsQuckBite.Models
     {
         public List<OrderUserViewModel> OrderModel { get; set; } = new List<OrderUserViewModel>();
         public List<SelectListItem> OrderStatuses { get; set; } = null!;
-
     }
 }
