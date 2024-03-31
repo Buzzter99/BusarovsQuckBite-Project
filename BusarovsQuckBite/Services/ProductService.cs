@@ -39,7 +39,7 @@ namespace BusarovsQuckBite.Services
                 CreatedOn = c.TransactionDateAndTime.ToString(DateFormatConstants.DefaultDateFormat),
                 IsDeleted = c.IsDeleted,
             });
-            if (category != null)
+            if (category != null && categories.Any(x => x.Name.ToUpper() == category.ToUpper()))
             {
                 model = model.Where(x => x.Category.Name == category);
             }

@@ -9,7 +9,7 @@
             <a class="nav-link" asp-controller="Cart" asp-action="MyCart" asp-area=""><i class="fa-solid fa-cart-shopping"></i> My Cart</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#" class="navbar-text">Welcome, @UserManager.GetUserAsync(User).Result.UserName!</a>
+            <a class="nav-link" asp-area="AccountManager"  asp-controller="Manage" asp-action="Index" class="navbar-text">Welcome, @UserManager.GetUserAsync(User).Result.UserName!</a>
         </li>
     </ul>
     <ul class="navbar-nav">

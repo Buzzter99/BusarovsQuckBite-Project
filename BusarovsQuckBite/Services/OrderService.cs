@@ -69,10 +69,9 @@ namespace BusarovsQuckBite.Services
                 }
                 if (product.QtyWanted > dbProduct.QtyAvailable)
                 {
-                    throw new ApplicationException("Quantity must be greater than 0!");
+                    throw new ApplicationException("Out of stock!");
                 }
                 dbProduct.QtyWanted = product.QtyWanted;
-
             }
             if (model.SelectedAddressId != null)
             {
@@ -207,6 +206,10 @@ namespace BusarovsQuckBite.Services
         public async Task UpdateOrderStatus(int orderId, string userId)
         {
             var order = await GetByIdAsync(orderId);
+            if (order.Who == userId)
+            {
+                throw new ApplicationException("You cannot update your own order!");
+            }
             if (await _userManager.IsInRoleAsyncById(userId, RoleConstants.CookingStaffRoleName))
             {
                 if (order.Status == OrderStatus.Processing)

@@ -2,8 +2,10 @@ using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.ModelBinders;
+using BusarovsQuckBite.Providers;
 using BusarovsQuckBite.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ApplicationUser = BusarovsQuckBite.Data.Models.ApplicationUser;
@@ -28,7 +30,11 @@ namespace BusarovsQuckBite
             builder.Services.AddScoped<ICartService, CartService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IDataProtectionService, DataProtectionService>();
-            // builder.Services.Configure<CustomTokenProviderOptions>(options => { options.TokenLifespan = TimeSpan.FromSeconds(0);});
+            builder.Services.AddTransient<IEmailSender, EmailService>();
+            builder.Services.Configure<CustomTokenProviderOptions>(options =>
+            {
+                options.TokenLifespan = TimeSpan.FromHours(2);
+            });
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = false;
@@ -36,13 +42,13 @@ namespace BusarovsQuckBite
                     options.Password.RequireLowercase = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireNonAlphanumeric = false;
-                    // options.Tokens.PasswordResetTokenProvider = "Custom";
+                    options.Tokens.PasswordResetTokenProvider = "ResetTokenProvider";
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddSignInManager<ApplicationSignInManager<ApplicationUser>>()
                 .AddUserManager<ApplicationUserManager<ApplicationUser>>()
-                .AddDefaultTokenProviders();
-                //.AddTokenProvider<CustomTokenProvider<ApplicationUser>>("Custom");
+                .AddDefaultTokenProviders()
+                .AddTokenProvider<CustomTokenProvider<ApplicationUser>>("ResetTokenProvider");
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/AccountManager/Users/Login";

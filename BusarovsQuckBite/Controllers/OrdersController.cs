@@ -64,7 +64,11 @@ namespace BusarovsQuckBite.Controllers
         }
         public async Task<IActionResult> Orders(int page = 1)
         {
-            int pageSize = 1;
+            if (page == 0)
+            {
+                page = 1;
+            }
+            int pageSize = 10;
             var ordersForUser = await _orderService.GetOrdersForUser(GetUserId());
             ViewBag.PageNumber = page;
             ViewBag.TotalPages = PageHelper.CalculateTotalPages(pageSize, ordersForUser.OrderModel);
@@ -89,6 +93,10 @@ namespace BusarovsQuckBite.Controllers
         [Authorize(Roles = $"{RoleConstants.AdminRoleName},{RoleConstants.DeliveryDriverRoleName},{RoleConstants.CookingStaffRoleName}")]
         public async Task<IActionResult> OrderManagement(int page = 1)
         {
+            if (page == 0)
+            {
+                page = 1;
+            }
             int pageSize = 10;
             AllUserOrdersViewModel allOrders;
             try
