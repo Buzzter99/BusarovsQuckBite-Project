@@ -29,6 +29,19 @@
                             <div class="d-grid">
                                 <input type="submit" class="btn btn-primary btn-lg gradient-custom-4 text-body" value="Log In">
                             </div>
+                            <p class="text-center text-muted mt-3 mb-0">
+                                Forgot Password? <a asp-controller="Manage" asp-action="ForgotPassword" asp-area="AccountManager" class="fw-bold text-body"><u>Recover Password</u></a>
+                            </p>
+                            <p class="text-center text-muted mt-3 mb-0">
+                                Don't have an account? <a asp-controller="Users" asp-action="Register" asp-area="AccountManager" class="fw-bold text-body"><u>Register</u></a>
+                            </p>
+                            <p class="text-center text-muted mt-3 mb-0">
+                                Email not confirmed? <a asp-controller="Manage" asp-action="ResendEmailConfirmation" asp-area="AccountManager" class="fw-bold text-body"><u>Resend Email Confirmation</u></a>
+                            </p>
+                            @{
+                                await Html.RenderPartialAsync("_MessagePartial", TempData);
+                            }
+                            
                         </form>
                     </div>
                 </div>

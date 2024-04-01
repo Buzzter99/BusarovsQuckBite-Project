@@ -17,7 +17,6 @@ namespace BusarovsQuckBite.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            //string? callbackUrl = Url.Action("Login", "Users", new { area = "AccountManager", token = "test", userId = 1 }, Request.Scheme);
             var entities = await _productService.GetProductsForHomePageAsync(3);
             return View(entities);
         }

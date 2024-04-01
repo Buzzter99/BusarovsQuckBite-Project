@@ -6,6 +6,7 @@ using BusarovsQuckBite.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 namespace BusarovsQuckBite.Areas.Users.Controllers
 {
@@ -15,15 +16,18 @@ namespace BusarovsQuckBite.Areas.Users.Controllers
         private readonly ApplicationSignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly ILogger<ApplicationUser> _logger;
+        private readonly IEmailSender _emailSender;
         public UsersController(ApplicationUserManager<ApplicationUser> userManager,
             ApplicationSignInManager<ApplicationUser> signInManager,
             ILogger<ApplicationUser> logger,
-           RoleManager<ApplicationRole> roleManager)
+           RoleManager<ApplicationRole> roleManager,
+            IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _roleManager = roleManager;
+            _emailSender = emailSender;
         }
         [AllowAnonymous]
         [HttpGet]
@@ -53,6 +57,11 @@ namespace BusarovsQuckBite.Areas.Users.Controllers
                     {
                         await _userManager.AddToRoleAsync(entity, RoleConstants.CustomerRoleName);
                     }
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(entity);
+                    string callbackUrl = Url.Action("ConfirmEmail", "Manage", new { area = "AccountManager", userId = entity.Id, token = token  }, Request.Scheme)!;
+                    await _emailSender.SendEmailAsync(entity.Email, $"Confirm your email - QuickBite - {entity.UserName}",
+                        $"Please confirm your account by <a href='{(callbackUrl)}'>clicking here</a>  to access <b>all features and discounts.</b>");
+                    TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyAdded, "Account") + Environment.NewLine + "Email Verification sent! Please verify email to access all features!";
                     return RedirectToAction(nameof(Login));
                 }
                 foreach (var error in result.Errors)

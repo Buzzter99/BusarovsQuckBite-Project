@@ -27,4 +27,12 @@
     <Folder Include="Areas\AccountManager\Pages\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Areas\AccountManager\Views\Manage\ConfirmEmail.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Areas\AccountManager\Views\Manage\ConfirmEmail.cshtml" />
+  </ItemGroup>
+
 </Project>
