@@ -72,7 +72,7 @@ namespace BusarovsQuckBite.Services
         }
         public async Task<bool> IsInRoleAsyncById(string userId, string roleName)
         {
-            var user = await _store.FindByIdAsync(userId);
+            var user = await FindByIdAsync(userId);
             var role = await _store.Context.Roles.FirstOrDefaultAsync(x => x.Name == roleName);
             if (role == null || user == null)
             {

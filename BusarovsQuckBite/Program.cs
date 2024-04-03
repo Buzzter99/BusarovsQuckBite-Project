@@ -31,10 +31,7 @@ namespace BusarovsQuckBite
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddScoped<IDataProtectionService, DataProtectionService>();
             builder.Services.AddTransient<IEmailSender, EmailService>();
-            builder.Services.Configure<CustomTokenProviderOptions>(options =>
-            {
-                options.TokenLifespan = TimeSpan.FromHours(2);
-            });
+            builder.Services.Configure<CustomTokenProviderOptions>(options => {options.TokenLifespan = TimeSpan.FromHours(2);});
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = false;
