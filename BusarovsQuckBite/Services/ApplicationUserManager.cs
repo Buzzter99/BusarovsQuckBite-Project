@@ -159,5 +159,19 @@ namespace BusarovsQuckBite.Services
             }
             return await Task.FromResult(errors);
         }
+        public UserAllInfoViewModel MapInfoForUser(ApplicationUser user)
+        {
+            return new UserAllInfoViewModel()
+            {
+                UpdateUserDataViewModel = new UpdateUserDataViewModel()
+                {
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    Username = user.UserName,
+                    FirstName = user.FirstName == "" ? "" : _protectionService.Decrypt(user.FirstName!),
+                    LastName = user.LastName == "" ? "" : _protectionService.Decrypt(user.LastName!),
+                }
+            };
+        }
     }
 }

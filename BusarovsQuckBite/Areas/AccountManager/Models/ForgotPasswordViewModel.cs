@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BusarovsQuckBite.Areas.AccountManager.Models.Interfaces;
 
 namespace BusarovsQuckBite.Areas.AccountManager.Models
 {
-    public class ForgotPasswordViewModel
+    public class ForgotPasswordViewModel : IPasswordViewModel
     {
         [Required]
         [EmailAddress]
@@ -11,7 +12,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Models
         public string Password { get; set; } = string.Empty;
         [Required]
         [Compare(nameof(Password))]
-        public string PasswordConfirm { get; set; } = string.Empty;
+        public string ConfirmPassword { get; set; } = string.Empty;
         [Required]
         public string Token { get; set; } = string.Empty;
     }

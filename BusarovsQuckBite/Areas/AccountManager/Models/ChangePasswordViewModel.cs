@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BusarovsQuckBite.Areas.AccountManager.Models.Interfaces;
 
 namespace BusarovsQuckBite.Areas.AccountManager.Models
 {
-    public class ChangePasswordViewModel
+    public class ChangePasswordViewModel : IPasswordViewModel
     {
         [Required]
         public string Id { get; set; } = string.Empty;

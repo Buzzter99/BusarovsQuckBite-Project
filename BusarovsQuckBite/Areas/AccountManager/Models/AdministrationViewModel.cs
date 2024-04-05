@@ -1,9 +1,10 @@
 ﻿using BusarovsQuckBite.Constants;
 using System.ComponentModel.DataAnnotations;
+using BusarovsQuckBite.Areas.AccountManager.Models.Interfaces;
 
 namespace BusarovsQuckBite.Areas.AccountManager.Models
 {
-    public class AdministrationViewModel
+    public class AdministrationViewModel : IUserViewModel,IUserDataViewModel
     {
         public string Id { get; set; } = string.Empty;
         [Required]
@@ -17,7 +18,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Models
         public bool IsActive { get; set; }
         public DateTime TransactionDateAndTime { get; set; }
         [Required]
-        [RegularExpression(Constants.UserConstants.PhoneNumberValidationRegex, ErrorMessage = "Please provide valid Phone Number!")]
+        [RegularExpression(UserConstants.PhoneNumberValidationRegex, ErrorMessage = "Please provide valid Phone Number!")]
         public string PhoneNumber { get; set; } = string.Empty;
         [MinLength(UserConstants.FirstNameMinLength)]
         [MaxLength(UserConstants.FirstNameMaxLength)]

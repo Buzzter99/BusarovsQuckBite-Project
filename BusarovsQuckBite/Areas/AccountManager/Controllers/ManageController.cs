@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using System.Text.Encodings.Web;
+using BusarovsQuckBite.Contracts;
 
 namespace BusarovsQuckBite.Areas.AccountManager.Controllers
 {
@@ -15,14 +16,17 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
     {
         private readonly ApplicationUserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
-        public ManageController(ApplicationUserManager<ApplicationUser> userManager, IEmailSender emailSender)
+        private readonly IDataProtectionService _protectionService;
+        public ManageController(ApplicationUserManager<ApplicationUser> userManager, IEmailSender emailSender, IDataProtectionService protectionService)
         {
             _userManager = userManager;
             _emailSender = emailSender;
+            _protectionService = protectionService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var userData = _userManager.MapInfoForUser(await _userManager.FindByIdAsync(GetUserId()));
+            return View(userData);
         }
         [HttpPost]
         [AllowAnonymous]
@@ -43,6 +47,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                     return View();
                 }
                 TempData[ErrorMessagesConstants.FailedMessageKey] = string.Join(Environment.NewLine, result.Errors.Select(c => c.Description));
+                return View(model);
             }
             return View();
         }
@@ -76,7 +81,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             if (user != null)
             {
 
-                var token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(await _userManager.GeneratePasswordResetTokenAsync(user))); 
+                var token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(await _userManager.GeneratePasswordResetTokenAsync(user)));
                 string callbackUrl = Url.Action("ForgotPasswordConfirmation", "Manage", new { area = "AccountManager", token = token }, Request.Scheme)!;
                 await _emailSender.SendEmailAsync(user.Email, $"Password Reset - {user.UserName}",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>");
@@ -137,6 +142,38 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 }
             }
             return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateUserData(UpdateUserDataViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(nameof(Index), new UserAllInfoViewModel { UpdateUserDataViewModel = model });
+            }
+            var user = await _userManager.FindByIdAsync(GetUserId());
+            if (user != null)
+            {
+                if (model.FirstName != null)
+                {
+                    user.FirstName = _protectionService.Encrypt(model.FirstName);
+                }
+                if (model.LastName != null)
+                {
+                    user.LastName = _protectionService.Encrypt(model.LastName);
+                }
+                user.PhoneNumber = model.PhoneNumber;
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty,error.Description);
+                    }
+                    return View(nameof(Index), new UserAllInfoViewModel { UpdateUserDataViewModel = model });
+                }
+            }
+            TempData[SuccessMessageConstants.SuccessMessageKey] = SuccessMessageConstants.SuccessfullyModified;
+            return RedirectToAction(nameof(Index));
         }
     }
 }

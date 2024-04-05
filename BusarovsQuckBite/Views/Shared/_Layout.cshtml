@@ -19,43 +19,40 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        @if (User.Identity!.IsAuthenticated)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMyData" role="button" data-bs-toggle="dropdown" aria-expanded="false">Orders and Addresses</a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMyData">
+                                    <li><a class="dropdown-item" asp-controller="Orders" asp-action="Orders" asp-area="">My Orders</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Address" asp-action="All" asp-area="">My Addresses</a></li>
+                                </ul>
+                            </li>
+                        }
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-controller="Menu" asp-action="All" asp-area="">Order Menu</a>
                         </li>
                         @if (User.IsInRole(RoleConstants.AdminRoleName))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="AccountManager" asp-controller="Administration" asp-action="Index">User Administration</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Category" asp-action="All">Categories</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Product" asp-action="All">Products</a>
-                            </li>
-                        }
-                        @if (User.Identity!.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Orders" asp-action="Orders" asp-area="">My Orders</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Address" asp-action="All" asp-area="">My Addresses</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Administration</a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" asp-area="AccountManager" asp-controller="Administration" asp-action="Index">User Administration</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="All">Categories</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Product" asp-action="All">Products</a></li>
+                                </ul>
                             </li>
                         }
-                        @if ((User.IsInRole(RoleConstants.CookingStaffRoleName) 
-                             || User.IsInRole(RoleConstants.DeliveryDriverRoleName) 
-                             || User.IsInRole(RoleConstants.AdminRoleName))
-                             && User.Identity.IsAuthenticated)
+                        @if ((User.IsInRole(RoleConstants.CookingStaffRoleName)
+                        || User.IsInRole(RoleConstants.DeliveryDriverRoleName)
+                        || User.IsInRole(RoleConstants.AdminRoleName))
+                        && User.Identity!.IsAuthenticated)
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Orders" asp-action="OrderManagement" asp-area="">Manage Orders</a>
                             </li>
 
                         }
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Menu" asp-action="All" asp-area="">Order Menu</a>
-                        </li>
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

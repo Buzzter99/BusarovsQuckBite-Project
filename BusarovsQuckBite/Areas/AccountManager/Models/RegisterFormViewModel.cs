@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BusarovsQuckBite.Areas.AccountManager.Models.Interfaces;
 using BusarovsQuckBite.Constants;
 
 namespace BusarovsQuckBite.Areas.AccountManager.Models
 {
-    public class RegisterFormViewModel
+    public class RegisterFormViewModel : IPasswordViewModel,IUserViewModel
     {
         [Required]
         [MinLength(UserConstants.UsernameMinLength)]

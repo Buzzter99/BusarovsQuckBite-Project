@@ -13,7 +13,7 @@
                         <a class="page-link" href="@Url.Action("Orders","Orders", new { page = i}) ">@i</a>
                     </li>
                 }
-                <li class="page-item @((ViewBag.PageNumber == ViewBag.TotalPages) ? "disabled" : "")">
+                <li class="page-item @((ViewBag.PageNumber >= ViewBag.TotalPages || ViewBag.TotalPages == 0) ? "disabled" : "")">
                     <a class="page-link" href="@Url.Action("Orders","Orders", new { page = ViewBag.PageNumber + 1})" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>

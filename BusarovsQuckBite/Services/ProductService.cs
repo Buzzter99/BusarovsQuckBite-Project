@@ -94,10 +94,13 @@ namespace BusarovsQuckBite.Services
         public async Task DeleteProduct(int id)
         {
             var entity = await GetProductByIdAsync(id);
+            if (entity.Category.IsDeleted)
+            {
+                throw new ApplicationException("Cannot Modify Product to Deleted Category!");
+            }
             entity.IsDeleted = !entity.IsDeleted;
             await _context.SaveChangesAsync();
         }
-
         public async Task<Product> GetProductByIdAsync(int productId)
         {
             var entity = await _context.Products.FirstOrDefaultAsync(x => x.Id == productId);
@@ -107,7 +110,6 @@ namespace BusarovsQuckBite.Services
             }
             return entity;
         }
-
         public async Task<ProductFormViewModel> MapProductAsync(int id)
         {
             var product = await GetProductByIdAsync(id);
