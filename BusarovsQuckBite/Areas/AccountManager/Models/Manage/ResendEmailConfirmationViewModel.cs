@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BusarovsQuckBite.Areas.AccountManager.Models
+namespace BusarovsQuckBite.Areas.AccountManager.Models.Manage
 {
     public class ResendEmailConfirmationViewModel
     {

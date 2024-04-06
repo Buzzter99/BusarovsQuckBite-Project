@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace BusarovsQuckBite.Areas.AccountManager.Models
+namespace BusarovsQuckBite.Areas.AccountManager.Models.Users
 {
     public class LoginViewModel
     {

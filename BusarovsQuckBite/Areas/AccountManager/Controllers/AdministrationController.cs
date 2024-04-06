@@ -1,4 +1,4 @@
-﻿using BusarovsQuckBite.Areas.AccountManager.Models;
+﻿using BusarovsQuckBite.Areas.AccountManager.Models.Administration;
 using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models.Enums;
@@ -135,7 +135,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             return View(_userManager.MapPasswordViewModel(entity));
         }
         [HttpPost]
-        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        public async Task<IActionResult> ChangePassword(ChangePasswordAdministrationViewModel model)
         {
             if (!ModelState.IsValid)
             {

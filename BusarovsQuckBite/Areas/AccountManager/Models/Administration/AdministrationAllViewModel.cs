@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace BusarovsQuckBite.Areas.AccountManager.Models
+namespace BusarovsQuckBite.Areas.AccountManager.Models.Administration
 {
     public class AdministrationAllViewModel
     {

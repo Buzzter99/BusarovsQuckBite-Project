@@ -1,5 +1,5 @@
 ﻿using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Models;
+using BusarovsQuckBite.Models.Address;
 
 namespace BusarovsQuckBite.Contracts
 {

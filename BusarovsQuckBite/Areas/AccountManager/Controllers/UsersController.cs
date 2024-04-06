@@ -1,5 +1,4 @@
-﻿using BusarovsQuckBite.Areas.AccountManager.Controllers;
-using BusarovsQuckBite.Areas.AccountManager.Models;
+﻿using BusarovsQuckBite.Areas.AccountManager.Models.Users;
 using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Services;
@@ -11,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using System.Text.Encodings.Web;
-namespace BusarovsQuckBite.Areas.Users.Controllers
+namespace BusarovsQuckBite.Areas.AccountManager.Controllers
 {
     public class UsersController : BaseAreaController
     {

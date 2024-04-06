@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using BusarovsQuckBite.Constants;
 
-namespace BusarovsQuckBite.Models
+namespace BusarovsQuckBite.Models.Category
 {
     public class CategoryViewModel
     {

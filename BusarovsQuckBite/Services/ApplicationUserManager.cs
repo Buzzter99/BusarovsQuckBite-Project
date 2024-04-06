@@ -1,4 +1,5 @@
-﻿using BusarovsQuckBite.Areas.AccountManager.Models;
+﻿using BusarovsQuckBite.Areas.AccountManager.Models.Administration;
+using BusarovsQuckBite.Areas.AccountManager.Models.Manage;
 using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data;
@@ -6,11 +7,8 @@ using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using System.Security.Policy;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuckBite.Services
@@ -38,7 +36,7 @@ namespace BusarovsQuckBite.Services
             }
             return await base.CreateAsync(user, password);
         }
-        
+
         private async Task<List<RoleViewModel>> GetAllRoles()
         {
             return await _store.Context.Roles.Select(c => new RoleViewModel()
@@ -62,9 +60,9 @@ namespace BusarovsQuckBite.Services
                 TransactionDateAndTime = user.TransactionDateAndTime
             };
         }
-        public  ChangePasswordViewModel MapPasswordViewModel(ApplicationUser user)
+        public ChangePasswordAdministrationViewModel MapPasswordViewModel(ApplicationUser user)
         {
-            return new ChangePasswordViewModel()
+            return new ChangePasswordAdministrationViewModel()
             {
                 Id = user.Id,
                 Username = user.UserName
@@ -77,7 +75,7 @@ namespace BusarovsQuckBite.Services
             if (role == null || user == null)
             {
                 throw new ApplicationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
-            }   
+            }
             return await IsInRoleAsync(user, role.Name);
         }
 
@@ -111,7 +109,7 @@ namespace BusarovsQuckBite.Services
                     Roles = _store.Context.UserRoles
                         .Where(ur => ur.UserId == c.Id)
                         .Select(ur => ur.RoleId)
-                        .Join(_store.Context.Roles, ur => ur, r => r.Id, (ur, r) => 
+                        .Join(_store.Context.Roles, ur => ur, r => r.Id, (ur, r) =>
                             new RoleViewModel { Name = r.Name })
                         .ToList()
                 })
@@ -159,18 +157,15 @@ namespace BusarovsQuckBite.Services
             }
             return await Task.FromResult(errors);
         }
-        public UserAllInfoViewModel MapInfoForUser(ApplicationUser user)
+        public UpdateUserDataViewModel MapInfoForUser(ApplicationUser user)
         {
-            return new UserAllInfoViewModel()
+            return new UpdateUserDataViewModel()
             {
-                UpdateUserDataViewModel = new UpdateUserDataViewModel()
-                {
-                    Email = user.Email,
-                    PhoneNumber = user.PhoneNumber,
-                    Username = user.UserName,
-                    FirstName = user.FirstName == "" ? "" : _protectionService.Decrypt(user.FirstName!),
-                    LastName = user.LastName == "" ? "" : _protectionService.Decrypt(user.LastName!),
-                }
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Username = user.UserName,
+                FirstName = user.FirstName == "" ? "" : _protectionService.Decrypt(user.FirstName!),
+                LastName = user.LastName == "" ? "" : _protectionService.Decrypt(user.LastName!),
             };
         }
     }

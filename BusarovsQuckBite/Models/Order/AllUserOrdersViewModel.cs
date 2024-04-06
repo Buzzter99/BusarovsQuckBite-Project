@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace BusarovsQuckBite.Models
+namespace BusarovsQuckBite.Models.Order
 {
     public class AllUserOrdersViewModel
     {

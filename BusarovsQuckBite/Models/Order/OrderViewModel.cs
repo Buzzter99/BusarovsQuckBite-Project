@@ -2,8 +2,10 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using BusarovsQuckBite.Data.Enums;
+using BusarovsQuckBite.Models.Cart;
+using BusarovsQuckBite.Models.Address;
 
-namespace BusarovsQuckBite.Models
+namespace BusarovsQuckBite.Models.Order
 {
     public class OrderViewModel
     {

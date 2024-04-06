@@ -1,5 +1,6 @@
 ﻿using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Models;
+using BusarovsQuckBite.Models.Cart;
+using BusarovsQuckBite.Models.Product;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace BusarovsQuckBite.Contracts

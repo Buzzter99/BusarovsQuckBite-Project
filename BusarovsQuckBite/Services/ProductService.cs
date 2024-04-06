@@ -2,8 +2,9 @@
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Models;
+using BusarovsQuckBite.Models.Category;
 using BusarovsQuckBite.Models.Enums;
+using BusarovsQuckBite.Models.Product;
 using Microsoft.EntityFrameworkCore;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 namespace BusarovsQuckBite.Services

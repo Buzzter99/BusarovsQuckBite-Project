@@ -1,7 +1,8 @@
 ﻿using BusarovsQuckBite.Constants;
+using BusarovsQuckBite.Models.Category;
 using System.ComponentModel.DataAnnotations;
 
-namespace BusarovsQuckBite.Models
+namespace BusarovsQuckBite.Models.Product
 {
     public class ProductFormViewModel
     {
@@ -20,7 +21,7 @@ namespace BusarovsQuckBite.Models
         [Required]
         public int QtyAvailable { get; set; }
         [Required]
-        public int CategoryId { get; set; } 
+        public int CategoryId { get; set; }
         public List<CategoryViewModel> ActiveCategories { get; set; } = new List<CategoryViewModel>();
         [Required]
         public IFormFile ImageFile { get; set; } = null!;

@@ -1,4 +1,5 @@
-﻿@model List<ProductViewModel>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model List<ProductViewModel>
 @{
     await Html.RenderPartialAsync("_MessagePartial", TempData);
 }

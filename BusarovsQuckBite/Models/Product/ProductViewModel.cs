@@ -1,4 +1,6 @@
-﻿namespace BusarovsQuckBite.Models
+﻿using BusarovsQuckBite.Models.Category;
+
+namespace BusarovsQuckBite.Models.Product
 {
     public class ProductViewModel
     {

@@ -3,8 +3,10 @@ using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Enums;
 using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Models;
+using BusarovsQuckBite.Models.Cart;
 using BusarovsQuckBite.Models.Enums;
+using BusarovsQuckBite.Models.Order;
+using BusarovsQuckBite.Models.Product;
 using Microsoft.EntityFrameworkCore;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 

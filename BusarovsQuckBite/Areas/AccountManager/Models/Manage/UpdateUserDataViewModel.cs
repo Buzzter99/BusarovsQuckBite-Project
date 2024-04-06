@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using BusarovsQuckBite.Areas.AccountManager.Models.Interfaces;
 
-namespace BusarovsQuckBite.Areas.AccountManager.Models
+namespace BusarovsQuckBite.Areas.AccountManager.Models.Manage
 {
-    public class UpdateUserDataViewModel : IUserViewModel,IUserDataViewModel
+    public class UpdateUserDataViewModel : IUserViewModel, IUserDataViewModel
     {
         [MinLength(UserConstants.FirstNameMinLength)]
         [MaxLength(UserConstants.FirstNameMaxLength)]

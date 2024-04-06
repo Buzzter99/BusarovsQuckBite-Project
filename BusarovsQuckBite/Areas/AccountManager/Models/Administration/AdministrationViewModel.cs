@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using BusarovsQuckBite.Areas.AccountManager.Models.Interfaces;
 
-namespace BusarovsQuckBite.Areas.AccountManager.Models
+namespace BusarovsQuckBite.Areas.AccountManager.Models.Administration
 {
-    public class AdministrationViewModel : IUserViewModel,IUserDataViewModel
+    public class AdministrationViewModel : IUserViewModel, IUserDataViewModel
     {
         public string Id { get; set; } = string.Empty;
         [Required]

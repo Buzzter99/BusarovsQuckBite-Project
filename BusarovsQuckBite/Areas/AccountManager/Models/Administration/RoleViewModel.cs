@@ -1,4 +1,4 @@
-﻿namespace BusarovsQuckBite.Areas.AccountManager.Models
+﻿namespace BusarovsQuckBite.Areas.AccountManager.Models.Administration
 {
     public class RoleViewModel
     {

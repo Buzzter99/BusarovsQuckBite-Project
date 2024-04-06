@@ -38,6 +38,9 @@
                             <p class="text-center text-muted mt-3 mb-0">
                                 Email not confirmed? <a asp-controller="Manage" asp-action="ResendEmailConfirmation" asp-area="AccountManager" class="fw-bold text-body"><u>Resend Email Confirmation</u></a>
                             </p>
+                            <p class="text-center text-muted mt-3 mb-0">
+                                Forgot Username? <a asp-controller="Manage" asp-action="ResetUsername" asp-area="AccountManager" class="fw-bold text-body"><u>Reset It From Here</u></a>
+                            </p>
                             @{
                                 await Html.RenderPartialAsync("_MessagePartial", TempData);
                             }

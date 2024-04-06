@@ -62,8 +62,8 @@ namespace BusarovsQuckBite
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
-                // app.UseMiddleware<BadResponseCodeRedirect>();
-                // app.UseMiddleware<ExceptionLogger>();
+                //app.UseMiddleware<BadResponseCodeRedirect>();
+                //app.UseMiddleware<ExceptionLogger>();
             }
             else
             {

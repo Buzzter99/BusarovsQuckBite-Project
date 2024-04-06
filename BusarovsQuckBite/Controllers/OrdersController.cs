@@ -1,6 +1,7 @@
 ﻿using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
-using BusarovsQuckBite.Models;
+using BusarovsQuckBite.Models.Cart;
+using BusarovsQuckBite.Models.Order;
 using BusarovsQuckBite.Models.PageHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,9 +1,9 @@
 ﻿using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Models;
 using BusarovsQuckBite.Models.Enums;
 using BusarovsQuckBite.Models.PageHelpers;
+using BusarovsQuckBite.Models.Product;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;

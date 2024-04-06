@@ -1,5 +1,6 @@
-﻿using BusarovsQuckBite.Areas.AccountManager.Models;
+﻿using BusarovsQuckBite.Areas.AccountManager.Models.Manage;
 using BusarovsQuckBite.Constants;
+using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using System.Text.Encodings.Web;
-using BusarovsQuckBite.Contracts;
+using BusarovsQuckBite.Areas.AccountManager.Models.Enums;
 
 namespace BusarovsQuckBite.Areas.AccountManager.Controllers
 {
@@ -17,7 +18,9 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
         private readonly ApplicationUserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
         private readonly IDataProtectionService _protectionService;
-        public ManageController(ApplicationUserManager<ApplicationUser> userManager, IEmailSender emailSender, IDataProtectionService protectionService)
+        public ManageController(ApplicationUserManager<ApplicationUser> userManager, 
+            IEmailSender emailSender, 
+            IDataProtectionService protectionService)
         {
             _userManager = userManager;
             _emailSender = emailSender;
@@ -26,7 +29,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
         public async Task<IActionResult> Index()
         {
             var userData = _userManager.MapInfoForUser(await _userManager.FindByIdAsync(GetUserId()));
-            return View(userData);
+            return View(new UserAllInfoViewModel { UpdateUserDataViewModel = userData,ActiveTab = TabEnum.Profile.ToString()});
         }
         [HttpPost]
         [AllowAnonymous]
@@ -59,10 +62,6 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             {
                 model.Token = token;
             }
-            else
-            {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ErrorMessagesConstants.GeneralErrorMessage;
-            }
             return View(model);
         }
         [HttpPost]
@@ -83,7 +82,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
 
                 var token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(await _userManager.GeneratePasswordResetTokenAsync(user)));
                 string callbackUrl = Url.Action("ForgotPasswordConfirmation", "Manage", new { area = "AccountManager", token = token }, Request.Scheme)!;
-                await _emailSender.SendEmailAsync(user.Email, $"Password Reset - {user.UserName}",
+                await _emailSender.SendEmailAsync(user.Email, $"Password Reset",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>");
             }
             TempData[SuccessMessageConstants.SuccessMessageKey] = "Reset Password link sent. Please check your email";
@@ -105,14 +104,14 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View();
+                return View(model);
             }
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user != null)
             {
                 var token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(await _userManager.GenerateEmailConfirmationTokenAsync(user)));
                 string callbackUrl = Url.Action("ConfirmEmail", "Manage", new { area = "AccountManager", userId = user.Id, token = token }, Request.Scheme)!;
-                await _emailSender.SendEmailAsync(user.Email, $"Confirm your email - QuickBite - {user.UserName}",
+                await _emailSender.SendEmailAsync(user.Email, $"Confirm your email - QuickBite",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>  to access <b>all features and discounts.</b>");
             }
             TempData[SuccessMessageConstants.SuccessMessageKey] = "Email Verification sent!";
@@ -148,16 +147,16 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(nameof(Index), new UserAllInfoViewModel { UpdateUserDataViewModel = model });
+                return View(nameof(Index), new UserAllInfoViewModel { UpdateUserDataViewModel = model,ActiveTab = TabEnum.Profile.ToString()});
             }
             var user = await _userManager.FindByIdAsync(GetUserId());
             if (user != null)
             {
-                if (model.FirstName != null)
+                if (model.FirstName != null && !string.IsNullOrEmpty(model.FirstName) && !string.IsNullOrWhiteSpace(model.FirstName))
                 {
                     user.FirstName = _protectionService.Encrypt(model.FirstName);
                 }
-                if (model.LastName != null)
+                if (model.LastName != null && !string.IsNullOrEmpty(model.FirstName) && !string.IsNullOrWhiteSpace(model.FirstName))
                 {
                     user.LastName = _protectionService.Encrypt(model.LastName);
                 }
@@ -169,11 +168,97 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                     {
                         ModelState.AddModelError(string.Empty,error.Description);
                     }
-                    return View(nameof(Index), new UserAllInfoViewModel { UpdateUserDataViewModel = model });
+                    return View(nameof(Index), new UserAllInfoViewModel { UpdateUserDataViewModel = model, ActiveTab = TabEnum.Profile.ToString()});
                 }
             }
             TempData[SuccessMessageConstants.SuccessMessageKey] = SuccessMessageConstants.SuccessfullyModified;
             return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> ChangePassword(ChangeUserPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(nameof(Index), new UserAllInfoViewModel { ActiveTab = TabEnum.ChangePassword.ToString(),UpdateUserDataViewModel = _userManager.MapInfoForUser(await _userManager.FindByIdAsync(GetUserId())),ChangeUserPasswordViewModel = model});
+            }
+            var changePassword = await _userManager.ChangePasswordAsync(await _userManager.FindByIdAsync(GetUserId()),model.OldPassword,model.Password);
+            if (!changePassword.Succeeded)
+            {
+                foreach (var error in changePassword.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return View(nameof(Index), new UserAllInfoViewModel { ActiveTab = TabEnum.ChangePassword.ToString(), UpdateUserDataViewModel = _userManager.MapInfoForUser(await _userManager.FindByIdAsync(GetUserId())), ChangeUserPasswordViewModel = model });
+            }
+            TempData[SuccessMessageConstants.SuccessMessageKey] = "Password Changed Successfully";
+            return View(nameof(Index), new UserAllInfoViewModel { ActiveTab = TabEnum.ChangePassword.ToString(), UpdateUserDataViewModel = _userManager.MapInfoForUser(await _userManager.FindByIdAsync(GetUserId())) });
+
+        }
+        [AllowAnonymous]
+        public IActionResult ResetUsername()
+        {
+            return View();
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetUsername(ResendEmailConfirmationViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user != null)
+            {
+                var token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(await _userManager.GenerateUserTokenAsync(user,"Default","ResetUsername")));
+                string callbackUrl = Url.Action("ResetUsernameConfirmation", "Manage", new { area = "AccountManager", token = token }, Request.Scheme)!;
+                await _emailSender.SendEmailAsync(user.Email, $"Reset Your Username - QuickBite",
+                    $"Please reset your username by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>");
+            }
+            TempData[SuccessMessageConstants.SuccessMessageKey] = "Username Reset Link Sent";
+            return RedirectToAction(nameof(ResetUsername));
+        }
+        [AllowAnonymous]
+        public IActionResult ResetUsernameConfirmation(string? token)
+        {
+            ResetUsernameViewModel model = new ResetUsernameViewModel();
+            if (token != null)
+            {
+                model.Token = token;
+            }
+            return View(model);
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetUsernameConfirmation(ResetUsernameViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user != null)
+            {
+                var result = await _userManager.VerifyUserTokenAsync(user,"Default","ResetUsername", Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(model.Token)));
+                if (!result)
+                {
+                    TempData[ErrorMessagesConstants.FailedMessageKey] = "An error occured. Please try again Later!";
+                    return View(model);
+                }
+                user.UserName = model.NewUsername;
+                var operation = await _userManager.UpdateAsync(user);
+                if (!operation.Succeeded)
+                {
+                    foreach (var error in operation.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty,error.Description);
+                    }
+                    return View(model);
+                }
+                await _userManager.UpdateSecurityStampAsync(user);
+                TempData[SuccessMessageConstants.SuccessMessageKey] = "Username Changed Successfully";
+                return View();
+            }
+            return View();
         }
     }
 }

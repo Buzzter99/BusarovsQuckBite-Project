@@ -2,9 +2,9 @@
 using BusarovsQuckBite.Areas.AccountManager.Models.Interfaces;
 using BusarovsQuckBite.Constants;
 
-namespace BusarovsQuckBite.Areas.AccountManager.Models
+namespace BusarovsQuckBite.Areas.AccountManager.Models.Users
 {
-    public class RegisterFormViewModel : IPasswordViewModel,IUserViewModel
+    public class RegisterFormViewModel : IPasswordViewModel, IUserViewModel
     {
         [Required]
         [MinLength(UserConstants.UsernameMinLength)]
@@ -20,7 +20,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Models
         [EmailAddress]
         public string Email { get; set; } = string.Empty;
         [Required]
-        [RegularExpression(Constants.UserConstants.PhoneNumberValidationRegex,ErrorMessage = "Please provide valid Phone Number!")]
+        [RegularExpression(UserConstants.PhoneNumberValidationRegex, ErrorMessage = "Please provide valid Phone Number!")]
         public string PhoneNumber { get; set; } = string.Empty;
 
 

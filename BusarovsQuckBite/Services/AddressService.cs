@@ -2,7 +2,7 @@
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Models;
+using BusarovsQuckBite.Models.Address;
 using Microsoft.EntityFrameworkCore;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 

@@ -1,6 +1,6 @@
 ﻿using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Models;
 using BusarovsQuckBite.Models.Enums;
+using BusarovsQuckBite.Models.Product;
 
 namespace BusarovsQuckBite.Contracts
 {

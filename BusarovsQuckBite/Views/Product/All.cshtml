@@ -1,5 +1,5 @@
-﻿@model ProductAllViewModel
-
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model ProductAllViewModel
 <nav class="nav nav-pills flex-column flex-sm-row">
     @foreach (var item in Model.CategoriesWithProducts)
     {

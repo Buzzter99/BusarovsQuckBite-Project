@@ -1,17 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using BusarovsQuckBite.Areas.AccountManager.Models.Interfaces;
 
-namespace BusarovsQuckBite.Areas.AccountManager.Models
+namespace BusarovsQuckBite.Areas.AccountManager.Models.Manage
 {
-    public class ChangePasswordViewModel : IPasswordViewModel
+    public class ForgotPasswordViewModel : IPasswordViewModel
     {
         [Required]
-        public string Id { get; set; } = string.Empty;
+        [EmailAddress]
+        public string Email { get; set; } = string.Empty;
         [Required]
         public string Password { get; set; } = string.Empty;
         [Required]
         [Compare(nameof(Password))]
         public string ConfirmPassword { get; set; } = string.Empty;
-        public string Username { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Please Submit Link Again!")]
+        public string Token { get; set; } = string.Empty;
     }
 }

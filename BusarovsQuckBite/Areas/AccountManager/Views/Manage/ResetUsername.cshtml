@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "ResetUsername";
+}
+@model ResendEmailConfirmationViewModel
+<div class="mask d-flex align-items-center h-100 gradient-custom-3">
+    <div class="container h-100">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-md-8 col-lg-6">
+                <div class="card" style="border-radius: 15px;">
+                    <div class="card-body p-5">
+                        <h2 class="text-uppercase text-center mb-5">Enter Email Address To Reset Username</h2>
+                        <form asp-area="AccountManager" asp-controller="Manage" asp-action="ResetUsername" method="post">
+                            <div class="form-group mb-3">
+                                <label class="form-label" for="Email">Email</label>
+                                <input asp-for="Email" type="text" id="Email" class="form-control form-control-lg" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="d-grid">
+                                <input type="submit" class="btn btn-primary btn-lg gradient-custom-4 text-body" value="Send Request">
+                            </div>
+                            <div style="margin-top: 20px;"></div>
+                            @{
+                                await Html.RenderPartialAsync("_MessagePartial", TempData);
+                            }
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
