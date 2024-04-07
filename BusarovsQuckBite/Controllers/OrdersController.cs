@@ -129,8 +129,17 @@ namespace BusarovsQuckBite.Controllers
             return RedirectToAction(nameof(OrderManagement), new { page = pageNumber });
         }
         [Authorize(Roles = $"{RoleConstants.AdminRoleName},{RoleConstants.DeliveryDriverRoleName},{RoleConstants.CookingStaffRoleName}")]
-        public IActionResult SendMessage(OrderMessageViewModel messageInfo)
+        public async Task<IActionResult> SendMessage(OrderMessageViewModel messageInfo)
         {
+            try
+            {
+                await _orderService.GetByIdAsync(messageInfo.OrderId);
+            }
+            catch (ApplicationException ae)
+            {
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                return RedirectToAction(nameof(OrderManagement));
+            }
             return View(messageInfo);
         }
 

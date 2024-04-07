@@ -35,6 +35,10 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            if (User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home", new { area = "" });
+            }
             return View();
         }
         [AllowAnonymous]
@@ -77,6 +81,10 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login()
         {
+            if (User.Identity!.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home", new { area = "" });
+            }
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
             return View();
         }
@@ -84,7 +92,6 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            
             var user = await _userManager.FindByNameAsync(model.Username);
             if (user != null)
             {

@@ -2,7 +2,6 @@
 connection.on("ReceiveMessage", function (message) {
     var div = document.createElement("div");
     div.classList.add("alert", "alert-primary", "my-2");
-    const baseUrl = window.location.origin;
     document.getElementById("OrderList").appendChild(div);
     div.textContent = `${message}`;
     

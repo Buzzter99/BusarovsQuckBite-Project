@@ -36,7 +36,7 @@ namespace BusarovsQuckBite.Controllers
         {
             return View();
         }
-        public IActionResult Privacy()
+        public new IActionResult Unauthorized()
         {
             return View();
         }

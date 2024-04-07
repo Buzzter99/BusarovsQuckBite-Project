@@ -52,7 +52,7 @@ namespace BusarovsQuckBite
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/AccountManager/Users/Login";
-                options.AccessDeniedPath = "/Home/Error";
+                options.AccessDeniedPath = "/Home/Unauthorized";
             });
             builder.Services.AddControllersWithViews(options =>
             {
