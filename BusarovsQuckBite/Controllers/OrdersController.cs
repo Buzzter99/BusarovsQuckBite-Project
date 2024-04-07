@@ -77,19 +77,18 @@ namespace BusarovsQuckBite.Controllers
             ordersForUser.OrderModel = (PageHelper.CalculateItemsForPage(page, pageSize, ordersForUser.OrderModel));
             return View(ordersForUser);
         }
-        public async Task<IActionResult> TrackOrder(int id)
+        public async Task<IActionResult> TrackOrder(TrackOrderViewModel model)
         {
-            int status;
             try
             {
-               status = await _orderService.GetOrderStatusAsync(id,GetUserId());
+               model.Percentage = await _orderService.GetOrderStatusAsync(model.Id,GetUserId());
             }
             catch (ApplicationException ae)
             {
                 TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
                 return RedirectToAction(nameof(Orders));
             }
-            return View(status);
+            return View(model);
         }
         [Authorize(Roles = $"{RoleConstants.AdminRoleName},{RoleConstants.DeliveryDriverRoleName},{RoleConstants.CookingStaffRoleName}")]
         public async Task<IActionResult> OrderManagement(int page = 1)
@@ -128,6 +127,11 @@ namespace BusarovsQuckBite.Controllers
                 return RedirectToAction(nameof(OrderManagement), new { page = pageNumber});
             }
             return RedirectToAction(nameof(OrderManagement), new { page = pageNumber });
+        }
+        [Authorize(Roles = $"{RoleConstants.AdminRoleName},{RoleConstants.DeliveryDriverRoleName},{RoleConstants.CookingStaffRoleName}")]
+        public IActionResult SendMessage(OrderMessageViewModel messageInfo)
+        {
+            return View(messageInfo);
         }
 
     }

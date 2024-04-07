@@ -1,6 +1,8 @@
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
+using BusarovsQuckBite.Hubs;
+using BusarovsQuckBite.Middlewares;
 using BusarovsQuckBite.ModelBinders;
 using BusarovsQuckBite.Providers;
 using BusarovsQuckBite.Services;
@@ -29,6 +31,7 @@ namespace BusarovsQuckBite
             builder.Services.AddScoped<IImgService, ImgService>();
             builder.Services.AddScoped<ICartService, CartService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddSignalR();
             builder.Services.AddScoped<IDataProtectionService, DataProtectionService>();
             builder.Services.AddTransient<IEmailSender, EmailService>();
             builder.Services.Configure<CustomTokenProviderOptions>(options => {options.TokenLifespan = TimeSpan.FromHours(2);});
@@ -58,12 +61,12 @@ namespace BusarovsQuckBite
             });
             builder.Services.AddRazorPages();
             var app = builder.Build();
-
+            app.MapHub<ChatHub>("/chatHub");
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
-                //app.UseMiddleware<BadResponseCodeRedirect>();
-                //app.UseMiddleware<ExceptionLogger>();
+                app.UseMiddleware<BadResponseCodeRedirect>();
+                app.UseMiddleware<ExceptionLogger>();
             }
             else
             {

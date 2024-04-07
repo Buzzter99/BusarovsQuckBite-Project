@@ -13,7 +13,7 @@ using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuckBite.Services
 {
-    public class ApplicationUserManager<TUser> : UserManager<TUser> where TUser : IdentityUser, new()
+    public class ApplicationUserManager<TUser> : UserManager<TUser> where TUser : ApplicationUser, new()
     {
         private readonly UserStore<TUser, ApplicationRole, ApplicationDbContext, string, IdentityUserClaim<string>,
                 IdentityUserRole<string>, IdentityUserLogin<string>, IdentityUserToken<string>, IdentityRoleClaim<string>>
@@ -45,7 +45,7 @@ namespace BusarovsQuckBite.Services
                 Name = c.Name
             }).AsNoTracking().ToListAsync();
         }
-        public async Task<AdministrationViewModel> MapViewModel(ApplicationUser user)
+        public async Task<AdministrationViewModel> MapViewModel(TUser user)
         {
             return new AdministrationViewModel()
             {
@@ -60,7 +60,7 @@ namespace BusarovsQuckBite.Services
                 TransactionDateAndTime = user.TransactionDateAndTime
             };
         }
-        public ChangePasswordAdministrationViewModel MapPasswordViewModel(ApplicationUser user)
+        public ChangePasswordAdministrationViewModel MapPasswordViewModel(TUser user)
         {
             return new ChangePasswordAdministrationViewModel()
             {
@@ -81,17 +81,17 @@ namespace BusarovsQuckBite.Services
 
         public async Task<AdministrationAllViewModel> GetAllUsersByStatusAsync(FilterEnum e)
         {
-            IQueryable<ApplicationUser> query;
+            IQueryable<TUser> query;
             switch (e)
             {
                 case FilterEnum.Active:
-                    query = _store.Context.Users.Where(x => x.IsActive);
+                    query = (IQueryable<TUser>)_store.Context.Users.Where(x => x.IsActive);
                     break;
                 case FilterEnum.Deleted:
-                    query = _store.Context.Users.Where(x => !x.IsActive);
+                    query = (IQueryable<TUser>)_store.Context.Users.Where(x => !x.IsActive);
                     break;
                 default:
-                    query = _store.Context.Users;
+                    query = (IQueryable<TUser>)_store.Context.Users;
                     break;
             }
             var usersWithRoles = await query
@@ -131,7 +131,7 @@ namespace BusarovsQuckBite.Services
             }
             return await base.UpdateAsync(user);
         }
-        public ApplicationUser EditRequiredUserData(ApplicationUser entity, AdministrationViewModel model)
+        public TUser EditRequiredUserData(TUser entity, AdministrationViewModel model)
         {
             entity.Email = model.Email.Trim();
             entity.FirstName = model.FirstName == null ? "" : _protectionService.Encrypt(model.FirstName!);
@@ -157,7 +157,7 @@ namespace BusarovsQuckBite.Services
             }
             return await Task.FromResult(errors);
         }
-        public UpdateUserDataViewModel MapInfoForUser(ApplicationUser user)
+        public UpdateUserDataViewModel MapInfoForUser(TUser user)
         {
             return new UpdateUserDataViewModel()
             {

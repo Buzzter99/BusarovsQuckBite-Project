@@ -92,34 +92,34 @@ namespace BusarovsQuckBite.Migrations
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "33ad5f26-9b97-4bd0-8b63-273cce9a3cfb",
+                            ConcurrencyStamp = "8327fd42-0d9f-4d1f-85f8-3dad755be226",
                             Name = "Admin",
                             NormalizedName = "ADMIN",
-                            TransactionDateAndTime = new DateTime(2024, 3, 29, 22, 20, 53, 252, DateTimeKind.Local).AddTicks(2639)
+                            TransactionDateAndTime = new DateTime(2024, 4, 7, 22, 38, 41, 488, DateTimeKind.Local).AddTicks(3242)
                         },
                         new
                         {
                             Id = "fa175b24-e5a7-41ab-8237-94734f2b5408",
-                            ConcurrencyStamp = "c630af76-435a-43d8-84f3-77cf54ba435c",
+                            ConcurrencyStamp = "b6edbd8e-1d6a-4419-b491-51b8c2ee77a3",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER",
-                            TransactionDateAndTime = new DateTime(2024, 3, 29, 22, 20, 53, 252, DateTimeKind.Local).AddTicks(2652)
+                            TransactionDateAndTime = new DateTime(2024, 4, 7, 22, 38, 41, 488, DateTimeKind.Local).AddTicks(3249)
                         },
                         new
                         {
                             Id = "22ccb117-1c50-47a5-bc43-1d9a84879e10",
-                            ConcurrencyStamp = "b6ea216a-c833-4acc-8fc4-8a071ad56772",
+                            ConcurrencyStamp = "272b64e1-d7cb-46cd-bd2b-56ec24e1fcd6",
                             Name = "Delivery Driver",
                             NormalizedName = "DELIVERY DRIVER",
-                            TransactionDateAndTime = new DateTime(2024, 3, 29, 22, 20, 53, 252, DateTimeKind.Local).AddTicks(2657)
+                            TransactionDateAndTime = new DateTime(2024, 4, 7, 22, 38, 41, 488, DateTimeKind.Local).AddTicks(3255)
                         },
                         new
                         {
                             Id = "a1a8637e-6e83-4ee9-adef-09cd724473a7",
-                            ConcurrencyStamp = "f9e261f8-1610-4780-8e5d-b378d2fdf60a",
+                            ConcurrencyStamp = "4e89b65a-8e88-4217-957a-53f3c7c3af86",
                             Name = "Cooking Staff",
                             NormalizedName = "COOKING STAFF",
-                            TransactionDateAndTime = new DateTime(2024, 3, 29, 22, 20, 53, 252, DateTimeKind.Local).AddTicks(2689)
+                            TransactionDateAndTime = new DateTime(2024, 4, 7, 22, 38, 41, 488, DateTimeKind.Local).AddTicks(3259)
                         });
                 });
 
@@ -211,7 +211,7 @@ namespace BusarovsQuckBite.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9fd9e518-244f-4143-96bd-9b2a7292d687",
+                            ConcurrencyStamp = "78ebc31a-a1b6-4097-b060-b0595153006e",
                             Email = "brandabg1@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "",
@@ -220,11 +220,11 @@ namespace BusarovsQuckBite.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "BRANDABG1@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEH6XQhI9teFBaTNlnKrEnZup7SFzFAaxiLQBELxzC8Fj5c8nppEo6acVaN5SvZ5x5Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPDAFpO4zIPM1UwTHffnm11tfKDps0qprlanBWi8JE+QgIJJBKgUWOaCzzA7P+BU8g==",
                             PhoneNumber = "0896722926",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "b971d0c2-e131-430d-866f-b126b6dbe7df",
-                            TransactionDateAndTime = new DateTime(2024, 3, 29, 22, 20, 53, 252, DateTimeKind.Local).AddTicks(2467),
+                            SecurityStamp = "52647def-40ec-4382-a793-11616b5004bf",
+                            TransactionDateAndTime = new DateTime(2024, 4, 7, 22, 38, 41, 488, DateTimeKind.Local).AddTicks(3030),
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
@@ -304,7 +304,7 @@ namespace BusarovsQuckBite.Migrations
                             Id = 1,
                             IsDeleted = false,
                             Name = "Snacks",
-                            TransactionDateAndTime = new DateTime(2024, 3, 29, 22, 20, 53, 252, DateTimeKind.Local).AddTicks(3591),
+                            TransactionDateAndTime = new DateTime(2024, 4, 7, 22, 38, 41, 488, DateTimeKind.Local).AddTicks(4152),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -312,7 +312,7 @@ namespace BusarovsQuckBite.Migrations
                             Id = 2,
                             IsDeleted = false,
                             Name = "Burgers",
-                            TransactionDateAndTime = new DateTime(2024, 3, 29, 22, 20, 53, 252, DateTimeKind.Local).AddTicks(3601),
+                            TransactionDateAndTime = new DateTime(2024, 4, 7, 22, 38, 41, 488, DateTimeKind.Local).AddTicks(4167),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -320,7 +320,7 @@ namespace BusarovsQuckBite.Migrations
                             Id = 3,
                             IsDeleted = false,
                             Name = "Drinks",
-                            TransactionDateAndTime = new DateTime(2024, 3, 29, 22, 20, 53, 252, DateTimeKind.Local).AddTicks(3603),
+                            TransactionDateAndTime = new DateTime(2024, 4, 7, 22, 38, 41, 488, DateTimeKind.Local).AddTicks(4169),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -328,7 +328,7 @@ namespace BusarovsQuckBite.Migrations
                             Id = 4,
                             IsDeleted = false,
                             Name = "Pizzas",
-                            TransactionDateAndTime = new DateTime(2024, 3, 29, 22, 20, 53, 252, DateTimeKind.Local).AddTicks(3605),
+                            TransactionDateAndTime = new DateTime(2024, 4, 7, 22, 38, 41, 488, DateTimeKind.Local).AddTicks(4170),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -336,7 +336,7 @@ namespace BusarovsQuckBite.Migrations
                             Id = 5,
                             IsDeleted = false,
                             Name = "Pasta",
-                            TransactionDateAndTime = new DateTime(2024, 3, 29, 22, 20, 53, 252, DateTimeKind.Local).AddTicks(3606),
+                            TransactionDateAndTime = new DateTime(2024, 4, 7, 22, 38, 41, 488, DateTimeKind.Local).AddTicks(4172),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -344,7 +344,7 @@ namespace BusarovsQuckBite.Migrations
                             Id = 6,
                             IsDeleted = false,
                             Name = "Sandwiches",
-                            TransactionDateAndTime = new DateTime(2024, 3, 29, 22, 20, 53, 252, DateTimeKind.Local).AddTicks(3609),
+                            TransactionDateAndTime = new DateTime(2024, 4, 7, 22, 38, 41, 488, DateTimeKind.Local).AddTicks(4174),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -352,7 +352,7 @@ namespace BusarovsQuckBite.Migrations
                             Id = 7,
                             IsDeleted = false,
                             Name = "Desserts",
-                            TransactionDateAndTime = new DateTime(2024, 3, 29, 22, 20, 53, 252, DateTimeKind.Local).AddTicks(3611),
+                            TransactionDateAndTime = new DateTime(2024, 4, 7, 22, 38, 41, 488, DateTimeKind.Local).AddTicks(4176),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         });
                 });
@@ -527,7 +527,7 @@ namespace BusarovsQuckBite.Migrations
                             Name = "Pepperoni Pizza",
                             Price = 15.00m,
                             Quantity = 10,
-                            TransactionDateAndTime = new DateTime(2024, 3, 29, 22, 20, 53, 252, DateTimeKind.Local).AddTicks(4490),
+                            TransactionDateAndTime = new DateTime(2024, 4, 7, 22, 38, 41, 488, DateTimeKind.Local).AddTicks(4994),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -540,7 +540,7 @@ namespace BusarovsQuckBite.Migrations
                             Name = "Tuborg Beer",
                             Price = 5.00m,
                             Quantity = 50,
-                            TransactionDateAndTime = new DateTime(2024, 3, 29, 22, 20, 53, 252, DateTimeKind.Local).AddTicks(4500),
+                            TransactionDateAndTime = new DateTime(2024, 4, 7, 22, 38, 41, 488, DateTimeKind.Local).AddTicks(5005),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -553,7 +553,7 @@ namespace BusarovsQuckBite.Migrations
                             Name = "Hamburger",
                             Price = 8.50m,
                             Quantity = 15,
-                            TransactionDateAndTime = new DateTime(2024, 3, 29, 22, 20, 53, 252, DateTimeKind.Local).AddTicks(4503),
+                            TransactionDateAndTime = new DateTime(2024, 4, 7, 22, 38, 41, 488, DateTimeKind.Local).AddTicks(5007),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         });
                 });

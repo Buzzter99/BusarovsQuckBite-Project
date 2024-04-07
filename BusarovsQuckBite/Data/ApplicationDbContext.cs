@@ -5,24 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BusarovsQuckBite.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser,ApplicationRole,string>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<OrderProduct>().HasKey(x => new
-            {
-                x.OrderId,
-                x.ProductId
-            });
-            builder.Entity<CartProduct>().HasKey(x => new
-            {
-                x.CartId, x.ProductId
-            });
+            builder.Entity<OrderProduct>().HasKey(x => new { x.OrderId, x.ProductId });
+            builder.Entity<CartProduct>().HasKey(x => new { x.CartId, x.ProductId });
             builder.ApplyConfiguration(new UserConfiguration());
             builder.ApplyConfiguration(new RoleConfiguration());
             builder.ApplyConfiguration(new UserRoleConfiguration());

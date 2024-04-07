@@ -1,0 +1,17 @@
+﻿@model OrderMessageViewModel
+<h3>Send Message To User for His Order</h3>
+<div class="container">
+    <div class="row mb-3">
+        <div class="col">
+            <input type="hidden" id="orderId" value="@Model.OrderId" />
+            <input type="text" class="form-control" id="messageInput" placeholder="Type your message..." required>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-end">
+            <button type="button" class="btn btn-primary" id="sendButton">Send Message</button>
+        </div>
+    </div>
+</div>
+<script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/js/sendMessage.js"></script>
