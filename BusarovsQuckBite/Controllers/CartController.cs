@@ -1,6 +1,7 @@
 ﻿using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
@@ -10,10 +11,12 @@ namespace BusarovsQuckBite.Controllers
     {
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly ICartService _cartService;
-        public CartController(IHttpContextAccessor contextAccessor, ICartService cartService)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public CartController(IHttpContextAccessor contextAccessor, ICartService cartService, UserManager<ApplicationUser> userManager)
         {
             _contextAccessor = contextAccessor;
             _cartService = cartService;
+            _userManager = userManager;
         }
         public async Task<IActionResult> MyCart()
         {

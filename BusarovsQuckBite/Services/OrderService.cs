@@ -208,12 +208,14 @@ namespace BusarovsQuckBite.Services
         public async Task UpdateOrderStatus(int orderId, string userId)
         {
             var order = await GetByIdAsync(orderId);
+            bool isActionRequired = false;
             if (order.Who == userId)
             {
                 throw new ApplicationException("You cannot update your own order!");
             }
             if (await _userManager.IsInRoleAsyncById(userId, RoleConstants.CookingStaffRoleName))
             {
+                isActionRequired = true;
                 if (order.Status == OrderStatus.Processing)
                 {
                     order.Status = OrderStatus.Preparing;
@@ -225,6 +227,7 @@ namespace BusarovsQuckBite.Services
             }
             if (await _userManager.IsInRoleAsyncById(userId, RoleConstants.DeliveryDriverRoleName))
             {
+                isActionRequired = true;
                 if (order.Status == OrderStatus.ReadyForDelivery)
                 {
                     order.Status = OrderStatus.OnTheWay;
@@ -234,7 +237,19 @@ namespace BusarovsQuckBite.Services
                     order.Status = OrderStatus.Delivered;
                 }
             }
-            await _context.SaveChangesAsync();
+            if (isActionRequired)
+            {
+                var chronology = new OrderActionChronology
+                {
+                    Who = userId,
+                    OrderId = orderId,
+                    TransactionDateAndTime = DateTime.Now,
+                    OldStatus = ((OrderStatus)((int)order.Status - 1)).ToString(),
+                    NewStatus = order.Status.ToString()
+                };
+                await _context.AddAsync(chronology);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

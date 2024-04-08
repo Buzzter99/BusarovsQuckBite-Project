@@ -21,6 +21,7 @@
         {
             public const int TotalAmountPrecision = 18;
             public const int TotalAmountScale = 5;
+            public const int OrderStatusMaxLength = 50;
         }
 
         public static class ProductConstants

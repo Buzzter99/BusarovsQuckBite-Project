@@ -2,6 +2,7 @@
 using BusarovsQuckBite.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace BusarovsQuckBite.Data
 {
@@ -23,6 +24,10 @@ namespace BusarovsQuckBite.Data
             builder.ApplyConfiguration(new ProductConfiguration());
             builder.ApplyConfiguration(new OrderConfiguration());
             base.OnModelCreating(builder);
+            builder.Entity<OrderActionChronology>().HasOne(c => c.Order)
+                .WithMany()
+                .HasForeignKey(c => c.OrderId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Product> Products { get; set; }
@@ -34,5 +39,6 @@ namespace BusarovsQuckBite.Data
         public override DbSet<ApplicationRole> Roles { get; set; }
         public DbSet<CartProduct> CartProducts { get; set; }
         public DbSet<OrderProduct> OrdersProducts { get; set; }
+        public DbSet<OrderActionChronology> OrdersActionChronology { get; set;}
     }
 }

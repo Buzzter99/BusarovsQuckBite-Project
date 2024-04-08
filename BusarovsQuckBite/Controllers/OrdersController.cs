@@ -1,12 +1,15 @@
-﻿using BusarovsQuckBite.Constants;
+﻿using System.Security.Claims;
+using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data.Enums;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models.Cart;
 using BusarovsQuckBite.Models.Order;
 using BusarovsQuckBite.Models.PageHelpers;
+using BusarovsQuckBite.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuckBite.Controllers
@@ -14,18 +17,17 @@ namespace BusarovsQuckBite.Controllers
     public class OrdersController : BaseController
     {
         private readonly IOrderService _orderService;
+        private readonly ApplicationUserManager<ApplicationUser> _userManager;
 
-        public OrdersController(IOrderService orderService)
+        public OrdersController(IOrderService orderService, ApplicationUserManager<ApplicationUser> userManager)
         {
             _orderService = orderService;
+            _userManager = userManager;
         }
         [HttpPost]
         public async Task<IActionResult> MyOrder(CartViewModel model)
         {
-            OrderViewModel orderView = new OrderViewModel()
-            {
-                Cart = model
-            };
+            OrderViewModel orderView = new OrderViewModel() { Cart = model };
             try
             {
                 orderView = await _orderService.ValidateOrderAsync(orderView, GetUserId());
