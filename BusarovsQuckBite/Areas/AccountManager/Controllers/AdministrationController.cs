@@ -14,12 +14,15 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
     {
         private readonly ApplicationUserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly ApplicationSignInManager<ApplicationUser> _signInManager;
 
         public AdministrationController(ApplicationUserManager<ApplicationUser> userManager,
-            RoleManager<ApplicationRole> roleManager)
+            RoleManager<ApplicationRole> roleManager,
+            ApplicationSignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _signInManager = signInManager;
         }
         [HttpGet]
         public async Task<IActionResult> Index(FilterEnum keyword = FilterEnum.All, int page = 1)
@@ -87,6 +90,10 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 var result = await _userManager.AddToRoleAsync(entity, roleName);
                 if (result.Succeeded)
                 {
+                    if (userId == GetUserId())
+                    {
+                        await _signInManager.RefreshSignInAsync(entity);
+                    }
                     return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
                 }
                 TempData[ErrorMessagesConstants.FailedMessageKey] = string.Join(Environment.NewLine, result.Errors.Select(c => c.Description));
@@ -101,9 +108,18 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             var roleExists = await _roleManager.RoleExistsAsync(roleName);
             if (entity != null && roleExists)
             {
+                if (entity.UserName == UserConstants.AdminUsername && roleName == RoleConstants.AdminRoleName)
+                {
+                    TempData[ErrorMessagesConstants.FailedMessageKey] = "Cannot remove Administrator from Admin Role!";
+                    return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
+                }
                 var result = await _userManager.RemoveFromRoleAsync(entity, roleName);
                 if (result.Succeeded)
                 {
+                    if (userId == GetUserId())
+                    {
+                        await _signInManager.RefreshSignInAsync(entity);
+                    }
                     return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
                 }
                 TempData[ErrorMessagesConstants.FailedMessageKey] = string.Join(Environment.NewLine, result.Errors.Select(c => c.Description));

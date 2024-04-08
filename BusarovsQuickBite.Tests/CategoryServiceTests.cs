@@ -1,13 +1,11 @@
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Moq;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuickBite.Tests
 {
-    public class Tests
+    public class CategoryServiceTests
     {
         private DbContextOptions<ApplicationDbContext> _dbOptions;
         private ApplicationDbContext? _context;
@@ -15,9 +13,6 @@ namespace BusarovsQuickBite.Tests
         [SetUp]
         public void Setup()
         {
-            // var mockManager = new Mock<ApplicationUserManager<ApplicationUser>>();
-            // var test = mockManager.Setup(x => x.CreateAsync(new ApplicationUser()))
-            //     .ReturnsAsync(IdentityResult.Failed());
             _dbOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase("QuickBite" + Guid.NewGuid())
                 .Options;
@@ -26,7 +21,7 @@ namespace BusarovsQuickBite.Tests
             _categoryService = new CategoryService(_context);
         }
         [Test]
-        public void CreateCategory()
+        public void FindByNonExistingIdShouldThrow()
         {
             Assert.ThrowsAsync<ApplicationException>(async () => await _categoryService!.GetByIdAsync(0));
         }

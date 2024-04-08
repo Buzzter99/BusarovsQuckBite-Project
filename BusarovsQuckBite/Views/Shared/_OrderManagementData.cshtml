@@ -5,8 +5,93 @@
 <td>@Model.PaymentType</td>
 <td>@(Model.User.FirstName == "" ? Model.User.Username : $"{Model.User.FirstName} {Model.User.LastName}")</td>
 <td>@Model.User.PhoneNumber</td>
-@if (User.IsInRole(RoleConstants.CookingStaffRoleName))
+@if (Model.OrderStatus == OrderStatus.Delivered)
 {
+    <td>Order is Delivered! <i class="fa-solid fa-circle-check"></i></td>
+    await Html.RenderPartialAsync("_ModalOrderDetailsPartial", Model);
+    <td>@Html.ActionLink("Send Message", "SendMessage", "Orders", new { OrderId = @Model.Id, OrderStatus = @Model.OrderStatus }, new { @class = "btn btn-primary" })</td>
+    return;
+}
+@if (User.IsInRole(RoleConstants.CookingStaffRoleName) && User.IsInRole(RoleConstants.DeliveryDriverRoleName))
+{
+    @if (Model.OrderStatus == OrderStatus.ReadyForDelivery || Model.OrderStatus == OrderStatus.OnTheWay)
+    {
+        <td>
+            @using (Html.BeginForm("UpdateOrderStatus", "Orders", new { orderId = Model.Id, pageNumber = ViewBag.PageNumber }, FormMethod.Post))
+            {
+                OrderStatus nextStatus = OrderStatus.Processing;
+                <button type="submit" class="btn btn-success">
+                    <i class="fa-solid fa-truck"></i>
+                    @switch (Model.OrderStatus)
+                    {
+                        case OrderStatus.ReadyForDelivery:
+                            nextStatus = OrderStatus.OnTheWay;
+                            break;
+                        case OrderStatus.OnTheWay:
+                            nextStatus = OrderStatus.Delivered;
+                            break;
+                    }
+                    Update Order Status to @nextStatus
+                </button>
+            }
+        </td>
+    } else if (Model.OrderStatus == OrderStatus.Processing
+          || Model.OrderStatus == OrderStatus.Preparing)
+    {
+        <td>
+            @using (Html.BeginForm("UpdateOrderStatus", "Orders", new { orderId = Model.Id, pageNumber = ViewBag.PageNumber }, FormMethod.Post))
+            {
+                OrderStatus nextStatus = OrderStatus.Processing;
+                <button type="submit" class="btn btn-info">
+                    <i class="fa-solid fa-burger"></i>
+                    @switch (Model.OrderStatus)
+                    {
+                        case OrderStatus.Processing:
+                            nextStatus = OrderStatus.Preparing;
+                            break;
+                        case OrderStatus.Preparing:
+                            nextStatus = OrderStatus.ReadyForDelivery;
+                            break;
+
+                    }
+                    Update Order Status to @nextStatus
+                </button>
+            }
+        </td>
+    }
+}
+else if (User.IsInRole(RoleConstants.DeliveryDriverRoleName))
+{
+    @if (Model.OrderStatus == OrderStatus.ReadyForDelivery || Model.OrderStatus == OrderStatus.OnTheWay)
+    {
+        <td>
+            @using (Html.BeginForm("UpdateOrderStatus", "Orders", new { orderId = Model.Id, pageNumber = ViewBag.PageNumber }, FormMethod.Post))
+            {
+                OrderStatus nextStatus = OrderStatus.Processing;
+                <button type="submit" class="btn btn-success">
+                    <i class="fa-solid fa-truck"></i>
+                    @switch (Model.OrderStatus)
+                    {
+                        case OrderStatus.ReadyForDelivery:
+                            nextStatus = OrderStatus.OnTheWay;
+                            break;
+                        case OrderStatus.OnTheWay:
+                            nextStatus = OrderStatus.Delivered;
+                            break;
+                    }
+                    Update Order Status to @nextStatus
+                </button>
+            }
+        </td>
+    }
+    else
+    {
+        <td></td>
+    }
+}
+else if (User.IsInRole(RoleConstants.CookingStaffRoleName))
+{
+
     @if (Model.OrderStatus == OrderStatus.Processing
         || Model.OrderStatus == OrderStatus.Preparing)
     {
@@ -24,41 +109,23 @@
                         case OrderStatus.Preparing:
                             nextStatus = OrderStatus.ReadyForDelivery;
                             break;
+
                     }
                     Update Order Status to @nextStatus
                 </button>
             }
         </td>
     }
-}
-@if (User.IsInRole(RoleConstants.DeliveryDriverRoleName))
-{
+    else
     {
-        @if (Model.OrderStatus == OrderStatus.ReadyForDelivery || Model.OrderStatus == OrderStatus.OnTheWay)
-        {
-            <td>
-                @using (Html.BeginForm("UpdateOrderStatus", "Orders", new { orderId = Model.Id, pageNumber = ViewBag.PageNumber }, FormMethod.Post))
-                {
-                    OrderStatus nextStatus = OrderStatus.Processing;
-                    <button type="submit" class="btn btn-success">
-                        <i class="fa-solid fa-truck"></i>
-                        @switch (Model.OrderStatus)
-                        {
-                            case OrderStatus.ReadyForDelivery:
-                                nextStatus = OrderStatus.OnTheWay;
-                                break;
-                            case OrderStatus.OnTheWay:
-                                nextStatus = OrderStatus.Delivered;
-                                break;
-                        }
-                        Update Order Status to @nextStatus
-                    </button>
-                }
-            </td>
-        }
+        <td></td>
     }
 }
-@if (Model.OrderStatus == OrderStatus.Delivered)
+else if (User.IsInRole(RoleConstants.AdminRoleName))
 {
-    <td>Order is Delivered! <i class="fa-solid fa-circle-check"></i></td>
+    <td></td>
 }
+@{
+    await Html.RenderPartialAsync("_ModalOrderDetailsPartial", Model);
+}
+<td>@Html.ActionLink("Send Message", "SendMessage", "Orders", new { OrderId = @Model.Id, OrderStatus = @Model.OrderStatus }, new { @class = "btn btn-primary" })</td>

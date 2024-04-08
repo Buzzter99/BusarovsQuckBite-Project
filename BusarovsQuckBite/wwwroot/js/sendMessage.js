@@ -6,6 +6,7 @@ connection.start().then(function () {
     return console.error(err.toString());
 });
 var initialOrderId = document.getElementById("orderId").value;
+
 document.getElementById("sendButton").addEventListener("click", function (event) {
     var orderId = document.getElementById("orderId").value;
     var messageInput = document.getElementById("messageInput");

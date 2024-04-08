@@ -1,5 +1,7 @@
 ﻿using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
+using BusarovsQuckBite.Data.Enums;
+using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models.Cart;
 using BusarovsQuckBite.Models.Order;
 using BusarovsQuckBite.Models.PageHelpers;
@@ -131,13 +133,24 @@ namespace BusarovsQuckBite.Controllers
         [Authorize(Roles = $"{RoleConstants.AdminRoleName},{RoleConstants.DeliveryDriverRoleName},{RoleConstants.CookingStaffRoleName}")]
         public async Task<IActionResult> SendMessage(OrderMessageViewModel messageInfo)
         {
+            Order order;
             try
             {
-                await _orderService.GetByIdAsync(messageInfo.OrderId);
+                order = await _orderService.GetByIdAsync(messageInfo.OrderId);
             }
             catch (ApplicationException ae)
             {
                 TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                return RedirectToAction(nameof(OrderManagement));
+            }
+            if (messageInfo.OrderStatus.ToUpper() != order.Status.ToString().ToUpper())
+            {
+                TempData[ErrorMessagesConstants.FailedMessageKey] = ErrorMessagesConstants.GeneralErrorMessage;
+                return RedirectToAction(nameof(OrderManagement));
+            }
+            if (order.Status == OrderStatus.Delivered)
+            {
+                TempData[ErrorMessagesConstants.FailedMessageKey] = "Cannot send message to delivered order!";
                 return RedirectToAction(nameof(OrderManagement));
             }
             return View(messageInfo);

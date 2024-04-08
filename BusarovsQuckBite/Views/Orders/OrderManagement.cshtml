@@ -17,7 +17,6 @@
                             await Html.RenderPartialAsync("_OrderManagementData", entity);
                         }
                         <td style="white-space: nowrap;">$@entity.OrderProducts.Sum(x => x.Price * x.QtyWanted) <i class="fa-solid fa-money-bill"></i></td>
-                        <td>@Html.ActionLink("Send Message", "SendMessage", "Orders", new { OrderId = entity.Id }, new { @class = "btn btn-primary" })</td>
                     </tr>
                 }
             </tbody>
