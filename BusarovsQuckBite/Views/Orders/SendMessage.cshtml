@@ -3,13 +3,14 @@
 <div class="container">
     <div class="row mb-3">
         <div class="col">
-            <input type="hidden" data-order-id="@Model.OrderId" id="orderId" value="@Model.OrderId" />
+            <input type="hidden" id="orderId" value="@Model.OrderId" disabled="disabled"/>
             <input type="text" class="form-control" id="messageInput" placeholder="Type your message..." required>
         </div>
     </div>
     <div class="row">
         <div class="col text-end">
             <button type="button" class="btn btn-primary" id="sendButton">Send Message</button>
+            <a class="btn btn-primary" asp-action="OrderManagement"> Back To All Orders</a>
         </div>
     </div>
 </div>

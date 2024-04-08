@@ -1,6 +1,8 @@
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuickBite.Tests

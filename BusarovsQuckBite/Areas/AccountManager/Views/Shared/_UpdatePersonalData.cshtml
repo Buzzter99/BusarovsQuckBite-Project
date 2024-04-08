@@ -27,9 +27,9 @@
                 </div>
                 <input type="text" readonly="readonly" class="form-control" asp-for="Email" placeholder="Email">
             </div>
+            <span asp-validation-for="Email" class="text-danger"></span>
         </div>
     </div>
-    <div asp-validation-summary="All" class="text-danger"></div>
     <button class="btn btn-primary" type="submit">Edit Info</button>
 </form>
 <div style="margin-top: 20px;"></div>

@@ -93,6 +93,10 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             var user = await _userManager.FindByNameAsync(model.Username);
+            if (user == null)
+            {
+                user = await _userManager.FindByEmailAsync(model.Username);
+            }
             if (user != null)
             {
                 var hasRequiredRights = await _signInManager.CanSignInAsync(user);
@@ -100,7 +104,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 {
                     if (ModelState.IsValid)
                     {
-                        var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, lockoutOnFailure: true);
+                        var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: true);
                         if (result.Succeeded)
                         {
                             _logger.LogInformation($"User with id {user.Id} logged in.");

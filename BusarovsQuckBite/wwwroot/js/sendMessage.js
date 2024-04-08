@@ -5,12 +5,17 @@ connection.start().then(function () {
 }).catch(function (err) {
     return console.error(err.toString());
 });
+var initialOrderId = document.getElementById("orderId").value;
 document.getElementById("sendButton").addEventListener("click", function (event) {
     var orderId = document.getElementById("orderId").value;
     var messageInput = document.getElementById("messageInput");
     var message = messageInput.value;
     if (!message.trim()) {
         alert("You must provide message for the user!");
+        return;
+    }
+    if (orderId !== initialOrderId) {
+        alert("Error occured.Please reload page and try again!");
         return;
     }
     connection.invoke("SendMessage", message, orderId).then(function () {

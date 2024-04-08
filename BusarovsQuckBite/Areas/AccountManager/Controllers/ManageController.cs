@@ -166,7 +166,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 {
                     foreach (var error in result.Errors)
                     {
-                        ModelState.AddModelError(string.Empty,error.Description);
+                        ModelState.AddModelError(nameof(model.Email),error.Description);
                     }
                     return View(nameof(Index), new UserAllInfoViewModel { UpdateUserDataViewModel = model, ActiveTab = TabEnum.Profile.ToString()});
                 }
@@ -185,7 +185,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             {
                 foreach (var error in changePassword.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    ModelState.AddModelError(nameof(model.ConfirmPassword), error.Description);
                 }
                 return View(nameof(Index), new UserAllInfoViewModel { ActiveTab = TabEnum.ChangePassword.ToString(), UpdateUserDataViewModel = _userManager.MapInfoForUser(await _userManager.FindByIdAsync(GetUserId())), ChangeUserPasswordViewModel = model });
             }
