@@ -1,4 +1,5 @@
-﻿using BusarovsQuckBite.Data.Models;
+﻿using BusarovsQuckBite.Constants;
+using BusarovsQuckBite.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -23,7 +24,7 @@ namespace BusarovsQuckBite.Data.Configuration
                     CategoryId = 4,
                     Price = 15.00m,
                     Quantity = 10,
-                    Who = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                    Who = UserConstants.AdminId,
                     IsDeleted = false,
                     TransactionDateAndTime = DateTime.Now
                 },
@@ -36,7 +37,7 @@ namespace BusarovsQuckBite.Data.Configuration
                     CategoryId = 3,
                     Price = 5.00m,
                     Quantity = 50,
-                    Who = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                    Who = UserConstants.AdminId,
                     IsDeleted = false,
                     TransactionDateAndTime = DateTime.Now
                 },
@@ -49,7 +50,7 @@ namespace BusarovsQuckBite.Data.Configuration
                     CategoryId = 2,
                     Price = 8.50m,
                     Quantity = 15,
-                    Who = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                    Who = UserConstants.AdminId,
                     IsDeleted = false,
                     TransactionDateAndTime = DateTime.Now
                 }

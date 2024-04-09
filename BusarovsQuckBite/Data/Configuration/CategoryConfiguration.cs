@@ -1,4 +1,5 @@
-﻿using BusarovsQuckBite.Data.Models;
+﻿using BusarovsQuckBite.Constants;
+using BusarovsQuckBite.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -19,7 +20,7 @@ namespace BusarovsQuckBite.Data.Configuration
                 Name = "Snacks",
                 IsDeleted = false,
                 TransactionDateAndTime = DateTime.Now,
-                Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
+                Who = UserConstants.AdminId
             });
             categories.Add(new Category()
             {
@@ -27,7 +28,7 @@ namespace BusarovsQuckBite.Data.Configuration
                 Name = "Burgers",
                 IsDeleted = false,
                 TransactionDateAndTime = DateTime.Now,
-                Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
+                Who = UserConstants.AdminId
             });
             categories.Add(new Category()
             {
@@ -35,7 +36,7 @@ namespace BusarovsQuckBite.Data.Configuration
                 Name = "Drinks",
                 IsDeleted = false,
                 TransactionDateAndTime = DateTime.Now,
-                Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
+                Who = UserConstants.AdminId
             });
             categories.Add(new Category()
             {
@@ -43,7 +44,7 @@ namespace BusarovsQuckBite.Data.Configuration
                 Name = "Pizzas",
                 IsDeleted = false,
                 TransactionDateAndTime = DateTime.Now,
-                Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
+                Who = UserConstants.AdminId
             });
             categories.Add(new Category()
             {
@@ -51,7 +52,7 @@ namespace BusarovsQuckBite.Data.Configuration
                 Name = "Pasta",
                 IsDeleted = false,
                 TransactionDateAndTime = DateTime.Now,
-                Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
+                Who = UserConstants.AdminId
             });
             categories.Add(new Category()
             {
@@ -59,7 +60,7 @@ namespace BusarovsQuckBite.Data.Configuration
                 Name = "Sandwiches",
                 IsDeleted = false,
                 TransactionDateAndTime = DateTime.Now,
-                Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
+                Who = UserConstants.AdminId
             });
             categories.Add(new Category()
             {
@@ -67,7 +68,7 @@ namespace BusarovsQuckBite.Data.Configuration
                 Name = "Desserts",
                 IsDeleted = false,
                 TransactionDateAndTime = DateTime.Now,
-                Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
+                Who = UserConstants.AdminId
             });
             builder.HasData(categories);
         }

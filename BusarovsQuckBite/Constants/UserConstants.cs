@@ -13,5 +13,6 @@
         public const string AdminUsername = "Admin";
         public const string AdminEmail = "brandabg1@gmail.com";
         public const string AdminPhoneNumber = "0896722926";
+        public const string AdminId = "8e445865-a24d-4543-a6c6-9443d048cdb9";
     }
 }

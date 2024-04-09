@@ -15,7 +15,7 @@ namespace BusarovsQuckBite.Data.Configuration
             builder.HasData(
                 new ApplicationUser
                 {
-                    Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                    Id = UserConstants.AdminId,
                     UserName = UserConstants.AdminUsername,
                     PasswordHash = hasher.HashPassword(null, "000000"),
                     Email = UserConstants.AdminEmail,
