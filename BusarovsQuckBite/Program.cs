@@ -32,9 +32,11 @@ namespace BusarovsQuckBite
             builder.Services.AddScoped<ICartService, CartService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddSignalR();
+            // builder.Services.AddSession(x => { x.IdleTimeout = TimeSpan.FromMinutes(20);});
             builder.Services.AddScoped<IDataProtectionService, DataProtectionService>();
             builder.Services.AddTransient<IEmailSender, EmailService>();
             builder.Services.Configure<CustomTokenProviderOptions>(options => {options.TokenLifespan = TimeSpan.FromHours(2);});
+            builder.Services.Configure<DataProtectionTokenProviderOptions>(options => { options.TokenLifespan = TimeSpan.FromDays(1);});
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = false;
@@ -74,6 +76,7 @@ namespace BusarovsQuckBite
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+            // app.UseSession();
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();

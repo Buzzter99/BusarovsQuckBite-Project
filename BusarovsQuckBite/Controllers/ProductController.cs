@@ -25,16 +25,17 @@ namespace BusarovsQuckBite.Controllers
         {
             int pageSize = 5;
             var model = await _productService.GetAllProductsAsync(category,statusFilter);
-            int size = PageHelper.CalculateTotalPages(pageSize, model.Products);
-            if (size == 0)
-            {
-                size++;
-            }
+            int size = PageHelper.CalculateTotalPages(pageSize, model.Products) == 0 ? 1 : PageHelper.CalculateTotalPages(pageSize, model.Products);
             ViewBag.PageNumber = page;
             ViewBag.TotalPages = size;
             ViewBag.PageSize = pageSize;
             ViewBag.Category = category;
             ViewBag.Filter = statusFilter;
+            if (ViewBag.TotalPages < page || page <= 0)
+            {
+                page = 1;
+                ViewBag.PageNumber = page;
+            }
             model.Products = PageHelper.CalculateItemsForPage(page, pageSize, model.Products);
             return View(model);
         }
@@ -103,6 +104,10 @@ namespace BusarovsQuckBite.Controllers
         public async Task<IActionResult> Edit(ProductFormViewModel model)
         {
             model.ActiveCategories = await _categoryService.GetCategoriesForUserByStatusAsync(FilterEnum.Active);
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
             try
             {
                 await _productService.EditProductAsync(model);
@@ -110,10 +115,6 @@ namespace BusarovsQuckBite.Controllers
             catch (ApplicationException ae)
             {
                 ModelState.AddModelError(string.Empty,ae.Message);
-                return View(model);
-            }
-            if (!ModelState.IsValid)
-            {
                 return View(model);
             }
             TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyModified);

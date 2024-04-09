@@ -3,18 +3,18 @@
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
                 <li class="page-item @((ViewBag.PageNumber == 1) ? "disabled" : "")">
-                    <a class="page-link" href="@Url.Action("All","Menu", new { page = ViewBag.PageNumber - 1 })" aria-label="Previous">
+                    <a class="page-link" href="@Url.Action("All","Menu", new { page = ViewBag.PageNumber - 1, searchTerm = ViewBag.Search })" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
                 @for (int i = 1; i <= ViewBag.TotalPages; i++)
                 {
                     <li class="page-item @(i == ViewBag.PageNumber ? "active" : "")">
-                        <a class="page-link" href="@Url.Action("All","Menu", new { page = i}) ">@i</a>
+                        <a class="page-link" href="@Url.Action("All","Menu", new { page = i, searchTerm = ViewBag.Search}) ">@i</a>
                     </li>
                 }
                 <li class="page-item @((ViewBag.PageNumber >= ViewBag.TotalPages || ViewBag.TotalPages == 0) ? "disabled" : "")">
-                    <a class="page-link" href="@Url.Action("All","Menu", new { page = ViewBag.PageNumber + 1})" aria-label="Next">
+                    <a class="page-link" href="@Url.Action("All","Menu", new { page = ViewBag.PageNumber + 1, searchTerm = ViewBag.Search})" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>

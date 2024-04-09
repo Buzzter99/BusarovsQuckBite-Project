@@ -14,16 +14,22 @@ namespace BusarovsQuckBite.Controllers
         public async Task<IActionResult> All(int page = 1, string searchTerm = "")
         {
             int pageSize = 3;
+            ViewBag.Search = searchTerm;
             var entities = await _productService.GetAllProductsBySearchTerm(page,pageSize,searchTerm);
             ViewBag.PageNumber = page;
-            ViewBag.TotalPages = PageHelper.CalculateTotalPages(pageSize,entities);
+            ViewBag.TotalPages = PageHelper.CalculateTotalPages(pageSize,entities) == 0 ? 1 : PageHelper.CalculateTotalPages(pageSize, entities);
+            if (ViewBag.TotalPages < page || page <= 0)
+            {
+                page = 1;
+                ViewBag.PageNumber = page;
+            }
             ViewBag.PageSize = pageSize;
             return View(PageHelper.CalculateItemsForPage(page,pageSize,entities));
         }
         public async Task<IActionResult> Search(string? name)
         {
             var products = await _productService.GetAllProductsBySearchTerm(1, 3,name ?? "");
-            return RedirectToAction(nameof(All), new { page = 1, searchTerm = name });
+            return RedirectToAction(nameof(All), new { page = 1, searchTerm = products.Any() ? name : "" });
         }
         public IActionResult ClearFilter()
         {

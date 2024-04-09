@@ -14,15 +14,12 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
     {
         private readonly ApplicationUserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
-        private readonly ApplicationSignInManager<ApplicationUser> _signInManager;
 
         public AdministrationController(ApplicationUserManager<ApplicationUser> userManager,
-            RoleManager<ApplicationRole> roleManager,
-            ApplicationSignInManager<ApplicationUser> signInManager)
+            RoleManager<ApplicationRole> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _signInManager = signInManager;
         }
         [HttpGet]
         public async Task<IActionResult> Index(FilterEnum keyword = FilterEnum.All, int page = 1)
@@ -32,9 +29,9 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             page = Math.Max(1, Math.Min(page, PageHelper.CalculateTotalPages(pageSize, model.AdministrationDataModel)));
             ViewBag.Keyword = keyword;
             ViewBag.PageNumber = page;
-            ViewBag.TotalPages = PageHelper.CalculateTotalPages(pageSize, model.AdministrationDataModel);
+            ViewBag.TotalPages = PageHelper.CalculateTotalPages(pageSize, model.AdministrationDataModel) == 0 ? 1 : PageHelper.CalculateTotalPages(pageSize, model.AdministrationDataModel);
             ViewBag.PageSize = pageSize;
-            model.AdministrationDataModel = PageHelper.CalculateItemsForPage(page,pageSize,model.AdministrationDataModel);
+            model.AdministrationDataModel = PageHelper.CalculateItemsForPage(page, pageSize, model.AdministrationDataModel);
             return View(model);
         }
 
@@ -90,10 +87,6 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 var result = await _userManager.AddToRoleAsync(entity, roleName);
                 if (result.Succeeded)
                 {
-                    if (userId == GetUserId())
-                    {
-                        await _signInManager.RefreshSignInAsync(entity);
-                    }
                     return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
                 }
                 TempData[ErrorMessagesConstants.FailedMessageKey] = string.Join(Environment.NewLine, result.Errors.Select(c => c.Description));
@@ -116,10 +109,6 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 var result = await _userManager.RemoveFromRoleAsync(entity, roleName);
                 if (result.Succeeded)
                 {
-                    if (userId == GetUserId())
-                    {
-                        await _signInManager.RefreshSignInAsync(entity);
-                    }
                     return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
                 }
                 TempData[ErrorMessagesConstants.FailedMessageKey] = string.Join(Environment.NewLine, result.Errors.Select(c => c.Description));
@@ -137,7 +126,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             }
             model.IsActive = !model.IsActive;
             await _userManager.UpdateAsync(model);
-            return RedirectToAction(nameof(Index), new { keyword = keyword, page = currentPage});
+            return RedirectToAction(nameof(Index), new { keyword = keyword, page = currentPage });
         }
 
         public async Task<IActionResult> ChangePassword(string id, FilterEnum keyword)

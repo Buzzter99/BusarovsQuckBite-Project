@@ -1,15 +1,12 @@
-﻿using System.Security.Claims;
-using BusarovsQuckBite.Constants;
+﻿using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data.Enums;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models.Cart;
 using BusarovsQuckBite.Models.Order;
 using BusarovsQuckBite.Models.PageHelpers;
-using BusarovsQuckBite.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuckBite.Controllers
@@ -17,12 +14,10 @@ namespace BusarovsQuckBite.Controllers
     public class OrdersController : BaseController
     {
         private readonly IOrderService _orderService;
-        private readonly ApplicationUserManager<ApplicationUser> _userManager;
 
-        public OrdersController(IOrderService orderService, ApplicationUserManager<ApplicationUser> userManager)
+        public OrdersController(IOrderService orderService)
         {
             _orderService = orderService;
-            _userManager = userManager;
         }
         [HttpPost]
         public async Task<IActionResult> MyOrder(CartViewModel model)
@@ -76,9 +71,13 @@ namespace BusarovsQuckBite.Controllers
             int pageSize = 10;
             var ordersForUser = await _orderService.GetOrdersForUser(GetUserId());
             ViewBag.PageNumber = page;
-            ViewBag.TotalPages = PageHelper.CalculateTotalPages(pageSize, ordersForUser.OrderModel);
+            ViewBag.TotalPages = PageHelper.CalculateTotalPages(pageSize, ordersForUser.OrderModel) == 0 ? 1 : PageHelper.CalculateTotalPages(pageSize, ordersForUser.OrderModel);
             ViewBag.PageSize = pageSize;
-            ordersForUser.OrderModel = (PageHelper.CalculateItemsForPage(page, pageSize, ordersForUser.OrderModel));
+            ordersForUser.OrderModel = PageHelper.CalculateItemsForPage(page, pageSize, ordersForUser.OrderModel);
+            if (ViewBag.TotalPages < page || page <= 0)
+            {
+                return RedirectToAction(nameof(Orders));
+            }
             return View(ordersForUser);
         }
         public async Task<IActionResult> TrackOrder(TrackOrderViewModel model)
@@ -113,9 +112,13 @@ namespace BusarovsQuckBite.Controllers
                 return RedirectToAction("Index","Home");
             }
             ViewBag.PageNumber = page;
-            ViewBag.TotalPages = PageHelper.CalculateTotalPages(pageSize, allOrders.OrderModel);
+            ViewBag.TotalPages = PageHelper.CalculateTotalPages(pageSize, allOrders.OrderModel) == 0 ? 1 : PageHelper.CalculateTotalPages(pageSize, allOrders.OrderModel);
             ViewBag.PageSize = pageSize;
-            allOrders.OrderModel = (PageHelper.CalculateItemsForPage(page, pageSize, allOrders.OrderModel));
+            allOrders.OrderModel = PageHelper.CalculateItemsForPage(page, pageSize, allOrders.OrderModel);
+            if (ViewBag.TotalPages < page || page <= 0)
+            {
+                return RedirectToAction(nameof(OrderManagement));
+            }
             return View(allOrders);
         }
         [HttpPost]

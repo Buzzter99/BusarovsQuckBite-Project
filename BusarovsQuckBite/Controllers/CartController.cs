@@ -11,12 +11,10 @@ namespace BusarovsQuckBite.Controllers
     {
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly ICartService _cartService;
-        private readonly UserManager<ApplicationUser> _userManager;
-        public CartController(IHttpContextAccessor contextAccessor, ICartService cartService, UserManager<ApplicationUser> userManager)
+        public CartController(IHttpContextAccessor contextAccessor, ICartService cartService)
         {
             _contextAccessor = contextAccessor;
             _cartService = cartService;
-            _userManager = userManager;
         }
         public async Task<IActionResult> MyCart()
         {
