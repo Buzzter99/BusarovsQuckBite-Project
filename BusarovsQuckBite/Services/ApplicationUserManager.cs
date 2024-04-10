@@ -36,15 +36,6 @@ namespace BusarovsQuckBite.Services
             }
             return await base.CreateAsync(user, password);
         }
-
-        private async Task<List<RoleViewModel>> GetAllRoles()
-        {
-            return await _store.Context.Roles.Select(c => new RoleViewModel()
-            {
-                Id = c.Id,
-                Name = c.Name
-            }).AsNoTracking().ToListAsync();
-        }
         public async Task<AdministrationViewModel> MapViewModel(TUser user)
         {
             return new AdministrationViewModel()
@@ -140,6 +131,25 @@ namespace BusarovsQuckBite.Services
             entity.UserName = model.Username.Trim();
             return entity;
         }
+        public UpdateUserDataViewModel MapInfoForUser(TUser user)
+        {
+            return new UpdateUserDataViewModel()
+            {
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Username = user.UserName,
+                FirstName = user.FirstName == "" ? "" : _protectionService.Decrypt(user.FirstName!),
+                LastName = user.LastName == "" ? "" : _protectionService.Decrypt(user.LastName!),
+            };
+        }
+        private async Task<List<RoleViewModel>> GetAllRoles()
+        {
+            return await _store.Context.Roles.Select(c => new RoleViewModel()
+            {
+                Id = c.Id,
+                Name = c.Name
+            }).AsNoTracking().ToListAsync();
+        }
         private async Task<List<IdentityError>> ValidateUser(TUser user, IQueryable<TUser> collection)
         {
             var errors = new List<IdentityError>();
@@ -156,17 +166,6 @@ namespace BusarovsQuckBite.Services
                 errors.Add(new IdentityError { Description = "Phone number is already registered" });
             }
             return await Task.FromResult(errors);
-        }
-        public UpdateUserDataViewModel MapInfoForUser(TUser user)
-        {
-            return new UpdateUserDataViewModel()
-            {
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber,
-                Username = user.UserName,
-                FirstName = user.FirstName == "" ? "" : _protectionService.Decrypt(user.FirstName!),
-                LastName = user.LastName == "" ? "" : _protectionService.Decrypt(user.LastName!),
-            };
         }
     }
 }

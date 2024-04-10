@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
-namespace BusarovsQuickBite.Tests.FakeManager
+namespace BusarovsQuickBite.Tests.FakeManagers
 {
     public class FakeManager<T> where T : ApplicationUser
     {

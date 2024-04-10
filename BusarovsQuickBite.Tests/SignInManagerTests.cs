@@ -1,6 +1,7 @@
 ﻿using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Services;
-using BusarovsQuickBite.Tests.FakeManager;
+using BusarovsQuickBite.Tests.FakeManagers;
+
 namespace BusarovsQuickBite.Tests
 {
     [TestFixture]
