@@ -1,7 +1,7 @@
 ﻿using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data.Models;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
@@ -18,7 +18,7 @@ namespace BusarovsQuckBite.Controllers
         }
         public async Task<IActionResult> MyCart()
         {
-            var cart = await _cartService.GetCart(GetUserId());
+            var cart = await _cartService.GetCart(User.Identity.GetUserId());
             return View(cart);
         }
         [HttpPost]
@@ -27,7 +27,7 @@ namespace BusarovsQuckBite.Controllers
             string callbackUrl = _contextAccessor.HttpContext!.Request.Headers["Referer"];
             try
             {
-                await _cartService.AddCartProduct(productId,GetUserId());
+                await _cartService.AddCartProduct(productId,User.Identity.GetUserId());
             }
             catch (ApplicationException ae)
             {
@@ -41,7 +41,7 @@ namespace BusarovsQuckBite.Controllers
         {
             try
             {
-               await _cartService.RemoveProductFromCart(productId, GetUserId());
+               await _cartService.RemoveProductFromCart(productId, User.Identity.GetUserId());
             }
             catch (ApplicationException ae)
             {

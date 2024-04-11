@@ -3,6 +3,7 @@ using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models.Category;
 using BusarovsQuckBite.Models.Enums;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
@@ -49,7 +50,7 @@ namespace BusarovsQuckBite.Controllers
             {
                 return View(model);
             }
-            await _categoryService.AddCategoryAsync(model, GetUserId());
+            await _categoryService.AddCategoryAsync(model, User.Identity.GetUserId());
             TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyAdded,nameof(Category));
             ModelState.Clear();
             return View();

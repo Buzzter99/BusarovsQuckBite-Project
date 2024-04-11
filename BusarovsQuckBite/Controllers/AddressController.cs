@@ -2,8 +2,10 @@
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models.Address;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
+
 
 namespace BusarovsQuckBite.Controllers
 {
@@ -16,7 +18,7 @@ namespace BusarovsQuckBite.Controllers
         }
         public async Task<IActionResult> All()
         {
-            var myAddresses = await _addressService.GetAddressesForUserAsync(GetUserId());
+            var myAddresses = await _addressService.GetAddressesForUserAsync(User.Identity.GetUserId());
             return View(myAddresses);
         }
         public IActionResult AddAddress()
@@ -32,7 +34,7 @@ namespace BusarovsQuckBite.Controllers
             }
             try
             {
-                await _addressService.AddAddress(model, GetUserId());
+                await _addressService.AddAddress(model, User.Identity.GetUserId());
             }
             catch (ApplicationException ae)
             {
@@ -48,7 +50,7 @@ namespace BusarovsQuckBite.Controllers
         {
             try
             {
-                await _addressService.DeleteAddress(addressId, GetUserId());
+                await _addressService.DeleteAddress(addressId, User.Identity.GetUserId());
             }
             catch (ApplicationException ae)
             {
@@ -62,7 +64,7 @@ namespace BusarovsQuckBite.Controllers
             AddressViewModel address;
             try
             {
-                address = await _addressService.GetByIdForUser(addressId, GetUserId());
+                address = await _addressService.GetByIdForUser(addressId,User.Identity.GetUserId());
             }
             catch (ApplicationException ae)
             {
@@ -76,7 +78,7 @@ namespace BusarovsQuckBite.Controllers
         {
             try
             {
-                await _addressService.GetByIdForUser(address.AddressId, GetUserId());
+                await _addressService.GetByIdForUser(address.AddressId, User.Identity.GetUserId());
             }
             catch (ApplicationException ae)
             {
@@ -89,7 +91,7 @@ namespace BusarovsQuckBite.Controllers
             }
             try
             {
-                await _addressService.EditAddress(address, GetUserId());
+                await _addressService.EditAddress(address, User.Identity.GetUserId());
             }
             catch (ApplicationException ae)
             {

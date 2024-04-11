@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using System.Text.Encodings.Web;
 using BusarovsQuckBite.Areas.AccountManager.Models.Enums;
+using Microsoft.AspNet.Identity;
 
 namespace BusarovsQuckBite.Areas.AccountManager.Controllers
 {
@@ -28,7 +29,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var userData = _userManager.MapInfoForUser(await _userManager.FindByIdAsync(GetUserId()));
+            var userData = _userManager.MapInfoForUser(await _userManager.FindByIdAsync(User.Identity.GetUserId()));
             return View(new UserAllInfoViewModel { UpdateUserDataViewModel = userData,ActiveTab = TabEnum.Profile.ToString()});
         }
         [HttpPost]
@@ -149,7 +150,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             {
                 return View(nameof(Index), new UserAllInfoViewModel { UpdateUserDataViewModel = model,ActiveTab = TabEnum.Profile.ToString()});
             }
-            var user = await _userManager.FindByIdAsync(GetUserId());
+            var user = await _userManager.FindByIdAsync(User.Identity.GetUserId());
             if (user != null)
             {
                 if (model.FirstName != null && !string.IsNullOrEmpty(model.FirstName) && !string.IsNullOrWhiteSpace(model.FirstName))
@@ -178,19 +179,19 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(nameof(Index), new UserAllInfoViewModel { ActiveTab = TabEnum.ChangePassword.ToString(),UpdateUserDataViewModel = _userManager.MapInfoForUser(await _userManager.FindByIdAsync(GetUserId())),ChangeUserPasswordViewModel = model});
+                return View(nameof(Index), new UserAllInfoViewModel { ActiveTab = TabEnum.ChangePassword.ToString(),UpdateUserDataViewModel = _userManager.MapInfoForUser(await _userManager.FindByIdAsync(User.Identity.GetUserId())),ChangeUserPasswordViewModel = model});
             }
-            var changePassword = await _userManager.ChangePasswordAsync(await _userManager.FindByIdAsync(GetUserId()),model.OldPassword,model.Password);
+            var changePassword = await _userManager.ChangePasswordAsync(await _userManager.FindByIdAsync(User.Identity.GetUserId()),model.OldPassword,model.Password);
             if (!changePassword.Succeeded)
             {
                 foreach (var error in changePassword.Errors)
                 {
                     ModelState.AddModelError(nameof(model.ConfirmPassword), error.Description);
                 }
-                return View(nameof(Index), new UserAllInfoViewModel { ActiveTab = TabEnum.ChangePassword.ToString(), UpdateUserDataViewModel = _userManager.MapInfoForUser(await _userManager.FindByIdAsync(GetUserId())), ChangeUserPasswordViewModel = model });
+                return View(nameof(Index), new UserAllInfoViewModel { ActiveTab = TabEnum.ChangePassword.ToString(), UpdateUserDataViewModel = _userManager.MapInfoForUser(await _userManager.FindByIdAsync(User.Identity.GetUserId())), ChangeUserPasswordViewModel = model });
             }
             TempData[SuccessMessageConstants.SuccessMessageKey] = "Password Changed Successfully";
-            return View(nameof(Index), new UserAllInfoViewModel { ActiveTab = TabEnum.ChangePassword.ToString(), UpdateUserDataViewModel = _userManager.MapInfoForUser(await _userManager.FindByIdAsync(GetUserId())) });
+            return View(nameof(Index), new UserAllInfoViewModel { ActiveTab = TabEnum.ChangePassword.ToString(), UpdateUserDataViewModel = _userManager.MapInfoForUser(await _userManager.FindByIdAsync(User.Identity.GetUserId())) });
 
         }
         [AllowAnonymous]

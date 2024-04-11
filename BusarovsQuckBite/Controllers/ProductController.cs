@@ -4,6 +4,7 @@ using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models.Enums;
 using BusarovsQuckBite.Models.PageHelpers;
 using BusarovsQuckBite.Models.Product;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
@@ -49,7 +50,7 @@ namespace BusarovsQuckBite.Controllers
             }
             try
             {
-                await _productService.AddProduct(model,GetUserId());
+                await _productService.AddProduct(model,User.Identity.GetUserId());
             }
             catch (ApplicationException ae)
             {

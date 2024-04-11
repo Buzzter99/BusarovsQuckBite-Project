@@ -5,6 +5,7 @@ using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models.Cart;
 using BusarovsQuckBite.Models.Order;
 using BusarovsQuckBite.Models.PageHelpers;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
@@ -25,7 +26,7 @@ namespace BusarovsQuckBite.Controllers
             OrderViewModel orderView = new OrderViewModel() { Cart = model };
             try
             {
-                orderView = await _orderService.ValidateOrderAsync(orderView, GetUserId());
+                orderView = await _orderService.ValidateOrderAsync(orderView, User.Identity.GetUserId());
             }
             catch (ApplicationException ae)
             {
@@ -40,7 +41,7 @@ namespace BusarovsQuckBite.Controllers
         {
             try
             {
-                model = await _orderService.ValidateOrderAsync(model, GetUserId());
+                model = await _orderService.ValidateOrderAsync(model, User.Identity.GetUserId());
             }
             catch (ApplicationException ae)
             {
@@ -53,7 +54,7 @@ namespace BusarovsQuckBite.Controllers
             }
             try
             {
-                await _orderService.PlaceOrder(model, GetUserId());
+                await _orderService.PlaceOrder(model, User.Identity.GetUserId());
             }
             catch (ApplicationException ae)
             {
@@ -69,7 +70,7 @@ namespace BusarovsQuckBite.Controllers
                 page = 1;
             }
             int pageSize = 10;
-            var ordersForUser = await _orderService.GetOrdersForUser(GetUserId());
+            var ordersForUser = await _orderService.GetOrdersForUser(User.Identity.GetUserId());
             ViewBag.PageNumber = page;
             ViewBag.TotalPages = PageHelper.CalculateTotalPages(pageSize, ordersForUser.OrderModel) == 0 ? 1 : PageHelper.CalculateTotalPages(pageSize, ordersForUser.OrderModel);
             ViewBag.PageSize = pageSize;
@@ -84,7 +85,7 @@ namespace BusarovsQuckBite.Controllers
         {
             try
             {
-               model.Percentage = await _orderService.GetOrderStatusAsync(model.Id,GetUserId());
+               model.Percentage = await _orderService.GetOrderStatusAsync(model.Id,User.Identity.GetUserId());
             }
             catch (ApplicationException ae)
             {
@@ -126,7 +127,7 @@ namespace BusarovsQuckBite.Controllers
         {
             try
             {
-                await _orderService.UpdateOrderStatus(orderId, GetUserId());
+                await _orderService.UpdateOrderStatus(orderId, User.Identity.GetUserId());
             }
             catch (ApplicationException ae)
             {
