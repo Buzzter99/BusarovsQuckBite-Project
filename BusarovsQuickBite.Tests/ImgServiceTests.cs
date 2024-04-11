@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using System.IO;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuickBite.Tests
@@ -109,6 +108,21 @@ namespace BusarovsQuickBite.Tests
             Assert.That(_context!.Img.Count(), Is.EqualTo(expectedCount - 1));
             var fileShouldBeDeleted = File.Exists(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\Images\test.jpg");
             Assert.IsFalse(fileShouldBeDeleted);
+        }
+        [Test]
+        public async Task FilesShouldBeDeletedFromFileSystemWhenNotInDb()
+        {
+            await _imgService!.AddImg(_formFile!.Object);
+            await _context!.Database.EnsureDeletedAsync();
+            await _context.Database.EnsureCreatedAsync();
+            string wwwRootPath = _hostingEnvironmentMock!.Object.WebRootPath + "\\Images";
+            string[] filesBeforeDelete = Directory.GetFiles(wwwRootPath, "*.*", SearchOption.AllDirectories);
+            int actual = filesBeforeDelete.Length;
+            int expected = 4;
+            Assert.That(actual,Is.EqualTo(expected));
+            await _imgService.DeleteUnusedImages();
+            string[] filesAfterDelete = Directory.GetFiles(wwwRootPath, "*.*", SearchOption.AllDirectories);
+            Assert.That(filesAfterDelete.Length,Is.EqualTo(expected - 1));
         }
     }
 }

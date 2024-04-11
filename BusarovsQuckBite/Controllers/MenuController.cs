@@ -15,7 +15,7 @@ namespace BusarovsQuckBite.Controllers
         {
             int pageSize = 3;
             ViewBag.Search = searchTerm;
-            var entities = await _productService.GetAllProductsBySearchTerm(page,pageSize,searchTerm);
+            var entities = await _productService.GetAllProductsBySearchTerm(searchTerm);
             ViewBag.PageNumber = page;
             ViewBag.TotalPages = PageHelper.CalculateTotalPages(pageSize,entities) == 0 ? 1 : PageHelper.CalculateTotalPages(pageSize, entities);
             if (ViewBag.TotalPages < page || page <= 0)
@@ -28,7 +28,7 @@ namespace BusarovsQuckBite.Controllers
         }
         public async Task<IActionResult> Search(string? name)
         {
-            var products = await _productService.GetAllProductsBySearchTerm(1, 3,name ?? "");
+            var products = await _productService.GetAllProductsBySearchTerm(name ?? "");
             return RedirectToAction(nameof(All), new { page = 1, searchTerm = products.Any() ? name : "" });
         }
         public IActionResult ClearFilter()

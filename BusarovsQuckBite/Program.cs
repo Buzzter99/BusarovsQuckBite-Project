@@ -19,8 +19,6 @@ namespace BusarovsQuckBite
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString).UseLazyLoadingProxies());
@@ -32,7 +30,6 @@ namespace BusarovsQuckBite
             builder.Services.AddScoped<ICartService, CartService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
             builder.Services.AddSignalR();
-            // builder.Services.AddSession(x => { x.IdleTimeout = TimeSpan.FromMinutes(20);});
             builder.Services.AddScoped<IDataProtectionService, DataProtectionService>();
             builder.Services.AddTransient<IEmailSender, EmailService>();
             builder.Services.Configure<CustomTokenProviderOptions>(options => {options.TokenLifespan = TimeSpan.FromHours(2);});
@@ -76,7 +73,6 @@ namespace BusarovsQuckBite
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
-            // app.UseSession();
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
