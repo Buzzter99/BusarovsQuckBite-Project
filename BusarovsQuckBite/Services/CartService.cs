@@ -91,7 +91,6 @@ namespace BusarovsQuckBite.Services
             }
             await _context.SaveChangesAsync();
         }
-
         public async Task RemoveProductFromCart(int productId,string userId)
         {
             var product = await _context.CartProducts.FirstOrDefaultAsync(x => x.ProductId == productId && x.Cart.Who == userId);
@@ -102,13 +101,12 @@ namespace BusarovsQuckBite.Services
             _context.CartProducts.Remove(product);
             await _context.SaveChangesAsync();
         }
-
         public async Task<Cart> GetCartByUserId(string userId)
         {
             var cart = await _context.Carts.FirstOrDefaultAsync(x => x.Who == userId);
             if (cart == null)
             {
-                throw new InvalidOperationException("Cart not found");
+                throw new ApplicationException("Cart not found");
             }
             return cart;
         }

@@ -24,7 +24,7 @@ namespace BusarovsQuickBite.Tests
         private IProductService? _productService;
         private DbContextOptions<ApplicationDbContext>? _dbOptions;
         private ApplicationDbContext? _context;
-        private CategoryService? _categoryService;
+        private ICategoryService? _categoryService;
         private IImgService? _imgService;
         private Mock<IFormFile>? _formFile;
         private Mock<IWebHostEnvironment>? _hostingEnvironmentMock;
@@ -85,7 +85,7 @@ namespace BusarovsQuickBite.Tests
         [Test]
         public async Task AddProductShouldThrow()
         {
-            _productFormViewModel.Price = 0;
+            _productFormViewModel!.Price = 0;
             Assert.ThrowsAsync<ApplicationException>(async () => await _productService!.AddProduct(_productFormViewModel, UserConstants.AdminId));
             _productFormViewModel.Price = 5;
             _productFormViewModel.QtyAvailable = 0;
@@ -98,7 +98,7 @@ namespace BusarovsQuickBite.Tests
         public async Task AddShouldWork()
         {
             int count = await _context!.Products.CountAsync();
-            _productFormViewModel.ImageFile = _formFile!.Object;
+            _productFormViewModel!.ImageFile = _formFile!.Object;
             Assert.DoesNotThrowAsync(async () => await _productService!.AddProduct(_productFormViewModel, UserConstants.AdminId));
             int afterAdd = await _context!.Products.CountAsync();
             int imgShouldBeAdded = await _context!.Img.CountAsync();
@@ -120,7 +120,7 @@ namespace BusarovsQuickBite.Tests
             Assert.ThrowsAsync<ApplicationException>(async () => await _productService!.DeleteProduct(0));
             Assert.ThrowsAsync<ApplicationException>(async () => await _productService!.DeleteProduct(-1));
             Assert.ThrowsAsync<ApplicationException>(async () => await _productService!.DeleteProduct(20));
-            _productFormViewModel.ImageFile = _formFile!.Object;
+            _productFormViewModel!.ImageFile = _formFile!.Object;
             await _productService!.AddProduct(_productFormViewModel, UserConstants.AdminId);
             var category = await _context!.Categories.FirstOrDefaultAsync(x => x.Id == _productFormViewModel.CategoryId);
             category!.IsDeleted = true;
