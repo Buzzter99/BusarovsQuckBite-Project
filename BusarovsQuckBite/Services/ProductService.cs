@@ -155,7 +155,8 @@ namespace BusarovsQuckBite.Services
         }
         public async Task<List<ProductViewModel>> GetProductsForHomePageAsync(int count)
         {
-            var model = await _context.Products.Where(x => !x.IsDeleted && x.Quantity > 0)
+            var model = await _context.Products.Where(x => !x.IsDeleted && !x.Category.IsDeleted 
+                                                                        && x.Quantity > 0)
                 .OrderBy(x => x.Price)
                 .ThenByDescending(x => x.TransactionDateAndTime).Take(count).Select(c => new ProductViewModel
                 {
@@ -175,7 +176,7 @@ namespace BusarovsQuckBite.Services
         public async Task<List<ProductViewModel>> GetAllProductsBySearchTerm(string searchTerm = "")
         {
             ProductViewModel model = new ProductViewModel();
-            var entity = await _context.Products.Where(x => (!x.IsDeleted) && (x.Name.ToUpper().Contains(searchTerm.ToUpper())
+            var entity = await _context.Products.Where(x => (!x.IsDeleted && !x.Category.IsDeleted) && (x.Name.ToUpper().Contains(searchTerm.ToUpper())
                                                       || x.Category.Name.Contains(searchTerm.ToUpper())
                                                       || x.Description.ToUpper().Contains(searchTerm.ToUpper())))
                 .Select(c => new ProductViewModel()

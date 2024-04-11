@@ -13,7 +13,7 @@ namespace BusarovsQuickBite.Tests
     {
         private DbContextOptions<ApplicationDbContext>? _dbOptions;
         private ApplicationDbContext? _context;
-        private CategoryService? _categoryService;
+        private ICategoryService? _categoryService;
         [SetUp]
         public void Setup()
         {
@@ -140,7 +140,7 @@ namespace BusarovsQuickBite.Tests
         [Test]
         public async Task GetCategoriesForUserByStatusTest()
         {
-            int expectedCount = 7;
+            int expectedCount =await _context!.Categories.CountAsync();
             var collection = await _categoryService!.GetCategoriesForUserByStatusAsync(FilterEnum.All);
             Assert.That(collection.Count,Is.EqualTo(expectedCount));
             collection = await _categoryService!.GetCategoriesForUserByStatusAsync(FilterEnum.Active);
@@ -148,7 +148,7 @@ namespace BusarovsQuickBite.Tests
             collection = await _categoryService!.GetCategoriesForUserByStatusAsync(FilterEnum.Deleted);
             Assert.That(collection.Count, Is.EqualTo(0));
             await _categoryService.DeleteCategoryAsync(1);
-            int expectedAfterDelete = 6;
+            int expectedAfterDelete = expectedCount - 1;
             collection = await _categoryService!.GetCategoriesForUserByStatusAsync(FilterEnum.Active);
             Assert.That(collection.Count, Is.EqualTo(expectedAfterDelete));
             collection = await _categoryService!.GetCategoriesForUserByStatusAsync(FilterEnum.All);
@@ -156,12 +156,11 @@ namespace BusarovsQuickBite.Tests
             collection = await _categoryService!.GetCategoriesForUserByStatusAsync(FilterEnum.Deleted);
             Assert.That(collection.Count, Is.EqualTo(expectedCount - expectedAfterDelete));
         }
-
         [Test]
         public async Task SearchByNameTest()
         {
             string searchTerm = "pIzZa";
-            int expected = 1;
+            int expected = _context!.Categories.Count(x => x.Name.ToUpper().Contains(searchTerm.ToUpper()));
             var categories = await _categoryService!.SearchByNameAsync(FilterEnum.All, searchTerm);
             Assert.That(categories.Count,Is.EqualTo(expected));
             categories = await _categoryService!.SearchByNameAsync(FilterEnum.Active, searchTerm);

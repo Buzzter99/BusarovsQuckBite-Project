@@ -2,13 +2,14 @@
 using Microsoft.Extensions.Configuration;
 using Moq;
 using System.Net.Mail;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace BusarovsQuickBite.Tests
 {
     [TestFixture]
     public class EmailServiceTests
     {
-        private readonly EmailService _emailService;
+        private readonly IEmailSender _emailService;
 
         public EmailServiceTests()
         {

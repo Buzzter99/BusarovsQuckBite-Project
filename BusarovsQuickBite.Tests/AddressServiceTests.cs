@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using System.Text;
+using BusarovsQuckBite.Contracts;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuickBite.Tests
@@ -14,10 +15,10 @@ namespace BusarovsQuickBite.Tests
     [TestFixture]
     public class AddressServiceTests
     {
-        private AddressService? _addressService;
+        private IAddressService? _addressService;
         private DbContextOptions<ApplicationDbContext>? _dbOptions;
         private ApplicationDbContext? _context;
-        private DataProtectionService? _dataProtectionService;
+        private IDataProtectionService? _dataProtectionService;
         [SetUp]
         public void Setup()
         {

@@ -24,7 +24,7 @@ namespace BusarovsQuickBite.Tests
         private DbContextOptions<ApplicationDbContext>? _dbOptions;
         private ApplicationDbContext? _context;
         private DataProtectionService? _dataProtectionService;
-        private ApplicationUser _user;
+        private ApplicationUser? _user;
         [SetUp]
         public void SetUp()
         {
@@ -72,10 +72,10 @@ namespace BusarovsQuickBite.Tests
         [Test]
         public async Task CreateUserTest()
         {
-            var result = await _userManager.CreateAsync(_user, "000000");
+            var result = await _userManager.CreateAsync(_user!, "000000");
             Assert.IsTrue(result.Succeeded);
             var emailExist = new ApplicationUser();
-            emailExist.Email = _user.Email;
+            emailExist.Email = _user!.Email;
             var error1 = await _userManager.CreateAsync(emailExist, "000000");
             Assert.IsFalse(error1.Succeeded);
             var usernameExists = new ApplicationUser();

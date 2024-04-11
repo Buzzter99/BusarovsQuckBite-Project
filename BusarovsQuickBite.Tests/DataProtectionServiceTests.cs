@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using System.Text;
+using BusarovsQuckBite.Contracts;
 
 namespace BusarovsQuickBite.Tests
 {
     [TestFixture]
     public class DataProtectionServiceTests
     {
-        private DataProtectionService? _dataProtectionService;
+        private IDataProtectionService? _dataProtectionService;
 
         [SetUp]
         public void SetUp()

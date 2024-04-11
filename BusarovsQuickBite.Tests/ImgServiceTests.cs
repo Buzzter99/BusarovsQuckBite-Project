@@ -1,4 +1,5 @@
-﻿using BusarovsQuckBite.Data;
+﻿using BusarovsQuckBite.Contracts;
+using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +12,7 @@ namespace BusarovsQuickBite.Tests
     [TestFixture]
     public class ImgServiceTests
     {
-        private ImgService? _imgService;
+        private IImgService? _imgService;
         private Mock<IWebHostEnvironment>? _hostingEnvironmentMock;
         private DbContextOptions<ApplicationDbContext>? _dbOptions;
         private ApplicationDbContext? _context;
@@ -86,7 +87,7 @@ namespace BusarovsQuickBite.Tests
         [Test]
         public async Task ExistingFileShouldReturnCorrectId()
         {
-            int expectedId = 4;
+            int expectedId = _context!.Img.Count() + 1;
             var id = await _imgService!.AddImg(_formFile!.Object);
             var addAgain = await _imgService!.AddImg(_formFile!.Object);
             Assert.That(expectedId,Is.EqualTo(addAgain));
@@ -101,7 +102,7 @@ namespace BusarovsQuickBite.Tests
         [Test]
         public async Task DeleteUnusedImageForProduct()
         {
-            int expectedCount = 4;
+            int expectedCount = _context!.Img.Count() + 1;
             await _imgService!.AddImg(_formFile!.Object);
             Assert.That(_context!.Img.Count(),Is.EqualTo(expectedCount));
             await _imgService.DeleteUnusedImages();
@@ -118,7 +119,7 @@ namespace BusarovsQuickBite.Tests
             string wwwRootPath = _hostingEnvironmentMock!.Object.WebRootPath + "\\Images";
             string[] filesBeforeDelete = Directory.GetFiles(wwwRootPath, "*.*", SearchOption.AllDirectories);
             int actual = filesBeforeDelete.Length;
-            int expected = 4;
+            int expected = await _context.Img.CountAsync();
             Assert.That(actual,Is.EqualTo(expected));
             await _imgService.DeleteUnusedImages();
             string[] filesAfterDelete = Directory.GetFiles(wwwRootPath, "*.*", SearchOption.AllDirectories);
