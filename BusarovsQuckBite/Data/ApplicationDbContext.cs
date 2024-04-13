@@ -22,11 +22,8 @@ namespace BusarovsQuckBite.Data
             builder.ApplyConfiguration(new ImgConfiguration());
             builder.ApplyConfiguration(new ProductConfiguration());
             builder.ApplyConfiguration(new OrderConfiguration());
+            builder.ApplyConfiguration(new OrderActionChronologyConfiguration());
             base.OnModelCreating(builder);
-            builder.Entity<OrderActionChronology>().HasOne(c => c.Order)
-                .WithMany()
-                .HasForeignKey(c => c.OrderId)
-                .OnDelete(DeleteBehavior.Restrict);
         }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Product> Products { get; set; }

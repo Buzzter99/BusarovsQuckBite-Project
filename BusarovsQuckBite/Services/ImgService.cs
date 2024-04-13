@@ -64,21 +64,10 @@ namespace BusarovsQuckBite.Services
         public async Task DeleteUnusedImages()
         {
             var unusedImages = _context.Img.Where(x => !x.Products.Any()).ToList();
-            string wwwRootPath = _hostingEnvironment.WebRootPath + "\\Images";
-            string[] files = Directory.GetFiles(wwwRootPath, "*.*", SearchOption.AllDirectories);
             foreach (var img in unusedImages)
             {
                 File.Delete(img.FullPath);
                 _context.Img.Remove(img);
-            }
-            var allImages = await _context.Img.ToListAsync();
-            foreach (var directoryFile in files)
-            {
-                var fileName = Path.GetFileName(directoryFile);
-                if (!allImages.Any(x => x.Name.Contains(fileName)))
-                {
-                    File.Delete(DataConstants.ImgConstants.ImgBasePath + "/" + fileName);
-                }
             }
             await _context.SaveChangesAsync();
         }

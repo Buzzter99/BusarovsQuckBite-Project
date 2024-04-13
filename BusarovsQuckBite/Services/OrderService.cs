@@ -96,7 +96,7 @@ namespace BusarovsQuckBite.Services
         {
             if (model.Cart.CartOwner != userId)
             {
-                throw new InvalidOperationException(ErrorMessagesConstants.OwnerIsInvalid);
+                throw new ApplicationException(ErrorMessagesConstants.OwnerIsInvalid);
             }
             await _addressService.GetByIdForUser((int)model.SelectedAddressId!, userId);
             int orderId = await CreateAndGetOrderId(model, userId);
@@ -155,7 +155,7 @@ namespace BusarovsQuckBite.Services
             }
             var result = new AllUserOrdersViewModel
             {
-                OrderModel =  orderViewModels,
+                OrderModel = orderViewModels,
                 OrderStatuses = EnumHelper.GetEnumSelectList<OrderStatus>()
             };
             return result;
@@ -213,7 +213,27 @@ namespace BusarovsQuckBite.Services
             {
                 throw new ApplicationException("You cannot update your own order!");
             }
-            if (await _userManager.IsInRoleAsyncById(userId, RoleConstants.CookingStaffRoleName))
+            if (await _userManager.IsInRoleAsyncById(userId, RoleConstants.CookingStaffRoleName) && await _userManager.IsInRoleAsyncById(userId, RoleConstants.DeliveryDriverRoleName))
+            {
+                isActionRequired = true;
+                if (order.Status == OrderStatus.Processing)
+                {
+                    order.Status = OrderStatus.Preparing;
+                }
+                else if (order.Status == OrderStatus.Preparing)
+                {
+                    order.Status = OrderStatus.ReadyForDelivery;
+                }
+                else if (order.Status == OrderStatus.ReadyForDelivery)
+                {
+                    order.Status = OrderStatus.OnTheWay;
+                }
+                else if (order.Status == OrderStatus.OnTheWay)
+                {
+                    order.Status = OrderStatus.Delivered;
+                }
+            }
+            else if (await _userManager.IsInRoleAsyncById(userId, RoleConstants.CookingStaffRoleName))
             {
                 isActionRequired = true;
                 if (order.Status == OrderStatus.Processing)
@@ -225,7 +245,7 @@ namespace BusarovsQuckBite.Services
                     order.Status = OrderStatus.ReadyForDelivery;
                 }
             }
-            if (await _userManager.IsInRoleAsyncById(userId, RoleConstants.DeliveryDriverRoleName))
+            else if (await _userManager.IsInRoleAsyncById(userId, RoleConstants.DeliveryDriverRoleName))
             {
                 isActionRequired = true;
                 if (order.Status == OrderStatus.ReadyForDelivery)

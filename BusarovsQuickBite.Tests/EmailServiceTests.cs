@@ -18,11 +18,11 @@ namespace BusarovsQuickBite.Tests
                 .Build();
             _emailService = new EmailService(config);
         }
-        // [Test]
-        // public void SendEmailTest()
-        // {
-        //     Assert.DoesNotThrowAsync(async () => await _emailService.SendEmailAsync("ryuuzzakii@abv.bg", "subject", "<h1>test</h1>"));
-        // }
+        [Test]
+        public void SendEmailTest()
+        {
+            Assert.DoesNotThrowAsync(async () => await _emailService.SendEmailAsync("ryuuzzakii@abv.bg", "subject", "<h1>test</h1>"));
+        }
 
     }
 }

@@ -110,20 +110,5 @@ namespace BusarovsQuickBite.Tests
             var fileShouldBeDeleted = File.Exists(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\Images\test.jpg");
             Assert.IsFalse(fileShouldBeDeleted);
         }
-        [Test]
-        public async Task FilesShouldBeDeletedFromFileSystemWhenNotInDb()
-        {
-            await _imgService!.AddImg(_formFile!.Object);
-            await _context!.Database.EnsureDeletedAsync();
-            await _context.Database.EnsureCreatedAsync();
-            string wwwRootPath = _hostingEnvironmentMock!.Object.WebRootPath + "\\Images";
-            string[] filesBeforeDelete = Directory.GetFiles(wwwRootPath, "*.*", SearchOption.AllDirectories);
-            int actual = filesBeforeDelete.Length;
-            int expected = await _context.Img.CountAsync();
-            Assert.That(actual,Is.EqualTo(expected));
-            await _imgService.DeleteUnusedImages();
-            string[] filesAfterDelete = Directory.GetFiles(wwwRootPath, "*.*", SearchOption.AllDirectories);
-            Assert.That(filesAfterDelete.Length,Is.EqualTo(expected - 1));
-        }
     }
 }

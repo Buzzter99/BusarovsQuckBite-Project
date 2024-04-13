@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BusarovsQuckBite.Constants;
+﻿using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data;
-using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Models.Product;
 using BusarovsQuckBite.Services;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Moq;
+using System.Text;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuickBite.Tests
@@ -27,9 +20,7 @@ namespace BusarovsQuickBite.Tests
         private ApplicationDbContext? _context;
         private ICategoryService? _categoryService;
         private IImgService? _imgService;
-        private Mock<IFormFile>? _formFile;
         private Mock<IWebHostEnvironment>? _hostingEnvironmentMock;
-        private ProductFormViewModel? _productFormViewModel;
         private ICartService? _cartService;
 
         [SetUp]
@@ -43,21 +34,9 @@ namespace BusarovsQuickBite.Tests
             _hostingEnvironmentMock = new Mock<IWebHostEnvironment>();
             _hostingEnvironmentMock.Setup(h => h.WebRootPath).Returns(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\");
             _hostingEnvironmentMock.Setup(h => h.ContentRootPath).Returns(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\");
-            _formFile = new Mock<IFormFile>();
-            _formFile.Setup(f => f.Length).Returns(1024);
-            _formFile.Setup(f => f.FileName).Returns("test.jpg");
             _imgService = new ImgService(_hostingEnvironmentMock.Object, _context);
             _categoryService = new CategoryService(_context);
             _productService = new ProductService(_context, _imgService, _categoryService);
-            _productFormViewModel = new ProductFormViewModel
-            {
-                Name = "Product Name",
-                Description = "Product Description",
-                Price = 5,
-                QtyAvailable = 10,
-                CategoryId = 1,
-                ImageId = 1
-            };
             IConfiguration configuration = new ConfigurationBuilder()
                 .AddInMemoryCollection(new Dictionary<string, string> { })
                 .Build();

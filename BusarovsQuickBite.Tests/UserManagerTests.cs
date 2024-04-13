@@ -201,6 +201,10 @@ namespace BusarovsQuickBite.Tests
             Assert.IsNotNull(editData);
             Assert.That(editData.LastName, Is.Not.EqualTo(""));
             Assert.That(editData.FirstName, Is.Not.EqualTo(""));
+            string decryptedFirstName = _dataProtectionService!.Decrypt(editData.FirstName!);
+            string decryptedLastName = _dataProtectionService!.Decrypt(editData.LastName!);
+            Assert.That(decryptedFirstName,Is.EqualTo(adminModel.FirstName));
+            Assert.That(decryptedLastName, Is.EqualTo(adminModel.LastName));
         }
         [Test]
         public async Task GetUserByStatusTest()
@@ -218,6 +222,65 @@ namespace BusarovsQuickBite.Tests
             Assert.IsNotNull(deactivatedUsers);
             Assert.That(activeUsers.AdministrationDataModel.Count,Is.EqualTo(1));
             Assert.That(deactivatedUsers.AdministrationDataModel.Count, Is.EqualTo(1));
+        }
+        [Test]
+        public async Task UpdateUserNameShouldFail()
+        {
+            var user = new ApplicationUser
+            {
+                UserName = "test12345",
+                Email = "test@abv.bg",
+                PhoneNumber = "1234567890"
+            };
+            await _userManager.CreateAsync(user, "000000");
+            user.UserName = UserConstants.AdminUsername;
+            var userNameShouldFail = await _userManager.UpdateAsync(user);
+            Assert.IsFalse(userNameShouldFail.Succeeded);
+        }
+        [Test]
+        public async Task UpdateEmailShouldFail()
+        {
+            var user = new ApplicationUser
+            {
+                UserName = "test12345",
+                Email = "test@abv.bg",
+                PhoneNumber = "1234567890"
+            };
+            await _userManager.CreateAsync(user, "000000");
+            user.Email = UserConstants.AdminEmail;
+            var emailShouldFail = await _userManager.UpdateAsync(user);
+            Assert.IsFalse(emailShouldFail.Succeeded);
+        }
+        [Test]
+        public async Task UpdatePhoneNumberShouldFail()
+        {
+            var user = new ApplicationUser
+            {
+                UserName = "test12345",
+                Email = "test@abv.bg",
+                PhoneNumber = "1234567890"
+            };
+            await _userManager.CreateAsync(user, "000000");
+            user.PhoneNumber = UserConstants.AdminPhoneNumber;
+            var phoneNumberShouldFail = await _userManager.UpdateAsync(user);
+            Assert.IsFalse(phoneNumberShouldFail.Succeeded);
+        }
+
+        [Test]
+        public async Task UpdateShouldWork()
+        {
+            var user = new ApplicationUser
+            {
+                UserName = "test12345",
+                Email = "test@abv.bg",
+                PhoneNumber = "1234567890"
+            };
+            await _userManager.CreateAsync(user, "000000");
+            user.UserName = "Updated";
+            user.Email = "Updated@abv.bg";
+            user.PhoneNumber = "1234567891";
+            var shouldBeTrue = await _userManager.UpdateAsync(user);
+            Assert.IsTrue(shouldBeTrue.Succeeded);
         }
     }
 
