@@ -81,6 +81,10 @@ namespace BusarovsQuickBite.Tests
         {
             await _context!.Database.EnsureDeletedAsync();
             File.Delete(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\Images\test.jpg");
+            if (File.Exists(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\Images\newFormFile.jpg"))
+            {
+                File.Delete(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\Images\newFormFile.jpg");
+            }
         }
         [Test]
         public async Task AddProductShouldThrow()
@@ -197,7 +201,12 @@ namespace BusarovsQuickBite.Tests
         [Test]
         public async Task EditProductShouldWork()
         {
-            int firstId = 1;
+            var mockedFile = new Mock<IFormFile>();
+            mockedFile.Setup(f => f.Length).Returns(1024);
+            mockedFile.Setup(f => f.FileName).Returns("newFormFile.jpg");
+            _productFormViewModel!.ImageFile = _formFile!.Object;
+            await _productService!.AddProduct(_productFormViewModel, UserConstants.AdminId);
+            int firstId = 4;
             var category = await _context!.Categories.OrderByDescending(x => x.Id).FirstAsync();
             var viewModelToEdit = await _productService!.MapProductAsync(firstId);
             viewModelToEdit.Name = "Test";
@@ -205,7 +214,7 @@ namespace BusarovsQuickBite.Tests
             viewModelToEdit.Price = 200;
             viewModelToEdit.QtyAvailable = 123;
             viewModelToEdit.CategoryId = category.Id;
-            viewModelToEdit.ImageFile = _formFile!.Object;
+            viewModelToEdit.ImageFile = mockedFile.Object;
             Assert.DoesNotThrowAsync(async () => await _productService.EditProductAsync(viewModelToEdit));
             var entity = await _context.Products.FirstAsync(x => x.Id == firstId);
             Assert.That(entity.Id,Is.EqualTo(viewModelToEdit.Id));

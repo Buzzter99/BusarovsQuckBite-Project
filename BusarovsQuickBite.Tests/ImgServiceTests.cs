@@ -51,11 +51,11 @@ namespace BusarovsQuickBite.Tests
             Assert.That(result,Is.EqualTo(expectedId));
         }
         [Test]
-        public async Task ExtenstionIsInvalidShouldThrow()
+        public void ExtenstionIsInvalidShouldThrow()
         {
             _formFile!.Setup(f => f.FileName).Returns("test.html");
             Assert.ThrowsAsync<ApplicationException>(async () => await _imgService!.AddImg(_formFile!.Object));
-            File.Delete($@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\Images\test.html");
+            File.Delete(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\Images\test.html");
         }
         [Test]
         public void LengthIsInvalidShouldThrow()
