@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Net.Mail;
 using System.Net;
+using BusarovsQuckBite.Constants;
 
 namespace BusarovsQuckBite.Services
 {
@@ -26,7 +27,7 @@ namespace BusarovsQuckBite.Services
                 smtpClient.Credentials = new NetworkCredential(_smtpUserName, _smtpPassword);
                 MailMessage mailMessage = new MailMessage
                 {
-                    From = new MailAddress(_smtpUserName),
+                    From = new MailAddress(UserConstants.AdminEmail),
                     Subject = subject,
                     Body = htmlMessage,
                     IsBodyHtml = true
