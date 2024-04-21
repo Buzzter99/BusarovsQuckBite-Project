@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\AccountManager\Data\" />
+    <Folder Include="Areas\AccountManager\Models\" />
     <Folder Include="Areas\AccountManager\Pages\" />
   </ItemGroup>
 
@@ -35,6 +36,11 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Areas\AccountManager\Views\Manage\ConfirmEmail.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BusarovsQuickBite.Infrastructure\BusarovsQuickBite.Infrastructure.csproj" />
+    <ProjectReference Include="..\BusarovsQuickBite\BusarovsQuickBite.Core.csproj" />
   </ItemGroup>
 
 </Project>
