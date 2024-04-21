@@ -23,7 +23,7 @@ namespace BusarovsQuckBite.Controllers
             _productService = productService;
             _categoryService = categoryService;
         }
-        public async Task<IActionResult> All(string category, int page = 1, FilterEnum statusFilter = FilterEnum.All)
+        public async Task<IActionResult> All(string? category, int page = 1, FilterEnum statusFilter = FilterEnum.All)
         {
             int pageSize = 5;
             var model = await _productService.GetAllProductsAsync(category,statusFilter);
@@ -31,7 +31,7 @@ namespace BusarovsQuckBite.Controllers
             ViewBag.PageNumber = page;
             ViewBag.TotalPages = size;
             ViewBag.PageSize = pageSize;
-            ViewBag.Category = HtmlEncoder.Default.Encode(category);
+            ViewBag.Category = category == null ? "" : HtmlEncoder.Default.Encode(category);
             ViewBag.Filter = statusFilter;
             if (ViewBag.TotalPages < page || page <= 0)
             {

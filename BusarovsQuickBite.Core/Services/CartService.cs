@@ -1,10 +1,10 @@
 ﻿using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
-using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models.Cart;
 using BusarovsQuckBite.Models.Category;
 using BusarovsQuckBite.Models.Product;
+using BusarovsQuickBite.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
@@ -13,12 +13,12 @@ namespace BusarovsQuckBite.Services
     public class CartService : ICartService
     {
         private readonly IProductService _productService;
-        private readonly ApplicationDbContext _context;
+        private readonly IRepository _repository;
 
-        public CartService(IProductService productService, ApplicationDbContext context)
+        public CartService(IProductService productService, IRepository repository)
         {
             _productService = productService;
-            _context = context;
+            _repository = repository;
         }
         public async Task<CartViewModel> GetCart(string userId)
         {
@@ -33,7 +33,7 @@ namespace BusarovsQuckBite.Services
             }
             else
             {
-                var cart = await _context.Carts.FirstAsync(x => x.Who == userId);
+                var cart = await _repository.GetEntity<Cart>().FirstAsync(x => x.Who == userId);
                 model.Id = cart.Id;
             }
             model.ProductAll = await FindProductsForUserAndCart(userId);
@@ -42,7 +42,7 @@ namespace BusarovsQuckBite.Services
 
         public async Task<List<ProductViewModel>> FindProductsForUserAndCart(string userId)
         {
-            return await _context.CartProducts.Where(x => x.Cart.Who == userId)
+            return await _repository.GetEntity<CartProduct>().Where(x => x.Cart.Who == userId)
                 .Select(c => new ProductViewModel
                 {
                     Id = c.Product.Id,
@@ -73,7 +73,7 @@ namespace BusarovsQuckBite.Services
                 {
                     throw new ApplicationException("Product already Added!");
                 }
-                await _context.CartProducts.AddAsync(new CartProduct()
+                await _repository.AddAsync(new CartProduct()
                 {
                     CartId = cart.Id,
                     ProductId = product.Id
@@ -82,27 +82,27 @@ namespace BusarovsQuckBite.Services
             else
             {
                 var cartId = await CreateCartAsync(userId);
-                await _context.CartProducts.AddAsync(new CartProduct()
+                await _repository.AddAsync(new CartProduct()
                 {
                     CartId = cartId,
                     ProductId = productId
                 });
             }
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
         }
         public async Task RemoveProductFromCart(int productId,string userId)
         {
-            var product = await _context.CartProducts.FirstOrDefaultAsync(x => x.ProductId == productId && x.Cart.Who == userId);
+            var product = await _repository.GetEntity<CartProduct>().FirstOrDefaultAsync(x => x.ProductId == productId && x.Cart.Who == userId);
             if (product == null)
             {
                 throw new ApplicationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
             }
-            _context.CartProducts.Remove(product);
-            await _context.SaveChangesAsync();
+            _repository.DeleteEntity(product);
+            await _repository.SaveChangesAsync();
         }
         public async Task<Cart> GetCartByUserId(string userId)
         {
-            var cart = await _context.Carts.FirstOrDefaultAsync(x => x.Who == userId);
+            var cart = await _repository.GetEntity<Cart>().FirstOrDefaultAsync(x => x.Who == userId);
             if (cart == null)
             {
                 throw new ApplicationException("Cart not found");
@@ -112,9 +112,8 @@ namespace BusarovsQuckBite.Services
 
         private async Task<bool> IsCartCreatedAsync(string userId)
         {
-            return await _context.Carts.FirstOrDefaultAsync(x => x.Who == userId) != null;
+            return await _repository.GetEntity<Cart>().FirstOrDefaultAsync(x => x.Who == userId) != null;
         }
-
         private async Task<int> CreateCartAsync(string userId)
         {
             var cart = new Cart
@@ -122,8 +121,8 @@ namespace BusarovsQuckBite.Services
                 TransactionDateAndTime = DateTime.Now,
                 Who = userId
             };
-            await _context.Carts.AddAsync(cart);
-            await _context.SaveChangesAsync();
+            await _repository.AddAsync(cart);
+            await _repository.SaveChangesAsync();
             return cart.Id;
         }
     }

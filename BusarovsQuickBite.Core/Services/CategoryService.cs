@@ -1,9 +1,9 @@
 ﻿using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
-using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models.Category;
 using BusarovsQuckBite.Models.Enums;
+using BusarovsQuickBite.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
@@ -11,15 +11,15 @@ namespace BusarovsQuckBite.Services
 {
     public class CategoryService : ICategoryService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRepository _repository;
 
-        public CategoryService(ApplicationDbContext context)
+        public CategoryService(IRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
         public async Task<List<CategoryViewModel>> GetCategoriesForUserByStatusAsync(FilterEnum keyword)
         {
-            var categories = await _context.Categories
+            var categories = await _repository.GetEntity<Category>()
                 .OrderByDescending(x => x.TransactionDateAndTime).Select(c => new CategoryViewModel()
                 {
                     Id = c.Id,
@@ -49,7 +49,7 @@ namespace BusarovsQuckBite.Services
                 throw new ApplicationException(ErrorMessagesConstants.CannotDeleteProductInCategory);
             }
             category.IsDeleted = !category.IsDeleted;
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
         }
         public async Task AddCategoryAsync(CategoryViewModel model, string creatorId)
         {
@@ -60,8 +60,8 @@ namespace BusarovsQuckBite.Services
                 IsDeleted = false,
                 TransactionDateAndTime = DateTime.Now
             };
-            await _context.Categories.AddAsync(category);
-            await _context.SaveChangesAsync();
+            await _repository.AddAsync(category);
+            await _repository.SaveChangesAsync();
         }
         public async Task<CategoryViewModel> GetCategoryMappedByIdAsync(int id)
         {
@@ -77,13 +77,13 @@ namespace BusarovsQuckBite.Services
         {
             var entity = await GetByIdAsync(model.Id);
             entity.Name = model.Name;
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
             return model;
         }
 
         public async Task<List<CategoryViewModel>> SearchByNameAsync(FilterEnum keyword, string name)
         {
-            var model = _context.Categories.Where(x => x.Name.ToUpper().Contains(name.ToUpper()))
+            var model = _repository.GetEntity<Category>().Where(x => x.Name.ToUpper().Contains(name.ToUpper()))
                 .OrderByDescending(x => x.TransactionDateAndTime)
                 .Select(c => new CategoryViewModel()
                 {
@@ -107,7 +107,7 @@ namespace BusarovsQuckBite.Services
 
         public async Task<Category> GetByIdAsync(int id)
         {
-            var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+            var category = await _repository.GetByIdAsync<Category>(id);
             if (category == null)
             {
                 throw new ApplicationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);

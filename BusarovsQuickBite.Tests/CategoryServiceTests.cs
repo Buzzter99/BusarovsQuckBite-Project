@@ -4,6 +4,7 @@ using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Models.Category;
 using BusarovsQuckBite.Models.Enums;
 using BusarovsQuckBite.Services;
+using BusarovsQuickBite.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
@@ -22,7 +23,7 @@ namespace BusarovsQuickBite.Tests
                 .Options;
             _context = new ApplicationDbContext(_dbOptions);
             _context.Database.EnsureCreated();
-            _categoryService = new CategoryService(_context);
+            _categoryService = new CategoryService(new Repository(_context));
         }
         [TearDown]
         public void TearDown()

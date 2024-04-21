@@ -8,6 +8,7 @@ using BusarovsQuckBite.Models.Address;
 using BusarovsQuckBite.Models.Enums;
 using BusarovsQuckBite.Models.Product;
 using BusarovsQuckBite.Services;
+using BusarovsQuickBite.Infrastructure.Data.Common;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -46,9 +47,9 @@ namespace BusarovsQuickBite.Tests
             _formFile = new Mock<IFormFile>();
             _formFile.Setup(f => f.Length).Returns(1024);
             _formFile.Setup(f => f.FileName).Returns("test.jpg");
-            _imgService = new ImgService(_hostingEnvironmentMock.Object, _context);
-            _categoryService = new CategoryService(_context);
-            _productService = new ProductService(_context, _imgService, _categoryService);
+            _imgService = new ImgService(_hostingEnvironmentMock.Object, new Repository(_context));
+            _categoryService = new CategoryService(new Repository(_context));
+            _productService = new ProductService(new Repository(_context), _imgService, _categoryService);
             _productFormViewModel = new ProductFormViewModel
             {
                 Name = "Product Name",
@@ -74,7 +75,7 @@ namespace BusarovsQuickBite.Tests
             mockDataProtectionProvider
                 .Setup(s => s.CreateProtector(It.IsAny<string>())).Returns(mockDataProtector.Object);
             _dataProtectionService = new DataProtectionService(mockDataProtectionProvider.Object, configuration);
-            _addressService = new AddressService(_context,_dataProtectionService);
+            _addressService = new AddressService(new Repository(_context),_dataProtectionService);
         }
         [TearDown]
         public async Task TearDown()

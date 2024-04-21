@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using System.Text;
+using BusarovsQuickBite.Infrastructure.Data.Common;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuickBite.Tests
@@ -34,9 +35,9 @@ namespace BusarovsQuickBite.Tests
             _hostingEnvironmentMock = new Mock<IWebHostEnvironment>();
             _hostingEnvironmentMock.Setup(h => h.WebRootPath).Returns(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\");
             _hostingEnvironmentMock.Setup(h => h.ContentRootPath).Returns(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\");
-            _imgService = new ImgService(_hostingEnvironmentMock.Object, _context);
-            _categoryService = new CategoryService(_context);
-            _productService = new ProductService(_context, _imgService, _categoryService);
+            _imgService = new ImgService(_hostingEnvironmentMock.Object, new Repository(_context));
+            _categoryService = new CategoryService(new Repository(_context));
+            _productService = new ProductService(new Repository(_context), _imgService, _categoryService);
             IConfiguration configuration = new ConfigurationBuilder()
                 .AddInMemoryCollection(new Dictionary<string, string> { })
                 .Build();
@@ -52,7 +53,7 @@ namespace BusarovsQuickBite.Tests
             var mockDataProtectionProvider = new Mock<IDataProtectionProvider>();
             mockDataProtectionProvider
                 .Setup(s => s.CreateProtector(It.IsAny<string>())).Returns(mockDataProtector.Object);
-            _cartService = new CartService(_productService, _context);
+            _cartService = new CartService(_productService, new Repository(_context));
         }
         [TearDown]
         public async Task TearDown()

@@ -1,12 +1,12 @@
 ﻿using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
-using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Enums;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models.Cart;
 using BusarovsQuckBite.Models.Enums;
 using BusarovsQuckBite.Models.Order;
 using BusarovsQuckBite.Models.Product;
+using BusarovsQuickBite.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
@@ -16,25 +16,25 @@ namespace BusarovsQuckBite.Services
     {
         private readonly ICartService _cartService;
         private readonly IAddressService _addressService;
-        private readonly ApplicationDbContext _context;
+        private readonly IRepository _repository;
         private readonly IProductService _productService;
         private readonly ApplicationUserManager<ApplicationUser> _userManager;
 
         public OrderService(ICartService cartService, IAddressService addressService,
-            ApplicationDbContext context,
+            IRepository repository,
             IProductService productService,
             ApplicationUserManager<ApplicationUser> userManager)
         {
             _cartService = cartService;
             _addressService = addressService;
-            _context = context;
+            _repository = repository;
             _productService = productService;
             _userManager = userManager;
         }
 
         public async Task<Order> GetByIdAsync(int id)
         {
-            var model = await _context.Orders.Where(x => x.Id == id).FirstOrDefaultAsync();
+            var model = await _repository.GetByIdAsync<Order>(id);
             if (model == null)
             {
                 throw new ApplicationException("Order not found!");
@@ -106,7 +106,7 @@ namespace BusarovsQuckBite.Services
 
         public async Task<AllUserOrdersViewModel> GetOrdersForUser(string userId)
         {
-            var collection = await _context.Orders.Where(x => x.Who == userId).OrderByDescending(x => x.TransactionDateAndTime).ThenByDescending(x => x.Status).Select(c => new OrderUserViewModel
+            var collection = await _repository.GetEntity<Order>().Where(x => x.Who == userId).OrderByDescending(x => x.TransactionDateAndTime).ThenByDescending(x => x.Status).Select(c => new OrderUserViewModel
             {
 
                 Id = c.Id,
@@ -129,7 +129,7 @@ namespace BusarovsQuckBite.Services
         }
         public async Task<AllUserOrdersViewModel> GetAllOrders()
         {
-            var orders = await _context.Orders
+            var orders = await _repository.GetEntity<Order>()
                 .OrderByDescending(x => x.TransactionDateAndTime)
                 .ThenByDescending(x => x.Status).Include(order => order.User)
                 .ToListAsync();
@@ -166,12 +166,12 @@ namespace BusarovsQuckBite.Services
             var cartService = await _cartService.GetCartByUserId(userId);
             foreach (var kvp in cartItems)
             {
-                var entity = await _context.CartProducts.FirstOrDefaultAsync(x => x.CartId == cartService.Id && x.ProductId == kvp.Id);
+                var entity = await _repository.GetEntity<CartProduct>().FirstOrDefaultAsync(x => x.CartId == cartService.Id && x.ProductId == kvp.Id);
                 if (entity == null)
                 {
                     throw new ApplicationException("Product not found in cart!");
                 }
-                _context.Remove(entity);
+                _repository.DeleteEntity(entity);
                 var decreaseQty = await _productService.GetProductByIdAsync(kvp.Id);
                 decreaseQty.Quantity -= kvp.QtyWanted;
                 OrderProduct orderProduct = new OrderProduct
@@ -180,9 +180,9 @@ namespace BusarovsQuckBite.Services
                     ProductId = decreaseQty.Id,
                     QtyOrdered = kvp.QtyWanted
                 };
-                await _context.AddAsync(orderProduct);
+                await _repository.AddAsync(orderProduct);
             }
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
         }
         private async Task<int> CreateAndGetOrderId(OrderViewModel model, string userId)
         {
@@ -200,8 +200,8 @@ namespace BusarovsQuckBite.Services
                 PaymentType = validPaymentType,
                 AddressId = (int)model.SelectedAddressId!,
             };
-            await _context.Orders.AddAsync(order);
-            await _context.SaveChangesAsync();
+            await _repository.AddAsync(order);
+            await _repository.SaveChangesAsync();
             return order.Id;
         }
 
@@ -267,8 +267,8 @@ namespace BusarovsQuckBite.Services
                     OldStatus = ((OrderStatus)((int)order.Status - 1)).ToString(),
                     NewStatus = order.Status.ToString()
                 };
-                await _context.AddAsync(chronology);
-                await _context.SaveChangesAsync();
+                await _repository.AddAsync(chronology);
+                await _repository.SaveChangesAsync();
             }
         }
     }

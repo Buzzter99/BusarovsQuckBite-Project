@@ -6,6 +6,7 @@ using BusarovsQuckBite.Middlewares;
 using BusarovsQuckBite.ModelBinders;
 using BusarovsQuckBite.Providers;
 using BusarovsQuckBite.Services;
+using BusarovsQuickBite.Infrastructure.Data.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,7 @@ namespace BusarovsQuckBite
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString).UseLazyLoadingProxies());
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+            builder.Services.AddScoped<IRepository, Repository>();
             builder.Services.AddScoped<IAddressService, AddressService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IProductService, ProductService>();
@@ -64,8 +66,8 @@ namespace BusarovsQuckBite
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
-                app.UseMiddleware<BadResponseCodeRedirect>();
-                app.UseMiddleware<ExceptionLogger>();
+                //app.UseMiddleware<BadResponseCodeRedirect>();
+                //app.UseMiddleware<ExceptionLogger>();
             }
             else
             {

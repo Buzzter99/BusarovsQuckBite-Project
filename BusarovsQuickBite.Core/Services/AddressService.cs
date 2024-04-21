@@ -1,8 +1,8 @@
 ﻿using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
-using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models.Address;
+using BusarovsQuickBite.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
@@ -10,18 +10,18 @@ namespace BusarovsQuckBite.Services
 {
     public class AddressService : IAddressService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRepository _repository;
         private readonly IDataProtectionService _protectionService;
 
-        public AddressService(ApplicationDbContext context, IDataProtectionService protectionService)
+        public AddressService(IRepository repository, IDataProtectionService protectionService)
         {
-            _context = context;
+            _repository = repository;
             _protectionService = protectionService;
         }
 
         public async Task<List<AddressViewModel>> GetAddressesForUserAsync(string userId)
         {
-            return await _context.Addresses.Where(x => x.User.Id == userId).Select(c => new AddressViewModel()
+            return await _repository.GetEntity<Address>().Where(x => x.User.Id == userId).Select(c => new AddressViewModel()
             {
                 AddressId = c.Id,
                 Street = _protectionService.Decrypt(c.Street),
@@ -48,12 +48,12 @@ namespace BusarovsQuckBite.Services
                 TransactionDateAndTime = DateTime.Now,
                 Who = userId
             };
-            await _context.Addresses.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            await _repository.AddAsync(entity);
+            await _repository.SaveChangesAsync();
         }
         public async Task<AddressViewModel> GetByIdForUser(int addressId, string userId)
         {
-            var entity = await _context.Addresses.FirstOrDefaultAsync(x => x.Id == addressId);
+            var entity = await _repository.GetByIdAsync<Address>(addressId);
             if (entity == null)
             {
                 throw new ApplicationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
@@ -66,7 +66,7 @@ namespace BusarovsQuckBite.Services
         }
         public async Task DeleteAddress(int addressId, string userId)
         {
-            var address = await _context.Addresses.FirstOrDefaultAsync(x => x.Id == addressId);
+            var address = await _repository.GetByIdAsync<Address>(addressId);
             if (address == null)
             {
                 throw new ApplicationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
@@ -76,7 +76,7 @@ namespace BusarovsQuckBite.Services
                 throw new ApplicationException(ErrorMessagesConstants.OwnerIsInvalid);
             }
             address.IsDeleted = !address.IsDeleted;
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
         }
         private AddressViewModel MapViewModel(Address address)
         {
@@ -92,7 +92,7 @@ namespace BusarovsQuckBite.Services
         public async Task EditAddress(AddressViewModel model, string userId)
         {
             ContainsStreetNumber(model.Street);
-            var address = await _context.Addresses.FirstOrDefaultAsync(x => x.Id == model.AddressId);
+            var address = await _repository.GetByIdAsync<Address>(model.AddressId);
             if (address == null)
             {
                 throw new ApplicationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
@@ -103,12 +103,12 @@ namespace BusarovsQuckBite.Services
             }
             address.City = _protectionService.Encrypt(model.City);
             address.Street = _protectionService.Encrypt(model.Street);
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
         }
 
         public async Task<List<AddressViewModel>> GetActiveAddressesForUser(string userId)
         {
-            return await _context.Addresses.Where(x => x.User.Id == userId && !x.IsDeleted).Select(c => new AddressViewModel()
+            return await _repository.GetEntity<Address>().Where(x => x.User.Id == userId && !x.IsDeleted).Select(c => new AddressViewModel()
             {
                 AddressId = c.Id,
                 Street = _protectionService.Decrypt(c.Street),

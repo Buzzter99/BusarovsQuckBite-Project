@@ -17,6 +17,7 @@ using BusarovsQuckBite.Models.Cart;
 using BusarovsQuckBite.Models.Enums;
 using BusarovsQuckBite.Models.Order;
 using BusarovsQuckBite.Models.Product;
+using BusarovsQuickBite.Infrastructure.Data.Common;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuickBite.Tests
@@ -66,18 +67,18 @@ namespace BusarovsQuickBite.Tests
             _hostingEnvironmentMock = new Mock<IWebHostEnvironment>();
             _hostingEnvironmentMock.Setup(h => h.WebRootPath).Returns(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\");
             _hostingEnvironmentMock.Setup(h => h.ContentRootPath).Returns(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\");
-            _imgService = new ImgService(_hostingEnvironmentMock.Object, _context);
-            _categoryService = new CategoryService(_context);
-            _productService = new ProductService(_context, _imgService, _categoryService);
-            _cartService = new CartService(_productService, _context);
-            _addressService = new AddressService(_context, _dataProtectionService);
+            _imgService = new ImgService(_hostingEnvironmentMock.Object, new Repository(_context));
+            _categoryService = new CategoryService(new Repository(_context));
+            _productService = new ProductService(new Repository(_context), _imgService, _categoryService);
+            _cartService = new CartService(_productService, new Repository(_context));
+            _addressService = new AddressService(new Repository(_context), _dataProtectionService);
             _store = new UserStore<ApplicationUser, ApplicationRole, ApplicationDbContext, string, IdentityUserClaim<string>,
                 IdentityUserRole<string>, IdentityUserLogin<string>, IdentityUserToken<string>,
                 IdentityRoleClaim<string>>(_context);
             _userManager = new ApplicationUserManager<ApplicationUser>(_store,
                 null, new PasswordHasher<ApplicationUser>(), null, null, null, null, null, null, _dataProtectionService);
             _roleManager = new RoleManager<ApplicationRole>(new RoleStore<ApplicationRole, ApplicationDbContext>(_context),null,null,null,null);
-            _orderService = new OrderService(_cartService,_addressService,_context,_productService,_userManager);
+            _orderService = new OrderService(_cartService,_addressService,new Repository(_context),_productService,_userManager);
         }
         [TearDown]
         public async Task TearDown()

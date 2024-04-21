@@ -1,29 +1,29 @@
 ﻿using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
-using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models.Category;
 using BusarovsQuckBite.Models.Enums;
 using BusarovsQuckBite.Models.Product;
+using BusarovsQuickBite.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 namespace BusarovsQuckBite.Services
 {
     public class ProductService : IProductService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRepository _repository;
         private readonly IImgService _imgService;
         private readonly ICategoryService _categoryService;
-        public ProductService(ApplicationDbContext context, IImgService imgService, ICategoryService categoryService)
+        public ProductService(IRepository repository, IImgService imgService, ICategoryService categoryService)
         {
-            _context = context;
+            _repository = repository;
             _imgService = imgService;
             _categoryService = categoryService;
         }
         public async Task<ProductAllViewModel> GetAllProductsAsync(string? category = null, FilterEnum statusFilter = FilterEnum.All)
         {
             var categories = await _categoryService.GetCategoriesForUserByStatusAsync(FilterEnum.Active);
-            var model = _context.Products.Select(c => new ProductViewModel()
+            var model = _repository.GetEntity<Product>().Select(c => new ProductViewModel()
             {
                 Id = c.Id,
                 Name = c.Name,
@@ -89,8 +89,8 @@ namespace BusarovsQuckBite.Services
                 IsDeleted = false,
                 Who = userId
             };
-            await _context.AddAsync(product);
-            await _context.SaveChangesAsync();
+            await _repository.AddAsync(product);
+            await _repository.SaveChangesAsync();
         }
         public async Task DeleteProduct(int id)
         {
@@ -100,11 +100,11 @@ namespace BusarovsQuckBite.Services
                 throw new ApplicationException("Cannot Modify Product to Deleted Category!");
             }
             entity.IsDeleted = !entity.IsDeleted;
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
         }
         public async Task<Product> GetProductByIdAsync(int productId)
         {
-            var entity = await _context.Products.FirstOrDefaultAsync(x => x.Id == productId);
+            var entity = await _repository.GetByIdAsync<Product>(productId);
             if (entity == null)
             {
                 throw new ApplicationException(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
@@ -150,12 +150,12 @@ namespace BusarovsQuckBite.Services
             entity.Quantity = model.QtyAvailable;
             entity.CategoryId = model.CategoryId;
             entity.ImageId = model.ImageId;
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
             await _imgService.DeleteUnusedImages();
         }
         public async Task<List<ProductViewModel>> GetProductsForHomePageAsync(int count)
         {
-            var model = await _context.Products.Where(x => !x.IsDeleted && !x.Category.IsDeleted 
+            var model = await _repository.GetEntity<Product>().Where(x => !x.IsDeleted && !x.Category.IsDeleted 
                                                                         && x.Quantity > 0)
                 .OrderBy(x => x.Price)
                 .ThenByDescending(x => x.TransactionDateAndTime).Take(count).Select(c => new ProductViewModel
@@ -176,7 +176,7 @@ namespace BusarovsQuckBite.Services
         public async Task<List<ProductViewModel>> GetAllProductsBySearchTerm(string searchTerm = "")
         {
             ProductViewModel model = new ProductViewModel();
-            var entity = await _context.Products.Where(x => (!x.IsDeleted && !x.Category.IsDeleted) && (x.Name.ToUpper().Contains(searchTerm.ToUpper())
+            var entity = await _repository.GetEntity<Product>().Where(x => (!x.IsDeleted && !x.Category.IsDeleted) && (x.Name.ToUpper().Contains(searchTerm.ToUpper())
                                                       || x.Category.Name.Contains(searchTerm.ToUpper())
                                                       || x.Description.ToUpper().Contains(searchTerm.ToUpper())))
                 .Select(c => new ProductViewModel()
@@ -200,7 +200,7 @@ namespace BusarovsQuckBite.Services
         }
         public async Task<List<ProductViewModel>> GetProductsForOrderAsync(int orderId)
         {
-            return await _context.OrdersProducts.Where(x => x.OrderId == orderId).Select(c => new ProductViewModel
+            return await _repository.GetEntity<OrderProduct>().Where(x => x.OrderId == orderId).Select(c => new ProductViewModel
             {
                 Id = c.ProductId,
                 Name = c.Product.Name,

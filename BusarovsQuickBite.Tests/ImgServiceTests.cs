@@ -1,6 +1,7 @@
 ﻿using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Services;
+using BusarovsQuickBite.Infrastructure.Data.Common;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +32,7 @@ namespace BusarovsQuickBite.Tests
             _formFile = new Mock<IFormFile>();
             _formFile.Setup(f => f.Length).Returns(1024);
             _formFile.Setup(f => f.FileName).Returns("test.jpg");
-            _imgService = new ImgService(_hostingEnvironmentMock.Object, _context);
+            _imgService = new ImgService(_hostingEnvironmentMock.Object, new Repository(_context));
         }
         [SetUp]
         public void SetUp()

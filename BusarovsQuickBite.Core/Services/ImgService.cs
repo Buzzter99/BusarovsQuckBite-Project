@@ -1,7 +1,7 @@
 ﻿using BusarovsQuckBite.Constants;
 using BusarovsQuckBite.Contracts;
-using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
+using BusarovsQuickBite.Infrastructure.Data.Common;
 using BusarovsQuickBite.Infrastructure.DataConstants;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -13,11 +13,11 @@ namespace BusarovsQuckBite.Services
     public class ImgService : IImgService
     {
         private readonly IWebHostEnvironment _hostingEnvironment;
-        private readonly ApplicationDbContext _context;
+        private readonly IRepository _repository;
 
-        public ImgService(IWebHostEnvironment hostingEnvironment, ApplicationDbContext context)
+        public ImgService(IWebHostEnvironment hostingEnvironment, IRepository repository)
         {
-            _context = context;
+            _repository = repository;
             _hostingEnvironment = hostingEnvironment;
         }
         public async Task<int> AddImg(IFormFile file)
@@ -37,7 +37,7 @@ namespace BusarovsQuckBite.Services
             string filePath = Path.Combine(uploadsFolder, uniqueFileName);
             if (File.Exists(filePath))
             {
-                var exists = await _context.Img.FirstOrDefaultAsync(x => x.Name == uniqueFileName);
+                var exists = await _repository.GetEntity<Img>().FirstOrDefaultAsync(x => x.Name == uniqueFileName);
                 if (exists != null)
                 {
                     return exists.Id;
@@ -60,19 +60,19 @@ namespace BusarovsQuckBite.Services
             {
                 await file.CopyToAsync(fileStream);
             }
-            await _context.Img.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            await _repository.AddAsync(entity);
+            await _repository.SaveChangesAsync();
             return entity.Id;
         }
         public async Task DeleteUnusedImages()
         {
-            var unusedImages = _context.Img.Where(x => !x.Products.Any()).ToList();
+            var unusedImages = _repository.GetEntity<Img>().Where(x => !x.Products.Any()).ToList();
             foreach (var img in unusedImages)
             {
                 File.Delete(img.FullPath);
-                _context.Img.Remove(img);
+                _repository.DeleteEntity(img);
             }
-            await _context.SaveChangesAsync();
+            await _repository.SaveChangesAsync();
         }
     }
 }

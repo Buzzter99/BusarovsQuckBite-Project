@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Moq;
 using System.Text;
 using BusarovsQuckBite.Contracts;
+using BusarovsQuickBite.Infrastructure.Data.Common;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuickBite.Tests
@@ -43,7 +44,7 @@ namespace BusarovsQuickBite.Tests
                 .Options;
             _context = new ApplicationDbContext(_dbOptions);
             _context.Database.EnsureCreated();
-            _addressService = new AddressService(_context,_dataProtectionService);
+            _addressService = new AddressService(new Repository(_context),_dataProtectionService);
         }
         [TearDown]
         public void TearDown()
