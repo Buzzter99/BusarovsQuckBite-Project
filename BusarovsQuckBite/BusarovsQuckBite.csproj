@@ -39,8 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BusarovsQuickBite.Infrastructure\BusarovsQuickBite.Infrastructure.csproj" />
-    <ProjectReference Include="..\BusarovsQuickBite\BusarovsQuickBite.Core.csproj" />
+    <ProjectReference Include="..\BusarovsQuickBite.Core\BusarovsQuickBite.Core.csproj" />
   </ItemGroup>
 
 </Project>

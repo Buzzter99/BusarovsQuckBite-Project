@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusarovsQuckBite", "Busarov
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusarovsQuickBite.Tests", "BusarovsQuickBite.Tests\BusarovsQuickBite.Tests.csproj", "{A84C18EB-A1AB-4BDE-975C-2F531968E299}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusarovsQuickBite.Core", "BusarovsQuickBite\BusarovsQuickBite.Core.csproj", "{5C826820-AC15-4252-AD26-E9F38F7298D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusarovsQuickBite.Infrastructure", "BusarovsQuickBite.Infrastructure\BusarovsQuickBite.Infrastructure.csproj", "{F8A9A744-596A-4BF4-B3E4-6BDAA7EE45C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusarovsQuickBite.Infrastructure", "BusarovsQuickBite.Infrastructure\BusarovsQuickBite.Infrastructure.csproj", "{F8A9A744-596A-4BF4-B3E4-6BDAA7EE45C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusarovsQuickBite.Core", "BusarovsQuickBite.Core\BusarovsQuickBite.Core.csproj", "{60AA9A0A-6359-431C-9051-4C9240E266AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,14 +25,14 @@ Global
 		{A84C18EB-A1AB-4BDE-975C-2F531968E299}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A84C18EB-A1AB-4BDE-975C-2F531968E299}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A84C18EB-A1AB-4BDE-975C-2F531968E299}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5C826820-AC15-4252-AD26-E9F38F7298D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C826820-AC15-4252-AD26-E9F38F7298D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C826820-AC15-4252-AD26-E9F38F7298D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C826820-AC15-4252-AD26-E9F38F7298D6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F8A9A744-596A-4BF4-B3E4-6BDAA7EE45C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F8A9A744-596A-4BF4-B3E4-6BDAA7EE45C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8A9A744-596A-4BF4-B3E4-6BDAA7EE45C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8A9A744-596A-4BF4-B3E4-6BDAA7EE45C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60AA9A0A-6359-431C-9051-4C9240E266AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60AA9A0A-6359-431C-9051-4C9240E266AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60AA9A0A-6359-431C-9051-4C9240E266AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60AA9A0A-6359-431C-9051-4C9240E266AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

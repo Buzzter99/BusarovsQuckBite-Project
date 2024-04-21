@@ -1,8 +1,8 @@
-﻿using BusarovsQuckBite.Constants;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mail;
-using Microsoft.Extensions.Configuration;
+using BusarovsQuckBite.Constants;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace BusarovsQuckBite.Services
 {
