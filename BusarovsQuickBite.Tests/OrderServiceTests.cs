@@ -39,10 +39,15 @@ namespace BusarovsQuickBite.Tests
             IdentityUserRole<string>, IdentityUserLogin<string>, IdentityUserToken<string>, IdentityRoleClaim<string>>? _store;
         private IDataProtectionService? _dataProtectionService;
         private RoleManager<ApplicationRole>? _roleManager;
+        private string? _rootFullPath;
+        private string? _imgFolderPath;
         [SetUp]
         public void Setup()
         {
-            
+            var config = new ConfigurationBuilder()
+                .AddUserSecrets<EmailServiceTests>()
+                .Build();
+            _rootFullPath = config["RootFullPath"];
             IConfiguration configuration = new ConfigurationBuilder()
                 .AddInMemoryCollection(new Dictionary<string, string> { })
                 .Build();
@@ -65,8 +70,9 @@ namespace BusarovsQuickBite.Tests
             _context = new ApplicationDbContext(_dbOptions);
             _context.Database.EnsureCreated();
             _hostingEnvironmentMock = new Mock<IWebHostEnvironment>();
-            _hostingEnvironmentMock.Setup(h => h.WebRootPath).Returns(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\");
-            _hostingEnvironmentMock.Setup(h => h.ContentRootPath).Returns(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\");
+            _hostingEnvironmentMock.Setup(h => h.WebRootPath).Returns(_rootFullPath);
+            _hostingEnvironmentMock.Setup(h => h.ContentRootPath).Returns(_rootFullPath);
+            _imgFolderPath = _rootFullPath + "\\Images";
             _imgService = new ImgService(_hostingEnvironmentMock.Object, new Repository(_context));
             _categoryService = new CategoryService(new Repository(_context));
             _productService = new ProductService(new Repository(_context), _imgService, _categoryService);
@@ -84,7 +90,7 @@ namespace BusarovsQuickBite.Tests
         public async Task TearDown()
         {
             await _context!.Database.EnsureDeletedAsync();
-            File.Delete(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\Images\test.jpg");
+            File.Delete($"{_imgFolderPath}\\test.jpg");
         }
         [Test]
         public void GetByIdShouldThrow()

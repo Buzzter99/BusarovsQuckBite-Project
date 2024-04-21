@@ -15,22 +15,22 @@ namespace BusarovsQuckBite.Data.Configuration
                 {
                     Id = 1,
                     Name = "download.jpg",
-                    FullPath = $"{DataConstants.ImgConstants.ImgBasePath}/download.jpg",
-                    RelativePath = $"{DataConstants.ImgConstants.ImgRelativePath}/"
+                    FullPath = $"{DataConstants.ImgConstants.ImgBasePath}\\download.jpg",
+                    RelativePath = $"{DataConstants.ImgConstants.ImgRelativePath}\\"
                 },
                 new Img()
                 {
                     Id = 2,
                     Name = "tuborg.jpg",
-                    FullPath = $"{DataConstants.ImgConstants.ImgBasePath}/tuborg.jpg",
-                    RelativePath = $"{DataConstants.ImgConstants.ImgRelativePath}/"
+                    FullPath = $"{DataConstants.ImgConstants.ImgBasePath}\\tuborg.jpg",
+                    RelativePath = $"{DataConstants.ImgConstants.ImgRelativePath}\\"
                 },
                 new Img()
                 {
                     Id = 3,
                     Name = "hamburger-baked-in-oven.jpg",
-                    FullPath = $"{DataConstants.ImgConstants.ImgBasePath}/hamburger-baked-in-oven.jpg",
-                    RelativePath = $"{DataConstants.ImgConstants.ImgRelativePath}/"
+                    FullPath = $"{DataConstants.ImgConstants.ImgBasePath}\\hamburger-baked-in-oven.jpg",
+                    RelativePath = $"{DataConstants.ImgConstants.ImgRelativePath}\\"
                 }
 
             });

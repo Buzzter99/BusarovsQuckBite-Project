@@ -32,18 +32,25 @@ namespace BusarovsQuickBite.Tests
         private ProductFormViewModel? _productFormViewModel;
         private IAddressService? _addressService;
         private IDataProtectionService? _dataProtectionService;
+        private string? _rootFullPath;
+        private string? _imgFolderPath;
 
         [SetUp]
         public void SetUp()
         {
+            var config = new ConfigurationBuilder()
+                .AddUserSecrets<EmailServiceTests>()
+                .Build();
+            _rootFullPath = config["RootFullPath"];
             _dbOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase("QuickBite" + Guid.NewGuid())
                 .Options;
             _context = new ApplicationDbContext(_dbOptions);
             _context.Database.EnsureCreated();
             _hostingEnvironmentMock = new Mock<IWebHostEnvironment>();
-            _hostingEnvironmentMock.Setup(h => h.WebRootPath).Returns(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\");
-            _hostingEnvironmentMock.Setup(h => h.ContentRootPath).Returns(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\");
+            _hostingEnvironmentMock.Setup(h => h.WebRootPath).Returns(_rootFullPath);
+            _hostingEnvironmentMock.Setup(h => h.ContentRootPath).Returns(_rootFullPath);
+            _imgFolderPath = _rootFullPath + "\\Images";
             _formFile = new Mock<IFormFile>();
             _formFile.Setup(f => f.Length).Returns(1024);
             _formFile.Setup(f => f.FileName).Returns("test.jpg");
@@ -81,10 +88,10 @@ namespace BusarovsQuickBite.Tests
         public async Task TearDown()
         {
             await _context!.Database.EnsureDeletedAsync();
-            File.Delete(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\Images\test.jpg");
-            if (File.Exists(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\Images\newFormFile.jpg"))
+            File.Delete($"{_imgFolderPath}\\test.jpg");
+            if (File.Exists($"{_imgFolderPath}\\newFormFile.jpg"))
             {
-                File.Delete(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\Images\newFormFile.jpg");
+                File.Delete($"{_imgFolderPath}\\newFormFile.jpg");
             }
         }
         [Test]

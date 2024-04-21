@@ -2,11 +2,11 @@ using BusarovsQuckBite.Contracts;
 using BusarovsQuckBite.Data;
 using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Hubs;
-using BusarovsQuckBite.Middlewares;
 using BusarovsQuckBite.ModelBinders;
 using BusarovsQuckBite.Providers;
 using BusarovsQuckBite.Services;
 using BusarovsQuickBite.Infrastructure.Data.Common;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +20,7 @@ namespace BusarovsQuckBite
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            WebHost.CreateDefaultBuilder(args).UseStartup<Program>();
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString).UseLazyLoadingProxies());

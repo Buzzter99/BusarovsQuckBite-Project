@@ -5,6 +5,7 @@ using BusarovsQuickBite.Infrastructure.Data.Common;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Moq;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
@@ -18,17 +19,24 @@ namespace BusarovsQuickBite.Tests
         private DbContextOptions<ApplicationDbContext>? _dbOptions;
         private ApplicationDbContext? _context;
         private Mock<IFormFile>? _formFile;
+        private string? _rootFullPath;
+        private string? _imgFolderPath;
         [SetUp]
         public void Setup()
         {
+            var config = new ConfigurationBuilder()
+                .AddUserSecrets<EmailServiceTests>()
+                .Build();
+            _rootFullPath = config["RootFullPath"];
             _dbOptions = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase("QuickBite" + Guid.NewGuid())
                 .Options;
             _context = new ApplicationDbContext(_dbOptions);
             _context.Database.EnsureCreated();
             _hostingEnvironmentMock = new Mock<IWebHostEnvironment>();
-            _hostingEnvironmentMock.Setup(h => h.WebRootPath).Returns(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\");
-            _hostingEnvironmentMock.Setup(h => h.ContentRootPath).Returns(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\");
+            _hostingEnvironmentMock.Setup(h => h.WebRootPath).Returns(_rootFullPath);
+            _hostingEnvironmentMock.Setup(h => h.ContentRootPath).Returns(_rootFullPath);
+            _imgFolderPath = _rootFullPath + "\\Images";
             _formFile = new Mock<IFormFile>();
             _formFile.Setup(f => f.Length).Returns(1024);
             _formFile.Setup(f => f.FileName).Returns("test.jpg");
@@ -42,7 +50,7 @@ namespace BusarovsQuickBite.Tests
         [TearDown]
         public void TearDown()
         {
-            File.Delete($@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\Images\test.jpg");
+            File.Delete($"{_imgFolderPath}\\test.jpg");
         }
         [Test]
         public async Task AddShouldWork()
@@ -56,7 +64,7 @@ namespace BusarovsQuickBite.Tests
         {
             _formFile!.Setup(f => f.FileName).Returns("test.html");
             Assert.ThrowsAsync<ApplicationException>(async () => await _imgService!.AddImg(_formFile!.Object));
-            File.Delete(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\Images\test.html");
+            File.Delete($"{_imgFolderPath}\\test.html");
         }
         [Test]
         public void LengthIsInvalidShouldThrow()
@@ -69,7 +77,7 @@ namespace BusarovsQuickBite.Tests
         {
             string name = "name1";
             string result = "";
-            for (int i = 0; i < 150 / name.Length; i++)
+            for (int i = 0; i < 300 / name.Length; i++)
             {
                 result += name;
             }
@@ -97,7 +105,7 @@ namespace BusarovsQuickBite.Tests
         public async Task FileShouldExistsOnFileSystem()
         {
            await _imgService!.AddImg(_formFile!.Object);
-           var fileShouldExist = File.Exists(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\Images\test.jpg");
+           var fileShouldExist = File.Exists($"{_imgFolderPath}\\test.jpg");
            Assert.IsTrue(fileShouldExist);
         }
         [Test]
@@ -108,7 +116,7 @@ namespace BusarovsQuickBite.Tests
             Assert.That(_context!.Img.Count(),Is.EqualTo(expectedCount));
             await _imgService.DeleteUnusedImages();
             Assert.That(_context!.Img.Count(), Is.EqualTo(expectedCount - 1));
-            var fileShouldBeDeleted = File.Exists(@"C:\Users\GRIGS\source\repos\BusarovsQuckBite\BusarovsQuckBite\wwwroot\Images\test.jpg");
+            var fileShouldBeDeleted = File.Exists($"{_imgFolderPath}\\test.jpg");
             Assert.IsFalse(fileShouldBeDeleted);
         }
     }
