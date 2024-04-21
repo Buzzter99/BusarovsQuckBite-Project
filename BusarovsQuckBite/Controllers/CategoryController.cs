@@ -6,6 +6,7 @@ using BusarovsQuckBite.Models.Enums;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Encodings.Web;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuckBite.Controllers
@@ -34,7 +35,7 @@ namespace BusarovsQuckBite.Controllers
             }
             catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ae.Message);
                 return RedirectToAction(nameof(All));
             }
             return RedirectToAction(nameof(All), "Category", new { keyword = currentTab.Split(" ")[0] });
@@ -51,7 +52,7 @@ namespace BusarovsQuckBite.Controllers
                 return View(model);
             }
             await _categoryService.AddCategoryAsync(model, User.Identity.GetUserId());
-            TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyAdded,nameof(Category));
+            TempData[SuccessMessageConstants.SuccessMessageKey] = HtmlEncoder.Default.Encode(string.Format(SuccessMessageConstants.SuccessfullyAdded,nameof(Category)));
             ModelState.Clear();
             return View();
         }
@@ -64,7 +65,7 @@ namespace BusarovsQuckBite.Controllers
             }
             catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ae.Message);
                 return View();
             }
             return View(model);
@@ -82,10 +83,10 @@ namespace BusarovsQuckBite.Controllers
             }
             catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ae.Message);
                 return View();
             }
-            TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyModified);
+            TempData[SuccessMessageConstants.SuccessMessageKey] = HtmlEncoder.Default.Encode(string.Format(SuccessMessageConstants.SuccessfullyModified));
             return View(model);
         }
         public async Task<IActionResult> Search(FilterEnum keyword, string? name)

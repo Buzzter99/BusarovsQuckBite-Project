@@ -172,7 +172,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                     return View(nameof(Index), new UserAllInfoViewModel { UpdateUserDataViewModel = model, ActiveTab = TabEnum.Profile.ToString()});
                 }
             }
-            TempData[SuccessMessageConstants.SuccessMessageKey] = SuccessMessageConstants.SuccessfullyModified;
+            TempData[SuccessMessageConstants.SuccessMessageKey] = HtmlEncoder.Default.Encode(SuccessMessageConstants.SuccessfullyModified);
             return RedirectToAction(nameof(Index));
         }
         public async Task<IActionResult> ChangePassword(ChangeUserPasswordViewModel model)
@@ -215,7 +215,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 await _emailSender.SendEmailAsync(user.Email, $"Reset Your Username - QuickBite",
                     $"Please reset your username by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>");
             }
-            TempData[SuccessMessageConstants.SuccessMessageKey] = "Username Reset Link Sent";
+            TempData[SuccessMessageConstants.SuccessMessageKey] = HtmlEncoder.Default.Encode("Username Reset Link Sent");
             return RedirectToAction(nameof(ResetUsername));
         }
         [AllowAnonymous]
@@ -242,7 +242,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 var result = await _userManager.VerifyUserTokenAsync(user,"Default","ResetUsername", Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(model.Token)));
                 if (!result)
                 {
-                    TempData[ErrorMessagesConstants.FailedMessageKey] = "An error occured. Please try again Later!";
+                    TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode("An error occured. Please try again Later!");
                     return View(model);
                 }
                 user.UserName = model.NewUsername;
@@ -256,7 +256,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                     return View(model);
                 }
                 await _userManager.UpdateSecurityStampAsync(user);
-                TempData[SuccessMessageConstants.SuccessMessageKey] = "Username Changed Successfully";
+                TempData[SuccessMessageConstants.SuccessMessageKey] = HtmlEncoder.Default.Encode("Username Changed Successfully");
                 return View();
             }
             return View();

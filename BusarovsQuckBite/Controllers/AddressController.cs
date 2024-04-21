@@ -4,6 +4,7 @@ using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Models.Address;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Encodings.Web;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 
@@ -41,7 +42,7 @@ namespace BusarovsQuckBite.Controllers
                 ModelState.AddModelError(string.Empty, ae.Message);
                 return View(model);
             }
-            TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyAdded, nameof(Address));
+            TempData[SuccessMessageConstants.SuccessMessageKey] = HtmlEncoder.Default.Encode(string.Format(SuccessMessageConstants.SuccessfullyAdded, nameof(Address)));
             ModelState.Clear();
             return View();
         }
@@ -54,7 +55,7 @@ namespace BusarovsQuckBite.Controllers
             }
             catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ae.Message);
                 return RedirectToAction(nameof(All));
             }
             return RedirectToAction(nameof(All));
@@ -68,7 +69,7 @@ namespace BusarovsQuckBite.Controllers
             }
             catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ae.Message);
                 return RedirectToAction(nameof(All));
             }
             return View(address);
@@ -82,7 +83,7 @@ namespace BusarovsQuckBite.Controllers
             }
             catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ae.Message);
                 return RedirectToAction(nameof(All));
             }
             if (!ModelState.IsValid)
@@ -98,7 +99,7 @@ namespace BusarovsQuckBite.Controllers
                 ModelState.AddModelError(string.Empty, ae.Message);
                 return View(address);
             }
-            TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyModified, nameof(Address));
+            TempData[SuccessMessageConstants.SuccessMessageKey] = HtmlEncoder.Default.Encode(string.Format(SuccessMessageConstants.SuccessfullyModified));
             return View(address);
         }
     }

@@ -67,7 +67,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                     string callbackUrl = Url.Action("ConfirmEmail", "Manage", new { area = "AccountManager", userId = entity.Id, token = token  }, Request.Scheme)!;
                     await _emailSender.SendEmailAsync(entity.Email, $"Confirm your email - QuickBite - {entity.UserName}",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>  to access <b>all features and discounts.</b>");
-                    TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyAdded, "Account") + Environment.NewLine + "Email Verification sent! Please verify email to access all features!";
+                    TempData[SuccessMessageConstants.SuccessMessageKey] = HtmlEncoder.Default.Encode(string.Format(SuccessMessageConstants.SuccessfullyAdded, "Account") + Environment.NewLine + "Email Verification sent! Please verify email to access all features!");
                     return RedirectToAction(nameof(Login));
                 }
                 foreach (var error in result.Errors)

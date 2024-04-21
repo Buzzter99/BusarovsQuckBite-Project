@@ -7,6 +7,7 @@ using BusarovsQuckBite.Models.Product;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Encodings.Web;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuckBite.Controllers
@@ -30,7 +31,7 @@ namespace BusarovsQuckBite.Controllers
             ViewBag.PageNumber = page;
             ViewBag.TotalPages = size;
             ViewBag.PageSize = pageSize;
-            ViewBag.Category = category;
+            ViewBag.Category = HtmlEncoder.Default.Encode(category);
             ViewBag.Filter = statusFilter;
             if (ViewBag.TotalPages < page || page <= 0)
             {
@@ -58,7 +59,7 @@ namespace BusarovsQuckBite.Controllers
                 return View(model);
             }
             ModelState.Clear();
-            TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyAdded,nameof(Product));
+            TempData[SuccessMessageConstants.SuccessMessageKey] = HtmlEncoder.Default.Encode(string.Format(SuccessMessageConstants.SuccessfullyAdded,nameof(Product)));
             return View(new ProductFormViewModel()
             {
                 ActiveCategories = model.ActiveCategories
@@ -81,10 +82,10 @@ namespace BusarovsQuckBite.Controllers
             }
             catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ae.Message);
                 return RedirectToAction(nameof(All), new { category = category, page = page });
             }
-            TempData[SuccessMessageConstants.SuccessMessageKey] = SuccessMessageConstants.SuccessfullyModified;
+            TempData[SuccessMessageConstants.SuccessMessageKey] = HtmlEncoder.Default.Encode(SuccessMessageConstants.SuccessfullyModified);
             return RedirectToAction(nameof(All), new { category = category, page = page,statusFilter = statusFilter });
         }
         public async Task<IActionResult> Edit(int id)
@@ -96,7 +97,7 @@ namespace BusarovsQuckBite.Controllers
             }
             catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ae.Message);
                 return RedirectToAction(nameof(All));
             }
             return View(model);
@@ -118,7 +119,7 @@ namespace BusarovsQuckBite.Controllers
                 ModelState.AddModelError(string.Empty,ae.Message);
                 return View(model);
             }
-            TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyModified);
+            TempData[SuccessMessageConstants.SuccessMessageKey] = HtmlEncoder.Default.Encode(string.Format(SuccessMessageConstants.SuccessfullyModified));
             return View(model);
         }
     }

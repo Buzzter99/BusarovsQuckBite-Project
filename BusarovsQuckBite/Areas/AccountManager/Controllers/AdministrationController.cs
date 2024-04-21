@@ -7,6 +7,7 @@ using BusarovsQuckBite.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Encodings.Web;
 namespace BusarovsQuckBite.Areas.AccountManager.Controllers
 {
     [Authorize(Roles = RoleConstants.AdminRoleName)]
@@ -49,7 +50,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             var entity = await _userManager.FindByIdAsync(id);
             if (entity == null)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ErrorMessagesConstants.EntityNotFoundExceptionMessage;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
                 return View(nameof(Edit), model);
             }
             var user = _userManager.EditRequiredUserData(entity, model);
@@ -62,7 +63,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 }
                 return View(model);
             }
-            TempData[SuccessMessageConstants.SuccessMessageKey] = SuccessMessageConstants.SuccessfullyModified;
+            TempData[SuccessMessageConstants.SuccessMessageKey] = HtmlEncoder.Default.Encode(SuccessMessageConstants.SuccessfullyModified);
             return View(model);
         }
         [HttpGet]
@@ -71,7 +72,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             var entity = await _userManager.FindByIdAsync(id);
             if (entity == null)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ErrorMessagesConstants.EntityNotFoundExceptionMessage;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
                 return RedirectToAction(nameof(Index), new { keyword = keyword });
             }
             var model = await _userManager.MapViewModel(entity);
@@ -89,7 +90,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 {
                     return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
                 }
-                TempData[ErrorMessagesConstants.FailedMessageKey] = string.Join(Environment.NewLine, result.Errors.Select(c => c.Description));
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(string.Join(Environment.NewLine, result.Errors.Select(c => c.Description)));
                 return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
             }
             return BadRequest();
@@ -103,7 +104,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             {
                 if (entity.UserName == UserConstants.AdminUsername && roleName == RoleConstants.AdminRoleName)
                 {
-                    TempData[ErrorMessagesConstants.FailedMessageKey] = "Cannot remove Administrator from Admin Role!";
+                    TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode("Cannot remove Administrator from Admin Role!");
                     return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
                 }
                 var result = await _userManager.RemoveFromRoleAsync(entity, roleName);
@@ -111,7 +112,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 {
                     return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
                 }
-                TempData[ErrorMessagesConstants.FailedMessageKey] = string.Join(Environment.NewLine, result.Errors.Select(c => c.Description));
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(string.Join(Environment.NewLine, result.Errors.Select(c => c.Description)));
                 return View(nameof(ManageRoles), await _userManager.MapViewModel(entity));
             }
             return BadRequest();
@@ -121,7 +122,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             var model = await _userManager.FindByIdAsync(id);
             if (model == null)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ErrorMessagesConstants.EntityNotFoundExceptionMessage;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
                 return RedirectToAction(nameof(Index), new { keyword = keyword, page = currentPage });
             }
             model.IsActive = !model.IsActive;
@@ -134,7 +135,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             var entity = await _userManager.FindByIdAsync(id);
             if (entity == null)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ErrorMessagesConstants.EntityNotFoundExceptionMessage;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
                 return RedirectToAction(nameof(Index), new { keyword = keyword });
             }
             return View(_userManager.MapPasswordViewModel(entity));
@@ -149,14 +150,14 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
             var entity = await _userManager.FindByIdAsync(model.Id);
             if (entity == null)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ErrorMessagesConstants.EntityNotFoundExceptionMessage;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ErrorMessagesConstants.EntityNotFoundExceptionMessage);
                 return View(model);
             }
             var token = await _userManager.GeneratePasswordResetTokenAsync(entity);
             var result = await _userManager.ResetPasswordAsync(entity, token, model.Password);
             if (result.Succeeded)
             {
-                TempData[SuccessMessageConstants.SuccessMessageKey] = SuccessMessageConstants.SuccessfullyModified;
+                TempData[SuccessMessageConstants.SuccessMessageKey] = HtmlEncoder.Default.Encode(SuccessMessageConstants.SuccessfullyModified);
                 return View(model);
             }
             foreach (var kvp in result.Errors)

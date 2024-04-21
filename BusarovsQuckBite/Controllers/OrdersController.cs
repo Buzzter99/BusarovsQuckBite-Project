@@ -8,6 +8,7 @@ using BusarovsQuckBite.Models.PageHelpers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Encodings.Web;
 using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
 
 namespace BusarovsQuckBite.Controllers
@@ -30,7 +31,7 @@ namespace BusarovsQuckBite.Controllers
             }
             catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ae.Message);
                 return RedirectToAction("MyCart", "Cart");
             }
             return View(orderView);
@@ -45,7 +46,7 @@ namespace BusarovsQuckBite.Controllers
             }
             catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ae.Message);
                 return RedirectToAction("MyCart", "Cart");
             }
             if (!ModelState.IsValid)
@@ -58,7 +59,7 @@ namespace BusarovsQuckBite.Controllers
             }
             catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ae.Message);
                 return RedirectToAction("MyCart", "Cart");
             }
             return RedirectToAction(nameof(Orders));
@@ -89,7 +90,7 @@ namespace BusarovsQuckBite.Controllers
             }
             catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ae.Message);
                 return RedirectToAction(nameof(Orders));
             }
             return View(model);
@@ -109,7 +110,7 @@ namespace BusarovsQuckBite.Controllers
             }
             catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ae.Message);
                 return RedirectToAction("Index","Home");
             }
             ViewBag.PageNumber = page;
@@ -131,7 +132,7 @@ namespace BusarovsQuckBite.Controllers
             }
             catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ae.Message);
                 return RedirectToAction(nameof(OrderManagement), new { page = pageNumber});
             }
             return RedirectToAction(nameof(OrderManagement), new { page = pageNumber });
@@ -146,17 +147,17 @@ namespace BusarovsQuckBite.Controllers
             }
             catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ae.Message);
                 return RedirectToAction(nameof(OrderManagement));
             }
             if (messageInfo.OrderStatus.ToUpper() != order.Status.ToString().ToUpper())
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ErrorMessagesConstants.GeneralErrorMessage;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ErrorMessagesConstants.GeneralErrorMessage);
                 return RedirectToAction(nameof(OrderManagement));
             }
             if (order.Status == OrderStatus.Delivered)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = "Cannot send message to delivered order!";
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode("Cannot send message to delivered order!");
                 return RedirectToAction(nameof(OrderManagement));
             }
             return View(messageInfo);
