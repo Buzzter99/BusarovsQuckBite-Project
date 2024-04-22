@@ -19,3 +19,5 @@ Configuration in the following pattern:
 },
 "RootFullPath": "pathtowwwrootwith\\"
 Configuration is needed for unit tests as well as for the main project.
+Update-Database should be run like the following:
+Update-Database --migration "LatestMigrationInMigrationsFolder"
