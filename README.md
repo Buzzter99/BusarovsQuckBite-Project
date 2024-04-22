@@ -17,7 +17,8 @@ Configuration in the following pattern:
     "SmtpPassword": "SmtpPassword"
   }
 },
-"RootFullPath": "pathtowwwrootwith\\"
+"RootFullPath": "C:/Admin/PathToImages/Images"
 Configuration is needed for unit tests as well as for the main project.
 Update-Database should be run like the following:
 Update-Database --migration "LatestMigrationInMigrationsFolder"
+Note: Path variable should be with / and ending with /
