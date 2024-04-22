@@ -39,8 +39,8 @@
             public const int FullPathMaxLength = 150;
             public const int RelativePathMaxLength = 100;
 
-            public const string ImgBasePath = "C:\\Users\\GRIGS\\source\\repos\\BusarovsQuckBite\\BusarovsQuckBite\\wwwroot\\Images";
-            public const string ImgRelativePath = "~\\Images";
+            public const string ImgBasePath = "C:/Users/GRIGS/source/repos/BusarovsQuckBite/BusarovsQuckBite/wwwroot/Images";
+            public const string ImgRelativePath = "~/Images";
         }
     }
 }

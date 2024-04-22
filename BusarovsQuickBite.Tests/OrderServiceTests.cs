@@ -72,7 +72,7 @@ namespace BusarovsQuickBite.Tests
             _hostingEnvironmentMock = new Mock<IWebHostEnvironment>();
             _hostingEnvironmentMock.Setup(h => h.WebRootPath).Returns(_rootFullPath);
             _hostingEnvironmentMock.Setup(h => h.ContentRootPath).Returns(_rootFullPath);
-            _imgFolderPath = _rootFullPath + "\\Images";
+            _imgFolderPath = _rootFullPath + "Images";
             _imgService = new ImgService(_hostingEnvironmentMock.Object, new Repository(_context));
             _categoryService = new CategoryService(new Repository(_context));
             _productService = new ProductService(new Repository(_context), _imgService, _categoryService);
@@ -90,7 +90,7 @@ namespace BusarovsQuickBite.Tests
         public async Task TearDown()
         {
             await _context!.Database.EnsureDeletedAsync();
-            File.Delete($"{_imgFolderPath}\\test.jpg");
+            File.Delete($"{_imgFolderPath}/test.jpg");
         }
         [Test]
         public void GetByIdShouldThrow()

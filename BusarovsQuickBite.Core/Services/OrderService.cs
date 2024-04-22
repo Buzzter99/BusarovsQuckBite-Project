@@ -106,7 +106,7 @@ namespace BusarovsQuickBite.Core.Services
 
         public async Task<AllUserOrdersViewModel> GetOrdersForUser(string userId)
         {
-            var collection = await _repository.GetEntity<Order>().Where(x => x.Who == userId).OrderByDescending(x => x.TransactionDateAndTime).ThenByDescending(x => x.Status).Select(c => new OrderUserViewModel
+            var collection = await _repository.AllReadOnly<Order>().Where(x => x.Who == userId).OrderByDescending(x => x.TransactionDateAndTime).ThenByDescending(x => x.Status).Select(c => new OrderUserViewModel
             {
 
                 Id = c.Id,
@@ -129,7 +129,7 @@ namespace BusarovsQuickBite.Core.Services
         }
         public async Task<AllUserOrdersViewModel> GetAllOrders()
         {
-            var orders = await _repository.GetEntity<Order>()
+            var orders = await _repository.AllReadOnly<Order>()
                 .OrderByDescending(x => x.TransactionDateAndTime)
                 .ThenByDescending(x => x.Status).Include(order => order.User)
                 .ToListAsync();

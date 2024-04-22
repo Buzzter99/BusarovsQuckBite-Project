@@ -21,7 +21,7 @@ namespace BusarovsQuickBite.Core.Services
 
         public async Task<List<AddressViewModel>> GetAddressesForUserAsync(string userId)
         {
-            return await _repository.GetEntity<Address>().Where(x => x.User.Id == userId).Select(c => new AddressViewModel()
+            return await _repository.AllReadOnly<Address>().Where(x => x.User.Id == userId).Select(c => new AddressViewModel()
             {
                 AddressId = c.Id,
                 Street = _protectionService.Decrypt(c.Street),
@@ -108,7 +108,7 @@ namespace BusarovsQuickBite.Core.Services
 
         public async Task<List<AddressViewModel>> GetActiveAddressesForUser(string userId)
         {
-            return await _repository.GetEntity<Address>().Where(x => x.User.Id == userId && !x.IsDeleted).Select(c => new AddressViewModel()
+            return await _repository.AllReadOnly<Address>().Where(x => x.User.Id == userId && !x.IsDeleted).Select(c => new AddressViewModel()
             {
                 AddressId = c.Id,
                 Street = _protectionService.Decrypt(c.Street),

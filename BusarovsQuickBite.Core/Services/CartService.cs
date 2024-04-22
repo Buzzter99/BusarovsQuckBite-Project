@@ -42,7 +42,7 @@ namespace BusarovsQuickBite.Core.Services
 
         public async Task<List<ProductViewModel>> FindProductsForUserAndCart(string userId)
         {
-            return await _repository.GetEntity<CartProduct>().Where(x => x.Cart.Who == userId)
+            return await _repository.AllReadOnly<CartProduct>().Where(x => x.Cart.Who == userId)
                 .Select(c => new ProductViewModel
                 {
                     Id = c.Product.Id,

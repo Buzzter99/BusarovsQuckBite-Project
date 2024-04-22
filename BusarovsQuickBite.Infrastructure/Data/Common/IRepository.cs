@@ -14,7 +14,7 @@ namespace BusarovsQuickBite.Infrastructure.Data.Common
 
         Task<T?> GetByIdAsync<T>(object id) where T : class;
 
-        void DeleteEntity<T>(T entityToDelete) where T : class;
+        void DeleteEntity<T>(T entityToDelete) where T : class?;
 
         DbSet<T> GetEntity<T>() where T : class;
     }

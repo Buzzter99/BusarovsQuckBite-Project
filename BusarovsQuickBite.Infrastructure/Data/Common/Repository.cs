@@ -39,9 +39,12 @@ namespace BusarovsQuickBite.Infrastructure.Data.Common
         {
             return await GetEntity<T>().FindAsync(id);
         }
-        public void DeleteEntity<T>(T entityToDelete) where T : class
+        public void DeleteEntity<T>(T? entityToDelete) where T : class
         {
-            GetEntity<T>().Remove(entityToDelete);
+            if (entityToDelete != null)
+            {
+                GetEntity<T>().Remove(entityToDelete);
+            }
         }
     }
 }

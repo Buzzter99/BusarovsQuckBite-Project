@@ -19,7 +19,7 @@ namespace BusarovsQuickBite.Core.Services
         }
         public async Task<List<CategoryViewModel>> GetCategoriesForUserByStatusAsync(FilterEnum keyword)
         {
-            var categories = await _repository.GetEntity<Category>()
+            var categories = await _repository.AllReadOnly<Category>()
                 .OrderByDescending(x => x.TransactionDateAndTime).Select(c => new CategoryViewModel()
                 {
                     Id = c.Id,
@@ -28,7 +28,7 @@ namespace BusarovsQuickBite.Core.Services
                     Creator = c.User.UserName,
                     IsDeleted = c.IsDeleted,
 
-                }).AsNoTracking()
+                })
                 .ToListAsync();
             switch (keyword)
             {
@@ -83,7 +83,7 @@ namespace BusarovsQuickBite.Core.Services
 
         public async Task<List<CategoryViewModel>> SearchByNameAsync(FilterEnum keyword, string name)
         {
-            var model = _repository.GetEntity<Category>().Where(x => x.Name.ToUpper().Contains(name.ToUpper()))
+            var model = _repository.AllReadOnly<Category>().Where(x => x.Name.ToUpper().Contains(name.ToUpper()))
                 .OrderByDescending(x => x.TransactionDateAndTime)
                 .Select(c => new CategoryViewModel()
                 {

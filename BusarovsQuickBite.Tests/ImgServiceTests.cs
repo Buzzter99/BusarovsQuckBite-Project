@@ -36,7 +36,7 @@ namespace BusarovsQuickBite.Tests
             _hostingEnvironmentMock = new Mock<IWebHostEnvironment>();
             _hostingEnvironmentMock.Setup(h => h.WebRootPath).Returns(_rootFullPath);
             _hostingEnvironmentMock.Setup(h => h.ContentRootPath).Returns(_rootFullPath);
-            _imgFolderPath = _rootFullPath + "\\Images";
+            _imgFolderPath = _rootFullPath + "Images";
             _formFile = new Mock<IFormFile>();
             _formFile.Setup(f => f.Length).Returns(1024);
             _formFile.Setup(f => f.FileName).Returns("test.jpg");
@@ -50,7 +50,7 @@ namespace BusarovsQuickBite.Tests
         [TearDown]
         public void TearDown()
         {
-            File.Delete($"{_imgFolderPath}\\test.jpg");
+            File.Delete($"{_imgFolderPath}/test.jpg");
         }
         [Test]
         public async Task AddShouldWork()
@@ -64,7 +64,7 @@ namespace BusarovsQuickBite.Tests
         {
             _formFile!.Setup(f => f.FileName).Returns("test.html");
             Assert.ThrowsAsync<ApplicationException>(async () => await _imgService!.AddImg(_formFile!.Object));
-            File.Delete($"{_imgFolderPath}\\test.html");
+            File.Delete($"{_imgFolderPath}/test.html");
         }
         [Test]
         public void LengthIsInvalidShouldThrow()
@@ -105,7 +105,7 @@ namespace BusarovsQuickBite.Tests
         public async Task FileShouldExistsOnFileSystem()
         {
            await _imgService!.AddImg(_formFile!.Object);
-           var fileShouldExist = File.Exists($"{_imgFolderPath}\\test.jpg");
+           var fileShouldExist = File.Exists($"{_imgFolderPath}/test.jpg");
            Assert.IsTrue(fileShouldExist);
         }
         [Test]
@@ -116,7 +116,7 @@ namespace BusarovsQuickBite.Tests
             Assert.That(_context!.Img.Count(),Is.EqualTo(expectedCount));
             await _imgService.DeleteUnusedImages();
             Assert.That(_context!.Img.Count(), Is.EqualTo(expectedCount - 1));
-            var fileShouldBeDeleted = File.Exists($"{_imgFolderPath}\\test.jpg");
+            var fileShouldBeDeleted = File.Exists($"{_imgFolderPath}/test.jpg");
             Assert.IsFalse(fileShouldBeDeleted);
         }
     }

@@ -23,7 +23,7 @@ namespace BusarovsQuickBite.Core.Services
         public async Task<ProductAllViewModel> GetAllProductsAsync(string? category = null, FilterEnum statusFilter = FilterEnum.All)
         {
             var categories = await _categoryService.GetCategoriesForUserByStatusAsync(FilterEnum.Active);
-            var model = _repository.GetEntity<Product>().Select(c => new ProductViewModel()
+            var model = _repository.AllReadOnly<Product>().Select(c => new ProductViewModel()
             {
                 Id = c.Id,
                 Name = c.Name,
@@ -155,7 +155,7 @@ namespace BusarovsQuickBite.Core.Services
         }
         public async Task<List<ProductViewModel>> GetProductsForHomePageAsync(int count)
         {
-            var model = await _repository.GetEntity<Product>().Where(x => !x.IsDeleted && !x.Category.IsDeleted 
+            var model = await _repository.AllReadOnly<Product>().Where(x => !x.IsDeleted && !x.Category.IsDeleted 
                                                                         && x.Quantity > 0)
                 .OrderBy(x => x.Price)
                 .ThenByDescending(x => x.TransactionDateAndTime).Take(count).Select(c => new ProductViewModel
@@ -176,7 +176,7 @@ namespace BusarovsQuickBite.Core.Services
         public async Task<List<ProductViewModel>> GetAllProductsBySearchTerm(string searchTerm = "")
         {
             ProductViewModel model = new ProductViewModel();
-            var entity = await _repository.GetEntity<Product>().Where(x => (!x.IsDeleted && !x.Category.IsDeleted) && (x.Name.ToUpper().Contains(searchTerm.ToUpper())
+            var entity = await _repository.AllReadOnly<Product>().Where(x => (!x.IsDeleted && !x.Category.IsDeleted) && (x.Name.ToUpper().Contains(searchTerm.ToUpper())
                                                       || x.Category.Name.Contains(searchTerm.ToUpper())
                                                       || x.Description.ToUpper().Contains(searchTerm.ToUpper())))
                 .Select(c => new ProductViewModel()
@@ -200,7 +200,7 @@ namespace BusarovsQuickBite.Core.Services
         }
         public async Task<List<ProductViewModel>> GetProductsForOrderAsync(int orderId)
         {
-            return await _repository.GetEntity<OrderProduct>().Where(x => x.OrderId == orderId).Select(c => new ProductViewModel
+            return await _repository.AllReadOnly<OrderProduct>().Where(x => x.OrderId == orderId).Select(c => new ProductViewModel
             {
                 Id = c.ProductId,
                 Name = c.Product.Name,

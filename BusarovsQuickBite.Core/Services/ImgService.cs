@@ -43,8 +43,8 @@ namespace BusarovsQuickBite.Core.Services
                 }
                 throw new ApplicationException(ErrorMessagesConstants.GeneralErrorMessage);
             }
-            string relativePath = DataConstants.ImgConstants.ImgRelativePath + "\\";
-            string fullPath = DataConstants.ImgConstants.ImgBasePath + $"\\{uniqueFileName}";
+            string relativePath = DataConstants.ImgConstants.ImgRelativePath + "/";
+            string fullPath = DataConstants.ImgConstants.ImgBasePath + $"/{uniqueFileName}";
             if (fullPath.Length > DataConstants.ImgConstants.FullPathMaxLength)
             {
                 throw new ApplicationException("Path exceeds max limit!");

@@ -50,7 +50,7 @@ namespace BusarovsQuickBite.Tests
             _hostingEnvironmentMock = new Mock<IWebHostEnvironment>();
             _hostingEnvironmentMock.Setup(h => h.WebRootPath).Returns(_rootFullPath);
             _hostingEnvironmentMock.Setup(h => h.ContentRootPath).Returns(_rootFullPath);
-            _imgFolderPath = _rootFullPath + "\\Images";
+            _imgFolderPath = _rootFullPath + "Images";
             _formFile = new Mock<IFormFile>();
             _formFile.Setup(f => f.Length).Returns(1024);
             _formFile.Setup(f => f.FileName).Returns("test.jpg");
@@ -88,10 +88,10 @@ namespace BusarovsQuickBite.Tests
         public async Task TearDown()
         {
             await _context!.Database.EnsureDeletedAsync();
-            File.Delete($"{_imgFolderPath}\\test.jpg");
-            if (File.Exists($"{_imgFolderPath}\\newFormFile.jpg"))
+            File.Delete($"{_imgFolderPath}/test.jpg");
+            if (File.Exists($"{_imgFolderPath}/newFormFile.jpg"))
             {
-                File.Delete($"{_imgFolderPath}\\newFormFile.jpg");
+                File.Delete($"{_imgFolderPath}/newFormFile.jpg");
             }
         }
         [Test]
