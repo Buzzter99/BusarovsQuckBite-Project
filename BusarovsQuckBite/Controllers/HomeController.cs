@@ -1,7 +1,7 @@
-﻿using BusarovsQuckBite.Contracts;
-using BusarovsQuckBite.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using BusarovsQuickBite.Core.Contracts;
+using BusarovsQuickBite.Core.Models;
 
 namespace BusarovsQuckBite.Controllers
 {

@@ -1,4 +1,4 @@
-﻿namespace BusarovsQuckBite.Models.Enums
+﻿namespace BusarovsQuickBite.Core.Models.Enums
 {
     public enum FilterEnum
     {

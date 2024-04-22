@@ -1,16 +1,16 @@
-﻿using BusarovsQuckBite.Constants;
-using BusarovsQuckBite.Contracts;
-using BusarovsQuckBite.Data.Enums;
-using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Models.Cart;
-using BusarovsQuckBite.Models.Enums;
-using BusarovsQuckBite.Models.Order;
-using BusarovsQuckBite.Models.Product;
+﻿using BusarovsQuickBite.Core.Contracts;
+using BusarovsQuickBite.Core.Models.Cart;
+using BusarovsQuickBite.Core.Models.Enums;
+using BusarovsQuickBite.Core.Models.Order;
+using BusarovsQuickBite.Core.Models.Product;
+using BusarovsQuickBite.Infrastructure.Constants;
 using BusarovsQuickBite.Infrastructure.Data.Common;
+using BusarovsQuickBite.Infrastructure.Data.Enums;
+using BusarovsQuickBite.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
+using ApplicationException = BusarovsQuickBite.Core.Exceptions.ApplicationException;
 
-namespace BusarovsQuckBite.Services
+namespace BusarovsQuickBite.Core.Services
 {
     public class OrderService : IOrderService
     {

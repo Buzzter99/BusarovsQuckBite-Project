@@ -1,5 +1,4 @@
-﻿using BusarovsQuckBite.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace BusarovsQuickBite.Infrastructure.Data.Common
 {

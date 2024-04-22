@@ -1,4 +1,4 @@
-﻿namespace BusarovsQuckBite.Areas.AccountManager.Models.Enums
+﻿namespace BusarovsQuickBite.Core.Models.Enums
 {
     public enum TabEnum
     {

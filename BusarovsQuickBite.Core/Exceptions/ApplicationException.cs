@@ -1,4 +1,4 @@
-﻿namespace BusarovsQuckBite.Exceptions
+﻿namespace BusarovsQuickBite.Core.Exceptions
 {
     public class ApplicationException : Exception
     {

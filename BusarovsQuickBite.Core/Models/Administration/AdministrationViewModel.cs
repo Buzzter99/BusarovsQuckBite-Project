@@ -1,8 +1,8 @@
-﻿using BusarovsQuckBite.Constants;
-using System.ComponentModel.DataAnnotations;
-using BusarovsQuckBite.Areas.AccountManager.Models.Interfaces;
+﻿using System.ComponentModel.DataAnnotations;
+using BusarovsQuickBite.Core.Contracts;
+using BusarovsQuickBite.Infrastructure.Constants;
 
-namespace BusarovsQuckBite.Areas.AccountManager.Models.Administration
+namespace BusarovsQuickBite.Core.Models.Administration
 {
     public class AdministrationViewModel : IUserViewModel, IUserDataViewModel
     {

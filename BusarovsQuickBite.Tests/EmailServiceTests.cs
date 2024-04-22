@@ -1,8 +1,6 @@
-﻿using BusarovsQuckBite.Services;
-using Microsoft.Extensions.Configuration;
-using Moq;
-using System.Net.Mail;
+﻿using BusarovsQuickBite.Core.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace BusarovsQuickBite.Tests
 {

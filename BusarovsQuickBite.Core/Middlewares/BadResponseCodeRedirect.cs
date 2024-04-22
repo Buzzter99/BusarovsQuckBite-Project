@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace BusarovsQuckBite.Middlewares
+namespace BusarovsQuickBite.Core.Middlewares
 {
     public class BadResponseCodeRedirect
     {

@@ -1,8 +1,8 @@
-﻿using BusarovsQuckBite.Contracts;
+﻿using BusarovsQuickBite.Core.Contracts;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Configuration;
 
-namespace BusarovsQuckBite.Services
+namespace BusarovsQuickBite.Core.Services
 {
     public class DataProtectionService : IDataProtectionService
     {

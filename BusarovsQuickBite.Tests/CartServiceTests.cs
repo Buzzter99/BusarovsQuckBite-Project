@@ -1,15 +1,15 @@
-﻿using BusarovsQuckBite.Constants;
-using BusarovsQuckBite.Contracts;
-using BusarovsQuckBite.Data;
-using BusarovsQuckBite.Services;
+﻿using BusarovsQuickBite.Core.Contracts;
+using BusarovsQuickBite.Core.Services;
+using BusarovsQuickBite.Infrastructure.Constants;
+using BusarovsQuickBite.Infrastructure.Data;
+using BusarovsQuickBite.Infrastructure.Data.Common;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using System.Text;
-using BusarovsQuickBite.Infrastructure.Data.Common;
-using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
+using ApplicationException = BusarovsQuickBite.Core.Exceptions.ApplicationException;
 
 namespace BusarovsQuickBite.Tests
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace BusarovsQuckBite.Middlewares
+namespace BusarovsQuickBite.Core.Middlewares
 {
     public class ExceptionLogger
     {

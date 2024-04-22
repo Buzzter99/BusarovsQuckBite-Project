@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using BusarovsQuckBite.Constants;
+using BusarovsQuickBite.Infrastructure.Constants;
 
-namespace BusarovsQuckBite.Areas.AccountManager.Models.Manage
+namespace BusarovsQuickBite.Core.Models.Manage
 {
     public class ResetUsernameViewModel
     {

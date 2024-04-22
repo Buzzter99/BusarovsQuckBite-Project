@@ -1,11 +1,11 @@
-﻿using BusarovsQuckBite.Constants;
-using BusarovsQuckBite.Contracts;
-using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Models.Address;
+﻿using BusarovsQuickBite.Infrastructure.Constants;
+using BusarovsQuickBite.Infrastructure.Data.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Encodings.Web;
-using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
+using BusarovsQuickBite.Core.Contracts;
+using BusarovsQuickBite.Core.Models.Address;
+using ApplicationException = BusarovsQuickBite.Core.Exceptions.ApplicationException;
 
 
 namespace BusarovsQuckBite.Controllers

@@ -1,11 +1,11 @@
-﻿using BusarovsQuckBite.Data.Enums;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using BusarovsQuckBite.Constants;
-using static BusarovsQuickBite.Infrastructure.DataConstants.DataConstants.OrderConstants;
+using BusarovsQuickBite.Infrastructure.Constants;
+using BusarovsQuickBite.Infrastructure.Data.Enums;
+using Microsoft.EntityFrameworkCore;
+using static BusarovsQuickBite.Infrastructure.Constants.DataConstants.OrderConstants;
 
-namespace BusarovsQuckBite.Data.Models
+namespace BusarovsQuickBite.Infrastructure.Data.Models
 {
     public class Order
     {

@@ -1,4 +1,4 @@
-﻿namespace BusarovsQuckBite.Models.PageHelpers
+﻿namespace BusarovsQuickBite.Core.Models.PageHelpers
 {
     public static class PageHelper
     {

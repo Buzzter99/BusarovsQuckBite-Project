@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace BusarovsQuckBite.Providers
+namespace BusarovsQuickBite.Core.Providers
 {
     public class CustomTokenProviderOptions : DataProtectionTokenProviderOptions
     {

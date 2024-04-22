@@ -1,11 +1,11 @@
-﻿using BusarovsQuckBite.Data.Models;
+﻿using BusarovsQuickBite.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace BusarovsQuckBite.Services
+namespace BusarovsQuickBite.Core.Services
 {
     public class ApplicationSignInManager<T> : SignInManager<T> where T : ApplicationUser
     {

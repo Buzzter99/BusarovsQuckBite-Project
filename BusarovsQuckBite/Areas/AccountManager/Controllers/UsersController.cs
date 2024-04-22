@@ -1,7 +1,6 @@
-﻿using BusarovsQuckBite.Areas.AccountManager.Models.Users;
-using BusarovsQuckBite.Constants;
-using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Services;
+﻿using BusarovsQuickBite.Core.Services;
+using BusarovsQuickBite.Infrastructure.Constants;
+using BusarovsQuickBite.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using System.Text.Encodings.Web;
+using BusarovsQuickBite.Core.Models.Users;
+
 namespace BusarovsQuckBite.Areas.AccountManager.Controllers
 {
     public class UsersController : BaseAreaController

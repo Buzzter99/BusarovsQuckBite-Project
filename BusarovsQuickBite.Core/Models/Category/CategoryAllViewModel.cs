@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace BusarovsQuckBite.Models.Category
+namespace BusarovsQuickBite.Core.Models.Category
 {
     public class CategoryAllViewModel
     {

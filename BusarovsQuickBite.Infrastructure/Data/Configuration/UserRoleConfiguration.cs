@@ -1,9 +1,9 @@
-﻿using BusarovsQuckBite.Constants;
+﻿using BusarovsQuickBite.Infrastructure.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace BusarovsQuckBite.Data.Configuration
+namespace BusarovsQuickBite.Infrastructure.Data.Configuration
 {
     public class UserRoleConfiguration : IEntityTypeConfiguration<IdentityUserRole<string>>
     {

@@ -1,13 +1,14 @@
-﻿using BusarovsQuckBite.Areas.AccountManager.Models.Administration;
-using BusarovsQuckBite.Constants;
-using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Models.Enums;
-using BusarovsQuckBite.Models.PageHelpers;
-using BusarovsQuckBite.Services;
+﻿using BusarovsQuickBite.Core.Services;
+using BusarovsQuickBite.Infrastructure.Constants;
+using BusarovsQuickBite.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Encodings.Web;
+using BusarovsQuickBite.Core.Models.Administration;
+using BusarovsQuickBite.Core.Models.Enums;
+using BusarovsQuickBite.Core.Models.PageHelpers;
+
 namespace BusarovsQuckBite.Areas.AccountManager.Controllers
 {
     [Authorize(Roles = RoleConstants.AdminRoleName)]

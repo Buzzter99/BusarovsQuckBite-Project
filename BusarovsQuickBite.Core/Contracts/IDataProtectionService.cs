@@ -1,4 +1,4 @@
-﻿namespace BusarovsQuckBite.Contracts;
+﻿namespace BusarovsQuickBite.Core.Contracts;
 
 public interface IDataProtectionService
 {

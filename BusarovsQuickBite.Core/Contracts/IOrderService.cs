@@ -1,7 +1,7 @@
-﻿using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Models.Order;
+﻿using BusarovsQuickBite.Core.Models.Order;
+using BusarovsQuickBite.Infrastructure.Data.Models;
 
-namespace BusarovsQuckBite.Contracts
+namespace BusarovsQuickBite.Core.Contracts
 {
     public interface IOrderService
     {

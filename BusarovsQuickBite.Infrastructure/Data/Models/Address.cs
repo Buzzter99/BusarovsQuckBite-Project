@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using BusarovsQuckBite.Constants;
-using static BusarovsQuickBite.Infrastructure.DataConstants.DataConstants;
+using BusarovsQuickBite.Infrastructure.Constants;
+using static BusarovsQuickBite.Infrastructure.Constants.DataConstants;
 
-namespace BusarovsQuckBite.Data.Models
+namespace BusarovsQuickBite.Infrastructure.Data.Models
 {
     public class Address
     {

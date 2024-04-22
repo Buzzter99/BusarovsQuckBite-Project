@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace BusarovsQuckBite.Contracts
+namespace BusarovsQuickBite.Core.Contracts
 {
     public interface IImgService
     {

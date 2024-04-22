@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BusarovsQuckBite.Migrations
+namespace BusarovsQuickBite.Infrastructure.Migrations
 {
-    [ExcludeFromCodeCoverage]
-    public partial class initial : Migration
+    public partial class initialCreateChangeNameSpaces : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -61,8 +59,9 @@ namespace BusarovsQuckBite.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FullPath = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    FullPath = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    RelativePath = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -199,7 +198,7 @@ namespace BusarovsQuckBite.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cart",
+                name: "Carts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -209,9 +208,9 @@ namespace BusarovsQuckBite.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cart", x => x.Id);
+                    table.PrimaryKey("PK_Carts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Cart_AspNetUsers_Who",
+                        name: "FK_Carts_AspNetUsers_Who",
                         column: x => x.Who,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -250,23 +249,24 @@ namespace BusarovsQuckBite.Migrations
                     TransactionDateAndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,5)", precision: 18, scale: 5, nullable: false),
-                    CartId = table.Column<int>(type: "int", nullable: false)
+                    PaymentType = table.Column<int>(type: "int", nullable: false),
+                    AddressId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_Addresses_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Addresses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Orders_AspNetUsers_Who",
                         column: x => x.Who,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Orders_Cart_CartId",
-                        column: x => x.CartId,
-                        principalTable: "Cart",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -309,6 +309,35 @@ namespace BusarovsQuckBite.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrdersActionChronology",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OldStatus = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    NewStatus = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    Who = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
+                    TransactionDateAndTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrdersActionChronology", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrdersActionChronology_AspNetUsers_Who",
+                        column: x => x.Who,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrdersActionChronology_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CartProducts",
                 columns: table => new
                 {
@@ -319,13 +348,38 @@ namespace BusarovsQuckBite.Migrations
                 {
                     table.PrimaryKey("PK_CartProducts", x => new { x.CartId, x.ProductId });
                     table.ForeignKey(
-                        name: "FK_CartProducts_Cart_CartId",
+                        name: "FK_CartProducts_Carts_CartId",
                         column: x => x.CartId,
-                        principalTable: "Cart",
+                        principalTable: "Carts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_CartProducts_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrdersProducts",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    QtyOrdered = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrdersProducts", x => new { x.OrderId, x.ProductId });
+                    table.ForeignKey(
+                        name: "FK_OrdersProducts_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrdersProducts_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -337,16 +391,26 @@ namespace BusarovsQuckBite.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName", "TransactionDateAndTime" },
                 values: new object[,]
                 {
-                    { "22ccb117-1c50-47a5-bc43-1d9a84879e10", "85b777ef-cf1a-434d-8516-f2eb838346f2", "Delivery Driver", "DELIVERY DRIVER", new DateTime(2024, 3, 17, 17, 11, 43, 93, DateTimeKind.Local).AddTicks(4663) },
-                    { "2c5e174e-3b0e-446f-86af-483d56fd7210", "83aa2e4c-a176-4f18-b92a-aeed1a5ef9d9", "Admin", "ADMIN", new DateTime(2024, 3, 17, 17, 11, 43, 93, DateTimeKind.Local).AddTicks(4646) },
-                    { "a1a8637e-6e83-4ee9-adef-09cd724473a7", "dec71b80-f895-41fb-bb3e-a7878ab50b69", "Cooking Staff", "COOKING STAFF", new DateTime(2024, 3, 17, 17, 11, 43, 93, DateTimeKind.Local).AddTicks(4668) },
-                    { "fa175b24-e5a7-41ab-8237-94734f2b5408", "f56e5e3a-26d9-4269-b5db-b473543166d8", "Customer", "CUSTOMER", new DateTime(2024, 3, 17, 17, 11, 43, 93, DateTimeKind.Local).AddTicks(4657) }
+                    { "22ccb117-1c50-47a5-bc43-1d9a84879e10", "ed920c5d-bbe5-4ee7-a354-84794414f2f4", "Delivery Driver", "DELIVERY DRIVER", new DateTime(2024, 4, 22, 3, 22, 56, 166, DateTimeKind.Local).AddTicks(6735) },
+                    { "2c5e174e-3b0e-446f-86af-483d56fd7210", "e8559386-a7fc-4f05-a497-7488b5063a1c", "Admin", "ADMIN", new DateTime(2024, 4, 22, 3, 22, 56, 166, DateTimeKind.Local).AddTicks(6719) },
+                    { "a1a8637e-6e83-4ee9-adef-09cd724473a7", "801f79a6-6a9d-4676-83c5-3293f6659a8e", "Cooking Staff", "COOKING STAFF", new DateTime(2024, 4, 22, 3, 22, 56, 166, DateTimeKind.Local).AddTicks(6740) },
+                    { "fa175b24-e5a7-41ab-8237-94734f2b5408", "375ffe0e-d8ac-4322-97b0-b6175ee93479", "Customer", "CUSTOMER", new DateTime(2024, 4, 22, 3, 22, 56, 166, DateTimeKind.Local).AddTicks(6729) }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "IsActive", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TransactionDateAndTime", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "73043a34-e9c3-438c-93f2-6aefe23e9c77", "brandabg1@gmail.com", true, "", true, "", false, null, "BRANDABG1@GMAIL.COM", "ADMIN", "AQAAAAEAACcQAAAAEGZKFeIPnSHAxsVCshkhz4xS6Cr//Ql1gcyYxcJu+ccrb4vQIRo2u1ZgzurfQ1sMtA==", "0896722926", true, "adab7fd3-0f56-4f52-9981-b856b560f608", new DateTime(2024, 3, 17, 17, 11, 43, 93, DateTimeKind.Local).AddTicks(4479), false, "Admin" });
+                values: new object[] { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "8f501ce9-4b49-4ec6-b19f-03e1493955e4", "brandabg1@gmail.com", true, "", true, "", false, null, "BRANDABG1@GMAIL.COM", "ADMIN", "AQAAAAEAACcQAAAAEJXBsI3LPeeWP8pewaY//qSYkkmDWWFUERootToqXqTI6Wd17phmxiBmXJNLL/7C0A==", "0896722926", true, "c38483d7-8ab6-45ef-8d70-e2e8b398e353", new DateTime(2024, 4, 22, 3, 22, 56, 166, DateTimeKind.Local).AddTicks(6552), false, "Admin" });
+
+            migrationBuilder.InsertData(
+                table: "Img",
+                columns: new[] { "Id", "FullPath", "Name", "RelativePath" },
+                values: new object[,]
+                {
+                    { 1, "C:\\Users\\GRIGS\\source\\repos\\BusarovsQuckBite\\BusarovsQuckBite\\wwwroot\\Images\\download.jpg", "download.jpg", "~\\Images\\" },
+                    { 2, "C:\\Users\\GRIGS\\source\\repos\\BusarovsQuckBite\\BusarovsQuckBite\\wwwroot\\Images\\tuborg.jpg", "tuborg.jpg", "~\\Images\\" },
+                    { 3, "C:\\Users\\GRIGS\\source\\repos\\BusarovsQuckBite\\BusarovsQuckBite\\wwwroot\\Images\\hamburger-baked-in-oven.jpg", "hamburger-baked-in-oven.jpg", "~\\Images\\" }
+                });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -358,14 +422,29 @@ namespace BusarovsQuckBite.Migrations
                 columns: new[] { "Id", "IsDeleted", "Name", "TransactionDateAndTime", "Who" },
                 values: new object[,]
                 {
-                    { 1, false, "Snacks", new DateTime(2024, 3, 17, 17, 11, 43, 93, DateTimeKind.Local).AddTicks(5488), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
-                    { 2, false, "Burgers", new DateTime(2024, 3, 17, 17, 11, 43, 93, DateTimeKind.Local).AddTicks(5498), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
-                    { 3, false, "Drinks", new DateTime(2024, 3, 17, 17, 11, 43, 93, DateTimeKind.Local).AddTicks(5500), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
-                    { 4, false, "Pizzas", new DateTime(2024, 3, 17, 17, 11, 43, 93, DateTimeKind.Local).AddTicks(5501), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
-                    { 5, false, "Pasta", new DateTime(2024, 3, 17, 17, 11, 43, 93, DateTimeKind.Local).AddTicks(5503), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
-                    { 6, false, "Sandwiches", new DateTime(2024, 3, 17, 17, 11, 43, 93, DateTimeKind.Local).AddTicks(5505), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
-                    { 7, false, "Desserts", new DateTime(2024, 3, 17, 17, 11, 43, 93, DateTimeKind.Local).AddTicks(5507), "8e445865-a24d-4543-a6c6-9443d048cdb9" }
+                    { 1, false, "Snacks", new DateTime(2024, 4, 22, 3, 22, 56, 166, DateTimeKind.Local).AddTicks(7597), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
+                    { 2, false, "Burgers", new DateTime(2024, 4, 22, 3, 22, 56, 166, DateTimeKind.Local).AddTicks(7607), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
+                    { 3, false, "Drinks", new DateTime(2024, 4, 22, 3, 22, 56, 166, DateTimeKind.Local).AddTicks(7610), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
+                    { 4, false, "Pizzas", new DateTime(2024, 4, 22, 3, 22, 56, 166, DateTimeKind.Local).AddTicks(7612), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
+                    { 5, false, "Pasta", new DateTime(2024, 4, 22, 3, 22, 56, 166, DateTimeKind.Local).AddTicks(7613), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
+                    { 6, false, "Sandwiches", new DateTime(2024, 4, 22, 3, 22, 56, 166, DateTimeKind.Local).AddTicks(7616), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
+                    { 7, false, "Desserts", new DateTime(2024, 4, 22, 3, 22, 56, 166, DateTimeKind.Local).AddTicks(7617), "8e445865-a24d-4543-a6c6-9443d048cdb9" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "CategoryId", "Description", "ImageId", "IsDeleted", "Name", "Price", "Quantity", "TransactionDateAndTime", "Who" },
+                values: new object[] { 1, 4, "Pizza", 1, false, "Pepperoni Pizza", 15.00m, 10, new DateTime(2024, 4, 22, 3, 22, 56, 166, DateTimeKind.Local).AddTicks(8533), "8e445865-a24d-4543-a6c6-9443d048cdb9" });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "CategoryId", "Description", "ImageId", "IsDeleted", "Name", "Price", "Quantity", "TransactionDateAndTime", "Who" },
+                values: new object[] { 2, 3, "Beer", 2, false, "Tuborg Beer", 5.00m, 50, new DateTime(2024, 4, 22, 3, 22, 56, 166, DateTimeKind.Local).AddTicks(8544), "8e445865-a24d-4543-a6c6-9443d048cdb9" });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "CategoryId", "Description", "ImageId", "IsDeleted", "Name", "Price", "Quantity", "TransactionDateAndTime", "Who" },
+                values: new object[] { 3, 2, "Burger", 3, false, "Hamburger", 8.50m, 15, new DateTime(2024, 4, 22, 3, 22, 56, 166, DateTimeKind.Local).AddTicks(8546), "8e445865-a24d-4543-a6c6-9443d048cdb9" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_Who",
@@ -412,14 +491,14 @@ namespace BusarovsQuckBite.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Cart_Who",
-                table: "Cart",
-                column: "Who");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CartProducts_ProductId",
                 table: "CartProducts",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Carts_Who",
+                table: "Carts",
+                column: "Who");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_Who",
@@ -427,14 +506,29 @@ namespace BusarovsQuckBite.Migrations
                 column: "Who");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_CartId",
+                name: "IX_Orders_AddressId",
                 table: "Orders",
-                column: "CartId");
+                column: "AddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_Who",
                 table: "Orders",
                 column: "Who");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrdersActionChronology_OrderId",
+                table: "OrdersActionChronology",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrdersActionChronology_Who",
+                table: "OrdersActionChronology",
+                column: "Who");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrdersProducts_ProductId",
+                table: "OrdersProducts",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
@@ -455,9 +549,6 @@ namespace BusarovsQuckBite.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Addresses");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -476,16 +567,25 @@ namespace BusarovsQuckBite.Migrations
                 name: "CartProducts");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "OrdersActionChronology");
+
+            migrationBuilder.DropTable(
+                name: "OrdersProducts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Carts");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
+
+            migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Cart");
+                name: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "Categories");

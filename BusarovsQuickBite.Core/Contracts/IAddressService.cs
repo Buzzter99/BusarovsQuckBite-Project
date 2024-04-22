@@ -1,6 +1,6 @@
-﻿using BusarovsQuckBite.Models.Address;
+﻿using BusarovsQuickBite.Core.Models.Address;
 
-namespace BusarovsQuckBite.Contracts
+namespace BusarovsQuickBite.Core.Contracts
 {
     public interface IAddressService
     {

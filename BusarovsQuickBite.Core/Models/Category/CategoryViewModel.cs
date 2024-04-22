@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using BusarovsQuickBite.Infrastructure.DataConstants;
+using BusarovsQuickBite.Infrastructure.Constants;
 
-namespace BusarovsQuckBite.Models.Category
+namespace BusarovsQuickBite.Core.Models.Category
 {
     public class CategoryViewModel
     {

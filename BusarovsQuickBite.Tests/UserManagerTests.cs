@@ -1,9 +1,7 @@
-﻿using BusarovsQuckBite.Areas.AccountManager.Models.Administration;
-using BusarovsQuckBite.Constants;
-using BusarovsQuckBite.Data;
-using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Models.Enums;
-using BusarovsQuckBite.Services;
+﻿using BusarovsQuickBite.Core.Services;
+using BusarovsQuickBite.Infrastructure.Constants;
+using BusarovsQuickBite.Infrastructure.Data;
+using BusarovsQuickBite.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -11,7 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using System.Text;
-using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
+using BusarovsQuickBite.Core.Models.Administration;
+using BusarovsQuickBite.Core.Models.Enums;
+using ApplicationException = BusarovsQuickBite.Core.Exceptions.ApplicationException;
 
 namespace BusarovsQuickBite.Tests
 {

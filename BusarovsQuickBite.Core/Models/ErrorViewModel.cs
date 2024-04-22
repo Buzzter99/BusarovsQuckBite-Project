@@ -1,4 +1,4 @@
-namespace BusarovsQuckBite.Models
+namespace BusarovsQuickBite.Core.Models
 {
     public class ErrorViewModel
     {

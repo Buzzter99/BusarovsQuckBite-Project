@@ -1,7 +1,8 @@
-﻿using BusarovsQuckBite.Constants;
+﻿using System.ComponentModel.DataAnnotations;
+using BusarovsQuickBite.Infrastructure.Constants;
 using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
-namespace BusarovsQuckBite.Data.Models
+
+namespace BusarovsQuickBite.Infrastructure.Data.Models
 {
     public class ApplicationUser : IdentityUser
     {

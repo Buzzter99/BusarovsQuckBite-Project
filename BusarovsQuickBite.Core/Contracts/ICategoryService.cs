@@ -1,8 +1,8 @@
-﻿using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Models.Category;
-using BusarovsQuckBite.Models.Enums;
+﻿using BusarovsQuickBite.Core.Models.Category;
+using BusarovsQuickBite.Core.Models.Enums;
+using BusarovsQuickBite.Infrastructure.Data.Models;
 
-namespace BusarovsQuckBite.Contracts
+namespace BusarovsQuickBite.Core.Contracts
 {
     public interface ICategoryService
     {

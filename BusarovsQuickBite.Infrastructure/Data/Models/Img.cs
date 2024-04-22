@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using BusarovsQuickBite.Infrastructure.DataConstants;
+using BusarovsQuickBite.Infrastructure.Constants;
 
-namespace BusarovsQuckBite.Data.Models
+namespace BusarovsQuickBite.Infrastructure.Data.Models
 {
     public class Img
     {

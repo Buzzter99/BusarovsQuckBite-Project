@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Globalization;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace BusarovsQuckBite.ModelBinders
+namespace BusarovsQuickBite.Core.ModelBinders
 {
     public class DecimalModelBinder : IModelBinder
     {

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace BusarovsQuckBite.Providers
+namespace BusarovsQuickBite.Core.Providers
 {
     public class CustomTokenProvider<TUser> : DataProtectorTokenProvider<TUser> where TUser : class
     {

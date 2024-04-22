@@ -1,7 +1,9 @@
-﻿using BusarovsQuckBite.Contracts;
-using BusarovsQuckBite.Data;
-using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Services;
+﻿using BusarovsQuickBite.Core.Services;
+using BusarovsQuickBite.Infrastructure.Constants;
+using BusarovsQuickBite.Infrastructure.Data;
+using BusarovsQuickBite.Infrastructure.Data.Common;
+using BusarovsQuickBite.Infrastructure.Data.Enums;
+using BusarovsQuickBite.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -10,15 +12,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using System.Text;
-using BusarovsQuckBite.Constants;
-using BusarovsQuckBite.Data.Enums;
-using BusarovsQuckBite.Models.Address;
-using BusarovsQuckBite.Models.Cart;
-using BusarovsQuckBite.Models.Enums;
-using BusarovsQuckBite.Models.Order;
-using BusarovsQuckBite.Models.Product;
-using BusarovsQuickBite.Infrastructure.Data.Common;
-using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
+using BusarovsQuickBite.Core.Contracts;
+using BusarovsQuickBite.Core.Models.Address;
+using BusarovsQuickBite.Core.Models.Cart;
+using BusarovsQuickBite.Core.Models.Enums;
+using BusarovsQuickBite.Core.Models.Order;
+using BusarovsQuickBite.Core.Models.Product;
+using ApplicationException = BusarovsQuickBite.Core.Exceptions.ApplicationException;
 
 namespace BusarovsQuickBite.Tests
 {

@@ -1,6 +1,6 @@
-﻿using BusarovsQuckBite.Models.Product;
+﻿using BusarovsQuickBite.Core.Models.Product;
 
-namespace BusarovsQuckBite.Models.Cart
+namespace BusarovsQuickBite.Core.Models.Cart
 {
     public class CartViewModel
     {

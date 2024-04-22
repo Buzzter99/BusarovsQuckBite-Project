@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using BusarovsQuckBite.Data.Enums;
-using BusarovsQuckBite.Models.Cart;
-using BusarovsQuckBite.Models.Address;
+using BusarovsQuickBite.Core.Models.Address;
+using BusarovsQuickBite.Core.Models.Cart;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace BusarovsQuckBite.Models.Order
+namespace BusarovsQuickBite.Core.Models.Order
 {
     public class OrderViewModel
     {

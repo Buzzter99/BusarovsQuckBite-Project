@@ -1,5 +1,5 @@
-﻿using BusarovsQuckBite.Contracts;
-using BusarovsQuckBite.Models.PageHelpers;
+﻿using BusarovsQuickBite.Core.Contracts;
+using BusarovsQuickBite.Core.Models.PageHelpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BusarovsQuckBite.Controllers

@@ -1,17 +1,17 @@
-using BusarovsQuckBite.Contracts;
-using BusarovsQuckBite.Data;
-using BusarovsQuckBite.Data.Models;
 using BusarovsQuckBite.Hubs;
-using BusarovsQuckBite.ModelBinders;
-using BusarovsQuckBite.Providers;
-using BusarovsQuckBite.Services;
+using BusarovsQuickBite.Core.Contracts;
+using BusarovsQuickBite.Core.ModelBinders;
+using BusarovsQuickBite.Core.Providers;
+using BusarovsQuickBite.Core.Services;
+using BusarovsQuickBite.Infrastructure.Data;
 using BusarovsQuickBite.Infrastructure.Data.Common;
+using BusarovsQuickBite.Infrastructure.Data.Models;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ApplicationUser = BusarovsQuckBite.Data.Models.ApplicationUser;
+using ApplicationUser = BusarovsQuickBite.Infrastructure.Data.Models.ApplicationUser;
 
 namespace BusarovsQuckBite
 {

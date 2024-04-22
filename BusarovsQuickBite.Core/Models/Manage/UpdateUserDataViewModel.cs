@@ -1,8 +1,8 @@
-﻿using BusarovsQuckBite.Constants;
-using System.ComponentModel.DataAnnotations;
-using BusarovsQuckBite.Areas.AccountManager.Models.Interfaces;
+﻿using System.ComponentModel.DataAnnotations;
+using BusarovsQuickBite.Core.Contracts;
+using BusarovsQuickBite.Infrastructure.Constants;
 
-namespace BusarovsQuckBite.Areas.AccountManager.Models.Manage
+namespace BusarovsQuickBite.Core.Models.Manage
 {
     public class UpdateUserDataViewModel : IUserViewModel, IUserDataViewModel
     {

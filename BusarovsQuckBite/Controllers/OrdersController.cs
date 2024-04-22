@@ -1,15 +1,15 @@
-﻿using BusarovsQuckBite.Constants;
-using BusarovsQuckBite.Contracts;
-using BusarovsQuckBite.Data.Enums;
-using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Models.Cart;
-using BusarovsQuckBite.Models.Order;
-using BusarovsQuckBite.Models.PageHelpers;
+﻿using BusarovsQuickBite.Infrastructure.Constants;
+using BusarovsQuickBite.Infrastructure.Data.Enums;
+using BusarovsQuickBite.Infrastructure.Data.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Encodings.Web;
-using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
+using BusarovsQuickBite.Core.Contracts;
+using BusarovsQuickBite.Core.Models.Cart;
+using BusarovsQuickBite.Core.Models.Order;
+using BusarovsQuickBite.Core.Models.PageHelpers;
+using ApplicationException = BusarovsQuickBite.Core.Exceptions.ApplicationException;
 
 namespace BusarovsQuckBite.Controllers
 {

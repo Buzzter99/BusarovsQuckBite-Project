@@ -1,6 +1,6 @@
-﻿using BusarovsQuckBite.Models.Category;
+﻿using BusarovsQuickBite.Core.Models.Category;
 
-namespace BusarovsQuckBite.Models.Product
+namespace BusarovsQuickBite.Core.Models.Product
 {
     public class ProductViewModel
     {

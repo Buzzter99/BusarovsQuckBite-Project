@@ -1,8 +1,8 @@
-﻿using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Models.Cart;
-using BusarovsQuckBite.Models.Product;
+﻿using BusarovsQuickBite.Core.Models.Cart;
+using BusarovsQuickBite.Core.Models.Product;
+using BusarovsQuickBite.Infrastructure.Data.Models;
 
-namespace BusarovsQuckBite.Contracts
+namespace BusarovsQuickBite.Core.Contracts
 {
     public interface ICartService
     {

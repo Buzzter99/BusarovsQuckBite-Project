@@ -1,4 +1,6 @@
-﻿@model OrderUserViewModel
+﻿@using BusarovsQuickBite.Infrastructure.Constants
+@using BusarovsQuickBite.Infrastructure.Data.Enums
+@model OrderUserViewModel
 <td>@(Model.DeliveryAddress.City + " " + Model.DeliveryAddress.Street)</td>
 <td>@Model.OrderPlacedDate</td>
 <td>@Model.OrderStatus</td>

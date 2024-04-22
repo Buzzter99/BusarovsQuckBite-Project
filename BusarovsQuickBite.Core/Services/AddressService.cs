@@ -1,12 +1,12 @@
-﻿using BusarovsQuckBite.Constants;
-using BusarovsQuckBite.Contracts;
-using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Models.Address;
+﻿using BusarovsQuickBite.Core.Contracts;
+using BusarovsQuickBite.Core.Models.Address;
+using BusarovsQuickBite.Infrastructure.Constants;
 using BusarovsQuickBite.Infrastructure.Data.Common;
+using BusarovsQuickBite.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
+using ApplicationException = BusarovsQuickBite.Core.Exceptions.ApplicationException;
 
-namespace BusarovsQuckBite.Services
+namespace BusarovsQuickBite.Core.Services
 {
     public class AddressService : IAddressService
     {

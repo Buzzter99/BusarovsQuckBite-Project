@@ -1,5 +1,5 @@
-﻿using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Services;
+﻿using BusarovsQuickBite.Core.Services;
+using BusarovsQuickBite.Infrastructure.Data.Models;
 using BusarovsQuickBite.Tests.FakeManagers;
 
 namespace BusarovsQuickBite.Tests

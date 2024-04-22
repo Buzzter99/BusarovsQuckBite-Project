@@ -1,9 +1,9 @@
-﻿using BusarovsQuckBite.Data.Configuration;
-using BusarovsQuckBite.Data.Models;
+﻿using BusarovsQuickBite.Infrastructure.Data.Configuration;
+using BusarovsQuickBite.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace BusarovsQuckBite.Data
+namespace BusarovsQuickBite.Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string>
     {

@@ -1,10 +1,10 @@
-﻿using BusarovsQuckBite.Constants;
-using BusarovsQuckBite.Data.Models;
+﻿using BusarovsQuickBite.Infrastructure.Constants;
+using BusarovsQuickBite.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace BusarovsQuckBite.Data.Configuration
+namespace BusarovsQuickBite.Infrastructure.Data.Configuration
 {
     public class UserConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {

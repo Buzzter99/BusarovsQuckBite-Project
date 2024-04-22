@@ -1,9 +1,9 @@
-﻿using BusarovsQuckBite.Areas.AccountManager.Models.Administration;
-using BusarovsQuckBite.Data.Enums;
-using BusarovsQuckBite.Models.Address;
-using BusarovsQuckBite.Models.Product;
+﻿using BusarovsQuickBite.Core.Models.Address;
+using BusarovsQuickBite.Core.Models.Administration;
+using BusarovsQuickBite.Core.Models.Product;
+using BusarovsQuickBite.Infrastructure.Data.Enums;
 
-namespace BusarovsQuckBite.Models.Order
+namespace BusarovsQuickBite.Core.Models.Order
 {
     public class OrderUserViewModel
     {

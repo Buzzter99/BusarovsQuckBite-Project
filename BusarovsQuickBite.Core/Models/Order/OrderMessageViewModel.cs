@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace BusarovsQuckBite.Models.Order
+﻿namespace BusarovsQuickBite.Core.Models.Order
 {
     public class OrderMessageViewModel
     {

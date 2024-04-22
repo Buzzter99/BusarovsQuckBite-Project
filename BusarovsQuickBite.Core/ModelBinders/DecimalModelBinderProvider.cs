@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace BusarovsQuckBite.ModelBinders
+namespace BusarovsQuickBite.Core.ModelBinders
 {
     public class DecimalModelBinderProvider : IModelBinderProvider
     {

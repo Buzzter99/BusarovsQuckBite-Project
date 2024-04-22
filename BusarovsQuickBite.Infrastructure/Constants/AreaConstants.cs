@@ -1,4 +1,4 @@
-﻿namespace BusarovsQuckBite.Constants
+﻿namespace BusarovsQuickBite.Infrastructure.Constants
 {
     public static class AreaConstants
     {

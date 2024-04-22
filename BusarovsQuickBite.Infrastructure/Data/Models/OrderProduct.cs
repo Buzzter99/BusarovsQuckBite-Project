@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BusarovsQuckBite.Data.Models
+namespace BusarovsQuickBite.Infrastructure.Data.Models
 {
     public class OrderProduct
     {

@@ -1,16 +1,16 @@
-﻿using BusarovsQuckBite.Areas.AccountManager.Models.Manage;
-using BusarovsQuckBite.Constants;
-using BusarovsQuckBite.Contracts;
-using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Services;
+﻿using BusarovsQuickBite.Core.Services;
+using BusarovsQuickBite.Infrastructure.Constants;
+using BusarovsQuickBite.Infrastructure.Data.Models;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using System.Text.Encodings.Web;
-using BusarovsQuckBite.Areas.AccountManager.Models.Enums;
-using Microsoft.AspNet.Identity;
+using BusarovsQuickBite.Core.Contracts;
+using BusarovsQuickBite.Core.Models.Enums;
+using BusarovsQuickBite.Core.Models.Manage;
 
 namespace BusarovsQuckBite.Areas.AccountManager.Controllers
 {

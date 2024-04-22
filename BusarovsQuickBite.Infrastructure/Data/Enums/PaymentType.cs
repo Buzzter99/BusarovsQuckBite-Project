@@ -1,4 +1,4 @@
-﻿namespace BusarovsQuckBite.Data.Enums
+﻿namespace BusarovsQuickBite.Infrastructure.Data.Enums
 {
     public enum PaymentType
     {

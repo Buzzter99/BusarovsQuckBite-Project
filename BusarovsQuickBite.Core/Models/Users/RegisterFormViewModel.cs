@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using BusarovsQuckBite.Areas.AccountManager.Models.Interfaces;
-using BusarovsQuckBite.Constants;
+using BusarovsQuickBite.Core.Contracts;
+using BusarovsQuickBite.Infrastructure.Constants;
 
-namespace BusarovsQuckBite.Areas.AccountManager.Models.Users
+namespace BusarovsQuickBite.Core.Models.Users
 {
     public class RegisterFormViewModel : IPasswordViewModel, IUserViewModel
     {

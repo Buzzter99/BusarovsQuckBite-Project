@@ -1,5 +1,6 @@
-﻿@using BusarovsQuckBite.Data.Models
-@using BusarovsQuckBite.Services
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using BusarovsQuickBite.Core.Services
+@using BusarovsQuickBite.Infrastructure.Data.Models
 @inject ApplicationSignInManager<ApplicationUser> SignInManager
 @inject ApplicationUserManager<ApplicationUser> UserManager
 @if (SignInManager.IsSignedIn(User))

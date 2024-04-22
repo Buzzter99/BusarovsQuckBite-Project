@@ -1,9 +1,9 @@
-﻿using BusarovsQuckBite.Models.Category;
-using BusarovsQuickBite.Infrastructure.DataConstants;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using BusarovsQuickBite.Core.Models.Category;
+using BusarovsQuickBite.Infrastructure.Constants;
 using Microsoft.AspNetCore.Http;
 
-namespace BusarovsQuckBite.Models.Product
+namespace BusarovsQuickBite.Core.Models.Product
 {
     public class ProductFormViewModel
     {

@@ -1,4 +1,4 @@
-﻿namespace BusarovsQuckBite.Areas.AccountManager.Models.Manage
+﻿namespace BusarovsQuickBite.Core.Models.Manage
 {
     public class UserAllInfoViewModel
     {

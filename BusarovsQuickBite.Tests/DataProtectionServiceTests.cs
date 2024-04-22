@@ -1,9 +1,9 @@
-﻿using BusarovsQuckBite.Services;
+﻿using BusarovsQuickBite.Core.Services;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Configuration;
 using Moq;
 using System.Text;
-using BusarovsQuckBite.Contracts;
+using BusarovsQuickBite.Core.Contracts;
 
 namespace BusarovsQuickBite.Tests
 {

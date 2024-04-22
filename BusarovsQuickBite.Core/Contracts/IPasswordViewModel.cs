@@ -1,4 +1,4 @@
-﻿namespace BusarovsQuckBite.Areas.AccountManager.Models.Interfaces
+﻿namespace BusarovsQuickBite.Core.Contracts
 {
     public interface IPasswordViewModel
     {

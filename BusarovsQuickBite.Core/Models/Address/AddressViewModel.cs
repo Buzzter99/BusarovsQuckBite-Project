@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using BusarovsQuickBite.Infrastructure.DataConstants;
+using BusarovsQuickBite.Infrastructure.Constants;
 
-namespace BusarovsQuckBite.Models.Address
+namespace BusarovsQuickBite.Core.Models.Address
 {
     public class AddressViewModel
     {

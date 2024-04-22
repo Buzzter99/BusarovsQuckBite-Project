@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using BusarovsQuckBite.Constants;
-using BusarovsQuickBite.Infrastructure.DataConstants;
+using BusarovsQuickBite.Infrastructure.Constants;
 using Microsoft.EntityFrameworkCore;
 
-namespace BusarovsQuckBite.Data.Models
+namespace BusarovsQuickBite.Infrastructure.Data.Models
 {
     public class Product
     {

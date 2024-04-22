@@ -1,10 +1,10 @@
 ﻿using System.Net;
 using System.Net.Mail;
-using BusarovsQuckBite.Constants;
+using BusarovsQuickBite.Infrastructure.Constants;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 
-namespace BusarovsQuckBite.Services
+namespace BusarovsQuickBite.Core.Services
 {
     public class EmailService : IEmailSender
     {

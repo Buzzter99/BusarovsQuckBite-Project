@@ -1,12 +1,12 @@
-using BusarovsQuckBite.Constants;
-using BusarovsQuckBite.Contracts;
-using BusarovsQuckBite.Data;
-using BusarovsQuckBite.Models.Category;
-using BusarovsQuckBite.Models.Enums;
-using BusarovsQuckBite.Services;
+using BusarovsQuickBite.Core.Contracts;
+using BusarovsQuickBite.Core.Models.Category;
+using BusarovsQuickBite.Core.Models.Enums;
+using BusarovsQuickBite.Core.Services;
+using BusarovsQuickBite.Infrastructure.Constants;
+using BusarovsQuickBite.Infrastructure.Data;
 using BusarovsQuickBite.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
-using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
+using ApplicationException = BusarovsQuickBite.Core.Exceptions.ApplicationException;
 
 namespace BusarovsQuickBite.Tests
 {

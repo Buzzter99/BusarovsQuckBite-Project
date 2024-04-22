@@ -1,4 +1,4 @@
-﻿namespace BusarovsQuckBite.Models.Order
+﻿namespace BusarovsQuickBite.Core.Models.Order
 {
     public class TrackOrderViewModel
     {

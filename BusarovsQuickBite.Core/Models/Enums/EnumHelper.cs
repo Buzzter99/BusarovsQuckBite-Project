@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace BusarovsQuckBite.Models.Enums
+namespace BusarovsQuickBite.Core.Models.Enums
 {
     public class EnumHelper
     {

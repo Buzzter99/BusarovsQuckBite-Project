@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using BusarovsQuckBite.Areas.AccountManager.Models.Interfaces;
+using BusarovsQuickBite.Core.Contracts;
 
-namespace BusarovsQuckBite.Areas.AccountManager.Models.Administration
+namespace BusarovsQuickBite.Core.Models.Administration
 {
     public class ChangePasswordAdministrationViewModel : IPasswordViewModel
     {

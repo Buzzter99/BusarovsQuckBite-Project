@@ -1,7 +1,7 @@
-﻿using BusarovsQuckBite.Models.Category;
+﻿using BusarovsQuickBite.Core.Models.Category;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace BusarovsQuckBite.Models.Product
+namespace BusarovsQuickBite.Core.Models.Product
 {
     public class ProductAllViewModel
     {

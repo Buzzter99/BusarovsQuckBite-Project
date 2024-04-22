@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using BusarovsQuckBite.Areas.AccountManager.Models.Interfaces;
+using BusarovsQuickBite.Core.Contracts;
 
-namespace BusarovsQuckBite.Areas.AccountManager.Models.Manage
+namespace BusarovsQuickBite.Core.Models.Manage
 {
     public class ForgotPasswordViewModel : IPasswordViewModel
     {

@@ -1,4 +1,4 @@
-﻿namespace BusarovsQuickBite.Infrastructure.DataConstants
+﻿namespace BusarovsQuickBite.Infrastructure.Constants
 {
     public static class DataConstants
     {

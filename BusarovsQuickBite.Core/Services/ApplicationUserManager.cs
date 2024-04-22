@@ -1,18 +1,18 @@
-﻿using BusarovsQuckBite.Areas.AccountManager.Models.Administration;
-using BusarovsQuckBite.Areas.AccountManager.Models.Manage;
-using BusarovsQuckBite.Constants;
-using BusarovsQuckBite.Contracts;
-using BusarovsQuckBite.Data;
-using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Models.Enums;
+﻿using BusarovsQuickBite.Core.Contracts;
+using BusarovsQuickBite.Core.Models.Administration;
+using BusarovsQuickBite.Core.Models.Enums;
+using BusarovsQuickBite.Core.Models.Manage;
+using BusarovsQuickBite.Infrastructure.Constants;
+using BusarovsQuickBite.Infrastructure.Data;
+using BusarovsQuickBite.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
+using ApplicationException = BusarovsQuickBite.Core.Exceptions.ApplicationException;
 
-namespace BusarovsQuckBite.Services
+namespace BusarovsQuickBite.Core.Services
 {
     public class ApplicationUserManager<TUser> : UserManager<TUser> where TUser : ApplicationUser, new()
     {

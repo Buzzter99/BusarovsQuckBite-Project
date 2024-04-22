@@ -1,13 +1,13 @@
-﻿using BusarovsQuckBite.Constants;
-using BusarovsQuckBite.Contracts;
-using BusarovsQuckBite.Data.Models;
-using BusarovsQuckBite.Models.Category;
-using BusarovsQuckBite.Models.Enums;
+﻿using BusarovsQuickBite.Infrastructure.Constants;
+using BusarovsQuickBite.Infrastructure.Data.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Encodings.Web;
-using ApplicationException = BusarovsQuckBite.Exceptions.ApplicationException;
+using BusarovsQuickBite.Core.Contracts;
+using BusarovsQuickBite.Core.Models.Category;
+using BusarovsQuickBite.Core.Models.Enums;
+using ApplicationException = BusarovsQuickBite.Core.Exceptions.ApplicationException;
 
 namespace BusarovsQuckBite.Controllers
 {
