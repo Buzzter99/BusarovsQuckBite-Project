@@ -21,7 +21,8 @@ namespace BusarovsQuckBite
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            DataConstants.ImgConstants.ImgBasePath = builder.Configuration["RootFullPath"] + "Images";
+            var basePath = builder.Configuration["RootFullPath"] + "Images";
+            DataConstants.ImgConstants.ImgBasePath = basePath;
             WebHost.CreateDefaultBuilder(args).UseStartup<Program>();
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
