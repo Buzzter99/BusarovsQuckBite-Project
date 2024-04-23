@@ -24,3 +24,4 @@ Configuration in the following pattern:
   "SmtpPort": "25",
   "SmtpUsername": "AKIA5FTY7Y4RCA7PDGWR",
   "SmtpPassword": "BL3vFFON4AUKRGgZ44G14TPq7DQWB19jY1HLVTmI6OSu"
+4.Application is hosted in Azure on http://quickbite.westeurope.cloudapp.azure.com/
