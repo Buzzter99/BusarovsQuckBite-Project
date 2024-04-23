@@ -1,7 +1,5 @@
--Application for ordering food and delivering using .NET6 AND ASP.NET CORE MVC.
--Requirements for project:
-ImgConstant for base path in BusarovsQuickBite.Infrastructure.Constants.ImgConstants.ImgBasePath should be set beforehand in order to run the project(Example: C:/Users/Admin/BusarovsQuckBite/wwwroot/Images)
-and downloaded the following images - https://drive.google.com/drive/folders/1pglU_AKdw8SKPgoN0KjTLcX3ZeddqYz3?usp=drive_link and pasted them in wwwroot/Images directory(Images directory should be created beforehand)
+-Application for ordering food and delivering using .NET6 AND ASP.NET CORE MVC. ORM used is EF and DB Provider is MS SQL.
+-Requirements for the project to be built:
 Configuration in the following pattern:
 
 {
@@ -19,13 +17,8 @@ Configuration in the following pattern:
   }
 },
 "RootFullPath": "C:/Admin/PathTowwwroot/"
-
-Configuration is needed for unit tests as well as for the main project.
-
-Update-Database should be run like the following:
-Update-Database --migration "LatestMigrationInMigrationsFolder"
-
-For testing purposes the following smtp configuration can be used:
+2.Configuration is needed for unit tests as well as for the main project.
+3.For testing purposes the following smtp configuration can be used:
 "EmailConfiguration": {
   "SmtpServer": "email-smtp.eu-west-2.amazonaws.com",
   "SmtpPort": "25",
