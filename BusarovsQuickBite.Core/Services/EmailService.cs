@@ -1,8 +1,7 @@
-﻿using System.Net;
+﻿using Microsoft.Extensions.Configuration;
+using System.Net;
 using System.Net.Mail;
-using BusarovsQuickBite.Infrastructure.Constants;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.Extensions.Configuration;
+using IEmailSender = BusarovsQuickBite.Core.Contracts.IEmailSender;
 
 namespace BusarovsQuickBite.Core.Services
 {
@@ -19,7 +18,7 @@ namespace BusarovsQuickBite.Core.Services
             _smtpUserName = config["EmailConfiguration:SmtpUsername"];
             _smtpPassword = config["EmailConfiguration:SmtpPassword"];
         }
-        public async Task SendEmailAsync(string email, string subject, string htmlMessage)
+        public async Task SendEmailAsync(string email, string subject, string htmlMessage,string fromEmail)
         {
             using (SmtpClient smtpClient = new SmtpClient(_smtpServer, _smtpPort))
             {
@@ -28,7 +27,7 @@ namespace BusarovsQuickBite.Core.Services
                 smtpClient.Credentials = new NetworkCredential(_smtpUserName, _smtpPassword);
                 MailMessage mailMessage = new MailMessage
                 {
-                    From = new MailAddress(UserConstants.AdminEmail),
+                    From = new MailAddress(fromEmail),
                     Subject = subject,
                     Body = htmlMessage,
                     IsBodyHtml = true

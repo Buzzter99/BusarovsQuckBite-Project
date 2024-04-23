@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ApplicationUser = BusarovsQuickBite.Infrastructure.Data.Models.ApplicationUser;
+using IEmailSender = BusarovsQuickBite.Core.Contracts.IEmailSender;
 
 namespace BusarovsQuckBite
 {

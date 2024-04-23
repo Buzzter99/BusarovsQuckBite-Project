@@ -1,5 +1,6 @@
-﻿using BusarovsQuickBite.Core.Services;
-using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using BusarovsQuickBite.Core.Contracts;
+using BusarovsQuickBite.Core.Services;
+using BusarovsQuickBite.Infrastructure.Constants;
 using Microsoft.Extensions.Configuration;
 
 namespace BusarovsQuickBite.Tests
@@ -19,7 +20,7 @@ namespace BusarovsQuickBite.Tests
         [Test]
         public void SendEmailTest()
         {
-            Assert.DoesNotThrowAsync(async () => await _emailService.SendEmailAsync("ryuuzzakii@abv.bg", "subject", "<h1>test</h1>"));
+            Assert.DoesNotThrowAsync(async () => await _emailService.SendEmailAsync("ryuuzzakii@abv.bg", "subject", "<h1>test</h1>",UserConstants.AdminEmail));
         }
 
     }

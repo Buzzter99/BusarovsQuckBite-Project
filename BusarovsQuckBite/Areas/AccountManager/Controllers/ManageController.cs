@@ -3,7 +3,6 @@ using BusarovsQuickBite.Infrastructure.Constants;
 using BusarovsQuickBite.Infrastructure.Data.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
@@ -84,7 +83,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 var token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(await _userManager.GeneratePasswordResetTokenAsync(user)));
                 string callbackUrl = Url.Action("ForgotPasswordConfirmation", "Manage", new { area = "AccountManager", token = token }, Request.Scheme)!;
                 await _emailSender.SendEmailAsync(user.Email, $"Password Reset",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>");
+                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>",UserConstants.AdminEmail);
             }
             TempData[SuccessMessageConstants.SuccessMessageKey] = "Reset Password link sent. Please check your email";
             return RedirectToAction(nameof(ForgotPassword));
@@ -113,7 +112,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 var token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(await _userManager.GenerateEmailConfirmationTokenAsync(user)));
                 string callbackUrl = Url.Action("ConfirmEmail", "Manage", new { area = "AccountManager", userId = user.Id, token = token }, Request.Scheme)!;
                 await _emailSender.SendEmailAsync(user.Email, $"Confirm your email - QuickBite",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>  to access <b>all features and discounts.</b>");
+                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>  to access <b>all features and discounts.</b>", UserConstants.AdminEmail);
             }
             TempData[SuccessMessageConstants.SuccessMessageKey] = "Email Verification sent!";
             return RedirectToAction(nameof(ResendEmailConfirmation));
@@ -213,7 +212,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 var token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(await _userManager.GenerateUserTokenAsync(user,"Default","ResetUsername")));
                 string callbackUrl = Url.Action("ResetUsernameConfirmation", "Manage", new { area = "AccountManager", token = token }, Request.Scheme)!;
                 await _emailSender.SendEmailAsync(user.Email, $"Reset Your Username - QuickBite",
-                    $"Please reset your username by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>");
+                    $"Please reset your username by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>", UserConstants.AdminEmail);
             }
             TempData[SuccessMessageConstants.SuccessMessageKey] = HtmlEncoder.Default.Encode("Username Reset Link Sent");
             return RedirectToAction(nameof(ResetUsername));

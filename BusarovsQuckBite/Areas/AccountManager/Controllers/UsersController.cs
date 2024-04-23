@@ -1,15 +1,15 @@
-﻿using BusarovsQuickBite.Core.Services;
-using BusarovsQuickBite.Infrastructure.Constants;
+﻿using BusarovsQuickBite.Infrastructure.Constants;
 using BusarovsQuickBite.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using System.Text.Encodings.Web;
+using BusarovsQuickBite.Core.Contracts;
 using BusarovsQuickBite.Core.Models.Users;
+using BusarovsQuickBite.Core.Services;
 
 namespace BusarovsQuckBite.Areas.AccountManager.Controllers
 {
@@ -67,7 +67,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                     var token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(await _userManager.GenerateEmailConfirmationTokenAsync(entity)));
                     string callbackUrl = Url.Action("ConfirmEmail", "Manage", new { area = "AccountManager", userId = entity.Id, token = token  }, Request.Scheme)!;
                     await _emailSender.SendEmailAsync(entity.Email, $"Confirm your email - QuickBite - {entity.UserName}",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>  to access <b>all features and discounts.</b>");
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>  to access <b>all features and discounts.</b>",UserConstants.AdminEmail);
                     TempData[SuccessMessageConstants.SuccessMessageKey] = HtmlEncoder.Default.Encode(string.Format(SuccessMessageConstants.SuccessfullyAdded, "Account") + Environment.NewLine + "Email Verification sent! Please verify email to access all features!");
                     return RedirectToAction(nameof(Login));
                 }
