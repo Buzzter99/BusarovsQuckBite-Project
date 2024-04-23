@@ -46,7 +46,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 if (result.Succeeded)
                 {
                     await _userManager.UpdateSecurityStampAsync(user);
-                    TempData[SuccessMessageConstants.SuccessMessageKey] = "Password Changed Successfully";
+                    TempData[SuccessMessageConstants.SuccessMessageKey] = HtmlEncoder.Default.Encode("Password Changed Successfully");
                     return View();
                 }
                 TempData[ErrorMessagesConstants.FailedMessageKey] = string.Join(Environment.NewLine, result.Errors.Select(c => c.Description));
