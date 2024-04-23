@@ -92,34 +92,34 @@ namespace BusarovsQuickBite.Infrastructure.Migrations
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "aaa8d6d5-9476-4a4a-a611-62c6c42f81ce",
+                            ConcurrencyStamp = "dedd4a47-7e7b-4855-b266-88e752d4f667",
                             Name = "Admin",
                             NormalizedName = "ADMIN",
-                            TransactionDateAndTime = new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(4083)
+                            TransactionDateAndTime = new DateTime(2024, 4, 23, 19, 12, 41, 361, DateTimeKind.Local).AddTicks(9324)
                         },
                         new
                         {
                             Id = "fa175b24-e5a7-41ab-8237-94734f2b5408",
-                            ConcurrencyStamp = "c474e0e4-5f26-472e-9da8-5f692cb7e39c",
+                            ConcurrencyStamp = "4ed86291-c651-4ae2-bd14-8b3b937d6edc",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER",
-                            TransactionDateAndTime = new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(4093)
+                            TransactionDateAndTime = new DateTime(2024, 4, 23, 19, 12, 41, 361, DateTimeKind.Local).AddTicks(9337)
                         },
                         new
                         {
                             Id = "22ccb117-1c50-47a5-bc43-1d9a84879e10",
-                            ConcurrencyStamp = "ed370a50-93c4-4364-aee4-5cc510d39e2a",
+                            ConcurrencyStamp = "88dd2205-1d54-4d1c-8d40-ec26360c6ee5",
                             Name = "Delivery Driver",
                             NormalizedName = "DELIVERY DRIVER",
-                            TransactionDateAndTime = new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(4102)
+                            TransactionDateAndTime = new DateTime(2024, 4, 23, 19, 12, 41, 361, DateTimeKind.Local).AddTicks(9344)
                         },
                         new
                         {
                             Id = "a1a8637e-6e83-4ee9-adef-09cd724473a7",
-                            ConcurrencyStamp = "bbe4eaba-0f3a-4c70-954c-fae2537df48b",
+                            ConcurrencyStamp = "47efe781-26ac-4b97-874c-6384165db061",
                             Name = "Cooking Staff",
                             NormalizedName = "COOKING STAFF",
-                            TransactionDateAndTime = new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(4107)
+                            TransactionDateAndTime = new DateTime(2024, 4, 23, 19, 12, 41, 361, DateTimeKind.Local).AddTicks(9351)
                         });
                 });
 
@@ -211,7 +211,7 @@ namespace BusarovsQuickBite.Infrastructure.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "54b7267b-5343-4405-8d09-60be98dbec19",
+                            ConcurrencyStamp = "086518f0-e224-458a-a73d-ec616096dc90",
                             Email = "brandabg1@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "",
@@ -220,11 +220,11 @@ namespace BusarovsQuickBite.Infrastructure.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "BRANDABG1@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPvDTmajtL56lTzILnDyWmawxiViFa7S8Jpre/V5TtFGcxSSGRj/eR7EwDFGeEOPFA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENpDjHT3mA4uQtr6phFtRiOIpBwcSd2cW38i7AP+MN+/TLRIY+qdt6aCrkSHYWehfQ==",
                             PhoneNumber = "0896722926",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "56191be5-f71b-4567-9f1f-5104a894b2d9",
-                            TransactionDateAndTime = new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(3837),
+                            SecurityStamp = "87201ac6-5281-47a9-985a-b7e332aea253",
+                            TransactionDateAndTime = new DateTime(2024, 4, 23, 19, 12, 41, 361, DateTimeKind.Local).AddTicks(9137),
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
@@ -304,7 +304,7 @@ namespace BusarovsQuickBite.Infrastructure.Migrations
                             Id = 1,
                             IsDeleted = false,
                             Name = "Snacks",
-                            TransactionDateAndTime = new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(5014),
+                            TransactionDateAndTime = new DateTime(2024, 4, 23, 19, 12, 41, 362, DateTimeKind.Local).AddTicks(270),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -312,7 +312,7 @@ namespace BusarovsQuickBite.Infrastructure.Migrations
                             Id = 2,
                             IsDeleted = false,
                             Name = "Burgers",
-                            TransactionDateAndTime = new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(5025),
+                            TransactionDateAndTime = new DateTime(2024, 4, 23, 19, 12, 41, 362, DateTimeKind.Local).AddTicks(281),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -320,7 +320,7 @@ namespace BusarovsQuickBite.Infrastructure.Migrations
                             Id = 3,
                             IsDeleted = false,
                             Name = "Drinks",
-                            TransactionDateAndTime = new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(5027),
+                            TransactionDateAndTime = new DateTime(2024, 4, 23, 19, 12, 41, 362, DateTimeKind.Local).AddTicks(282),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -328,7 +328,7 @@ namespace BusarovsQuickBite.Infrastructure.Migrations
                             Id = 4,
                             IsDeleted = false,
                             Name = "Pizzas",
-                            TransactionDateAndTime = new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(5028),
+                            TransactionDateAndTime = new DateTime(2024, 4, 23, 19, 12, 41, 362, DateTimeKind.Local).AddTicks(284),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -336,7 +336,7 @@ namespace BusarovsQuickBite.Infrastructure.Migrations
                             Id = 5,
                             IsDeleted = false,
                             Name = "Pasta",
-                            TransactionDateAndTime = new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(5030),
+                            TransactionDateAndTime = new DateTime(2024, 4, 23, 19, 12, 41, 362, DateTimeKind.Local).AddTicks(286),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -344,7 +344,7 @@ namespace BusarovsQuickBite.Infrastructure.Migrations
                             Id = 6,
                             IsDeleted = false,
                             Name = "Sandwiches",
-                            TransactionDateAndTime = new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(5033),
+                            TransactionDateAndTime = new DateTime(2024, 4, 23, 19, 12, 41, 362, DateTimeKind.Local).AddTicks(289),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -352,7 +352,7 @@ namespace BusarovsQuickBite.Infrastructure.Migrations
                             Id = 7,
                             IsDeleted = false,
                             Name = "Desserts",
-                            TransactionDateAndTime = new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(5034),
+                            TransactionDateAndTime = new DateTime(2024, 4, 23, 19, 12, 41, 362, DateTimeKind.Local).AddTicks(290),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         });
                 });
@@ -565,7 +565,7 @@ namespace BusarovsQuickBite.Infrastructure.Migrations
                             Name = "Pepperoni Pizza",
                             Price = 15.00m,
                             Quantity = 10,
-                            TransactionDateAndTime = new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(6019),
+                            TransactionDateAndTime = new DateTime(2024, 4, 23, 19, 12, 41, 362, DateTimeKind.Local).AddTicks(1160),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -578,7 +578,7 @@ namespace BusarovsQuickBite.Infrastructure.Migrations
                             Name = "Tuborg Beer",
                             Price = 5.00m,
                             Quantity = 50,
-                            TransactionDateAndTime = new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(6031),
+                            TransactionDateAndTime = new DateTime(2024, 4, 23, 19, 12, 41, 362, DateTimeKind.Local).AddTicks(1170),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         },
                         new
@@ -591,7 +591,7 @@ namespace BusarovsQuickBite.Infrastructure.Migrations
                             Name = "Hamburger",
                             Price = 8.50m,
                             Quantity = 15,
-                            TransactionDateAndTime = new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(6033),
+                            TransactionDateAndTime = new DateTime(2024, 4, 23, 19, 12, 41, 362, DateTimeKind.Local).AddTicks(1173),
                             Who = "8e445865-a24d-4543-a6c6-9443d048cdb9"
                         });
                 });

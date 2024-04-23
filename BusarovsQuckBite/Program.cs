@@ -3,6 +3,7 @@ using BusarovsQuickBite.Core.Contracts;
 using BusarovsQuickBite.Core.ModelBinders;
 using BusarovsQuickBite.Core.Providers;
 using BusarovsQuickBite.Core.Services;
+using BusarovsQuickBite.Infrastructure.Constants;
 using BusarovsQuickBite.Infrastructure.Data;
 using BusarovsQuickBite.Infrastructure.Data.Common;
 using BusarovsQuickBite.Infrastructure.Data.Models;
@@ -20,6 +21,7 @@ namespace BusarovsQuckBite
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            DataConstants.ImgConstants.ImgBasePath = builder.Configuration["RootFullPath"] + "Images";
             WebHost.CreateDefaultBuilder(args).UseStartup<Program>();
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>

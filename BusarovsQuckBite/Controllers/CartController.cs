@@ -3,6 +3,7 @@ using BusarovsQuickBite.Infrastructure.Constants;
 using BusarovsQuickBite.Infrastructure.Data.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Encodings.Web;
 using ApplicationException = BusarovsQuickBite.Core.Exceptions.ApplicationException;
 
 namespace BusarovsQuckBite.Controllers
@@ -31,10 +32,10 @@ namespace BusarovsQuckBite.Controllers
             }
             catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ae.Message);
                 return Redirect(callbackUrl);
             }
-            TempData[SuccessMessageConstants.SuccessMessageKey] = string.Format(SuccessMessageConstants.SuccessfullyAdded,nameof(Product));
+            TempData[SuccessMessageConstants.SuccessMessageKey] = HtmlEncoder.Default.Encode(string.Format(SuccessMessageConstants.SuccessfullyAdded,nameof(Product)));
             return Redirect(callbackUrl);
         }
         public async Task<IActionResult> RemoveItemFromCart(int productId)
@@ -45,7 +46,7 @@ namespace BusarovsQuckBite.Controllers
             }
             catch (ApplicationException ae)
             {
-                TempData[ErrorMessagesConstants.FailedMessageKey] = ae.Message;
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(ae.Message);
                 return RedirectToAction(nameof(MyCart));
             }
             return RedirectToAction(nameof(MyCart));

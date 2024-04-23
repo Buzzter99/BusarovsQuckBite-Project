@@ -1,5 +1,6 @@
 ﻿using BusarovsQuickBite.Core.Contracts;
 using BusarovsQuickBite.Core.Services;
+using BusarovsQuickBite.Infrastructure.Constants;
 using BusarovsQuickBite.Infrastructure.Data;
 using BusarovsQuickBite.Infrastructure.Data.Common;
 using Microsoft.AspNetCore.Hosting;
@@ -21,6 +22,7 @@ namespace BusarovsQuickBite.Tests
         private Mock<IFormFile>? _formFile;
         private string? _rootFullPath;
         private string? _imgFolderPath;
+        
         [SetUp]
         public void Setup()
         {
@@ -40,6 +42,7 @@ namespace BusarovsQuickBite.Tests
             _formFile = new Mock<IFormFile>();
             _formFile.Setup(f => f.Length).Returns(1024);
             _formFile.Setup(f => f.FileName).Returns("test.jpg");
+            DataConstants.ImgConstants.ImgBasePath = _imgFolderPath;
             _imgService = new ImgService(_hostingEnvironmentMock.Object, new Repository(_context));
         }
         [SetUp]

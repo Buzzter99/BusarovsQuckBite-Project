@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BusarovsQuickBite.Infrastructure.Migrations
 {
-    public partial class rollbackSlashForPath : Migration
+    public partial class migrationWithConfigForPath : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -391,16 +391,16 @@ namespace BusarovsQuickBite.Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName", "TransactionDateAndTime" },
                 values: new object[,]
                 {
-                    { "22ccb117-1c50-47a5-bc43-1d9a84879e10", "ed370a50-93c4-4364-aee4-5cc510d39e2a", "Delivery Driver", "DELIVERY DRIVER", new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(4102) },
-                    { "2c5e174e-3b0e-446f-86af-483d56fd7210", "aaa8d6d5-9476-4a4a-a611-62c6c42f81ce", "Admin", "ADMIN", new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(4083) },
-                    { "a1a8637e-6e83-4ee9-adef-09cd724473a7", "bbe4eaba-0f3a-4c70-954c-fae2537df48b", "Cooking Staff", "COOKING STAFF", new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(4107) },
-                    { "fa175b24-e5a7-41ab-8237-94734f2b5408", "c474e0e4-5f26-472e-9da8-5f692cb7e39c", "Customer", "CUSTOMER", new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(4093) }
+                    { "22ccb117-1c50-47a5-bc43-1d9a84879e10", "88dd2205-1d54-4d1c-8d40-ec26360c6ee5", "Delivery Driver", "DELIVERY DRIVER", new DateTime(2024, 4, 23, 19, 12, 41, 361, DateTimeKind.Local).AddTicks(9344) },
+                    { "2c5e174e-3b0e-446f-86af-483d56fd7210", "dedd4a47-7e7b-4855-b266-88e752d4f667", "Admin", "ADMIN", new DateTime(2024, 4, 23, 19, 12, 41, 361, DateTimeKind.Local).AddTicks(9324) },
+                    { "a1a8637e-6e83-4ee9-adef-09cd724473a7", "47efe781-26ac-4b97-874c-6384165db061", "Cooking Staff", "COOKING STAFF", new DateTime(2024, 4, 23, 19, 12, 41, 361, DateTimeKind.Local).AddTicks(9351) },
+                    { "fa175b24-e5a7-41ab-8237-94734f2b5408", "4ed86291-c651-4ae2-bd14-8b3b937d6edc", "Customer", "CUSTOMER", new DateTime(2024, 4, 23, 19, 12, 41, 361, DateTimeKind.Local).AddTicks(9337) }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "IsActive", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TransactionDateAndTime", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "54b7267b-5343-4405-8d09-60be98dbec19", "brandabg1@gmail.com", true, "", true, "", false, null, "BRANDABG1@GMAIL.COM", "ADMIN", "AQAAAAEAACcQAAAAEPvDTmajtL56lTzILnDyWmawxiViFa7S8Jpre/V5TtFGcxSSGRj/eR7EwDFGeEOPFA==", "0896722926", true, "56191be5-f71b-4567-9f1f-5104a894b2d9", new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(3837), false, "Admin" });
+                values: new object[] { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "086518f0-e224-458a-a73d-ec616096dc90", "brandabg1@gmail.com", true, "", true, "", false, null, "BRANDABG1@GMAIL.COM", "ADMIN", "AQAAAAEAACcQAAAAENpDjHT3mA4uQtr6phFtRiOIpBwcSd2cW38i7AP+MN+/TLRIY+qdt6aCrkSHYWehfQ==", "0896722926", true, "87201ac6-5281-47a9-985a-b7e332aea253", new DateTime(2024, 4, 23, 19, 12, 41, 361, DateTimeKind.Local).AddTicks(9137), false, "Admin" });
 
             migrationBuilder.InsertData(
                 table: "Img",
@@ -422,29 +422,29 @@ namespace BusarovsQuickBite.Infrastructure.Migrations
                 columns: new[] { "Id", "IsDeleted", "Name", "TransactionDateAndTime", "Who" },
                 values: new object[,]
                 {
-                    { 1, false, "Snacks", new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(5014), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
-                    { 2, false, "Burgers", new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(5025), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
-                    { 3, false, "Drinks", new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(5027), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
-                    { 4, false, "Pizzas", new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(5028), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
-                    { 5, false, "Pasta", new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(5030), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
-                    { 6, false, "Sandwiches", new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(5033), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
-                    { 7, false, "Desserts", new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(5034), "8e445865-a24d-4543-a6c6-9443d048cdb9" }
+                    { 1, false, "Snacks", new DateTime(2024, 4, 23, 19, 12, 41, 362, DateTimeKind.Local).AddTicks(270), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
+                    { 2, false, "Burgers", new DateTime(2024, 4, 23, 19, 12, 41, 362, DateTimeKind.Local).AddTicks(281), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
+                    { 3, false, "Drinks", new DateTime(2024, 4, 23, 19, 12, 41, 362, DateTimeKind.Local).AddTicks(282), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
+                    { 4, false, "Pizzas", new DateTime(2024, 4, 23, 19, 12, 41, 362, DateTimeKind.Local).AddTicks(284), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
+                    { 5, false, "Pasta", new DateTime(2024, 4, 23, 19, 12, 41, 362, DateTimeKind.Local).AddTicks(286), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
+                    { 6, false, "Sandwiches", new DateTime(2024, 4, 23, 19, 12, 41, 362, DateTimeKind.Local).AddTicks(289), "8e445865-a24d-4543-a6c6-9443d048cdb9" },
+                    { 7, false, "Desserts", new DateTime(2024, 4, 23, 19, 12, 41, 362, DateTimeKind.Local).AddTicks(290), "8e445865-a24d-4543-a6c6-9443d048cdb9" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "CategoryId", "Description", "ImageId", "IsDeleted", "Name", "Price", "Quantity", "TransactionDateAndTime", "Who" },
-                values: new object[] { 1, 4, "Pizza", 1, false, "Pepperoni Pizza", 15.00m, 10, new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(6019), "8e445865-a24d-4543-a6c6-9443d048cdb9" });
+                values: new object[] { 1, 4, "Pizza", 1, false, "Pepperoni Pizza", 15.00m, 10, new DateTime(2024, 4, 23, 19, 12, 41, 362, DateTimeKind.Local).AddTicks(1160), "8e445865-a24d-4543-a6c6-9443d048cdb9" });
 
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "CategoryId", "Description", "ImageId", "IsDeleted", "Name", "Price", "Quantity", "TransactionDateAndTime", "Who" },
-                values: new object[] { 2, 3, "Beer", 2, false, "Tuborg Beer", 5.00m, 50, new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(6031), "8e445865-a24d-4543-a6c6-9443d048cdb9" });
+                values: new object[] { 2, 3, "Beer", 2, false, "Tuborg Beer", 5.00m, 50, new DateTime(2024, 4, 23, 19, 12, 41, 362, DateTimeKind.Local).AddTicks(1170), "8e445865-a24d-4543-a6c6-9443d048cdb9" });
 
             migrationBuilder.InsertData(
                 table: "Products",
                 columns: new[] { "Id", "CategoryId", "Description", "ImageId", "IsDeleted", "Name", "Price", "Quantity", "TransactionDateAndTime", "Who" },
-                values: new object[] { 3, 2, "Burger", 3, false, "Hamburger", 8.50m, 15, new DateTime(2024, 4, 22, 21, 12, 19, 956, DateTimeKind.Local).AddTicks(6033), "8e445865-a24d-4543-a6c6-9443d048cdb9" });
+                values: new object[] { 3, 2, "Burger", 3, false, "Hamburger", 8.50m, 15, new DateTime(2024, 4, 23, 19, 12, 41, 362, DateTimeKind.Local).AddTicks(1173), "8e445865-a24d-4543-a6c6-9443d048cdb9" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_Who",
