@@ -49,7 +49,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                     TempData[SuccessMessageConstants.SuccessMessageKey] = HtmlEncoder.Default.Encode("Password Changed Successfully");
                     return View();
                 }
-                TempData[ErrorMessagesConstants.FailedMessageKey] = string.Join(Environment.NewLine, result.Errors.Select(c => c.Description));
+                TempData[ErrorMessagesConstants.FailedMessageKey] = HtmlEncoder.Default.Encode(string.Join(Environment.NewLine, result.Errors.Select(c => c.Description)));
                 return View(model);
             }
             return View();
@@ -85,7 +85,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 await _emailSender.SendEmailAsync(user.Email, $"Password Reset",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>",UserConstants.AdminEmail);
             }
-            TempData[SuccessMessageConstants.SuccessMessageKey] = "Reset Password link sent. Please check your email";
+            TempData[SuccessMessageConstants.SuccessMessageKey] = HtmlEncoder.Default.Encode("Reset Password link sent. Please check your email");
             return RedirectToAction(nameof(ForgotPassword));
         }
         [AllowAnonymous]
@@ -114,13 +114,13 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 await _emailSender.SendEmailAsync(user.Email, $"Confirm your email - QuickBite",
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>  to access <b>all features and discounts.</b>", UserConstants.AdminEmail);
             }
-            TempData[SuccessMessageConstants.SuccessMessageKey] = "Email Verification sent!";
+            TempData[SuccessMessageConstants.SuccessMessageKey] = HtmlEncoder.Default.Encode("Email Verification sent!");
             return RedirectToAction(nameof(ResendEmailConfirmation));
         }
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmailAsync(string? userId, string? token)
         {
-            ViewBag.Message = "Email Confirmed Successfully!";
+            ViewBag.Message = HtmlEncoder.Default.Encode("Email Confirmed Successfully!");
             if (userId != null && token != null)
             {
                 var user = await _userManager.FindByIdAsync(userId);
@@ -128,7 +128,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                 {
                     if (user.EmailConfirmed)
                     {
-                        ViewBag.Message = "Email Already Confirmed!";
+                        ViewBag.Message = HtmlEncoder.Default.Encode("Email Already Confirmed!");
                         return View();
                     }
                     var result = await _userManager.ConfirmEmailAsync(user, Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token)));
@@ -137,7 +137,7 @@ namespace BusarovsQuckBite.Areas.AccountManager.Controllers
                         await _userManager.UpdateSecurityStampAsync(user);
                         return View();
                     }
-                    ViewBag.Message = string.Join(Environment.NewLine, result.Errors.Select(c => c.Description));
+                    ViewBag.Message = HtmlEncoder.Default.Encode(string.Join(Environment.NewLine, result.Errors.Select(c => c.Description)));
                 }
             }
             return View();

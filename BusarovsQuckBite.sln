@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusarovsQuickBite.Tests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusarovsQuickBite.Infrastructure", "BusarovsQuickBite.Infrastructure\BusarovsQuickBite.Infrastructure.csproj", "{F8A9A744-596A-4BF4-B3E4-6BDAA7EE45C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusarovsQuickBite.Core", "BusarovsQuickBite.Core\BusarovsQuickBite.Core.csproj", "{60AA9A0A-6359-431C-9051-4C9240E266AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusarovsQuickBite.Core", "BusarovsQuickBite.Core\BusarovsQuickBite.Core.csproj", "{60AA9A0A-6359-431C-9051-4C9240E266AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusarovsQuckBite.Api", "BusarovsQuckBite.Api\BusarovsQuckBite.Api.csproj", "{E6468CEB-9984-4957-89CF-CC58D49076A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{60AA9A0A-6359-431C-9051-4C9240E266AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60AA9A0A-6359-431C-9051-4C9240E266AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60AA9A0A-6359-431C-9051-4C9240E266AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6468CEB-9984-4957-89CF-CC58D49076A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6468CEB-9984-4957-89CF-CC58D49076A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6468CEB-9984-4957-89CF-CC58D49076A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6468CEB-9984-4957-89CF-CC58D49076A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
