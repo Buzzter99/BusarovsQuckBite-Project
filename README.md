@@ -29,6 +29,6 @@ http://baseurl/api/ExportBaseImg (GET)
 -This api may or may not change in future releases.
 -For the api it is used the minimal api architecture with asp.net core .net 6.
 -Api gets the files ready and exports them in .zip extenstion.
-MVC Currently/Temporary hosted in OCI:
-http://130.61.253.188/quickbite - MVC
-http://130.61.253.188/quickbiteapi/swagger/index.html - Swagger API
+MVC Currently hosted in OCI with Autonomous Oracle Database and Ubuntu OS with reverse proxy:
+http://138.3.247.158 - MVC
+http://138.3.247.158/app/swagger/index.html - Swagger API (GET Request works with or without /app in the URL)
